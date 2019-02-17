@@ -1,0 +1,22 @@
+{
+  "name": "snapinator",
+  "version": "1.0.0",
+  "description": "Converts Scratch projects/sprites to Snap!",
+  "scripts": {
+    "build": "webpack"
+  },
+  "author": "djsrv",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/jszip": "^3.1.4",
+    "ts-loader": "^4.4.2",
+    "tslint": "^5.10.0",
+    "typescript": "^2.9.2",
+    "webpack": "^4.14.0",
+    "webpack-cli": "^3.0.8"
+  },
+  "dependencies": {
+    "jszip": "^3.1.5",
+    "npm": "^6.1.0"
+  }
+}
