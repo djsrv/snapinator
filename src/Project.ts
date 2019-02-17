@@ -3,7 +3,7 @@ import ImageFile from './media/ImageFile';
 import MediaFile from './media/MediaFile';
 import SoundFile from './media/SoundFile';
 import Stage from './objects/Stage';
-import Variable from './objects/Variable';
+import VariableFrame from './objects/VariableFrame';
 
 export default class Project {
     zip: JSZip;
@@ -14,7 +14,7 @@ export default class Project {
     thumbnail: ImageFile;
 
     media: {[id: string]: MediaFile};
-    globalVars: Variable[];
+    globalVars: VariableFrame;
     stage: Stage;
 
     async readZip(zip: JSZip) {
@@ -23,7 +23,7 @@ export default class Project {
         this.jsonObj = JSON.parse(jsonText);
         if (this.jsonObj.children) { // Scratch 2.0 project
             this.media = await this.readMediaSB2();
-            this.globalVars = Variable.readVariablesSB2(this.jsonObj);
+            this.globalVars = new VariableFrame().readScriptableSB2(this.jsonObj);
             this.stage = new Stage().readSB2(this.jsonObj, this);
         }
     }

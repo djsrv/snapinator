@@ -2,11 +2,11 @@ import Project from '../Project';
 import Costume from './Costume';
 import Script from './Script';
 import Sound from './Sound';
-import Variable from './Variable';
+import VariableFrame from './VariableFrame';
 
 export default class Scriptable {
     name: string;
-    variables: Variable[];
+    variables: VariableFrame;
     scripts: Script[];
     costumes: Costume[];
     sounds: Sound[];
@@ -17,7 +17,6 @@ export default class Scriptable {
         const soundObjs = jsonObj.sounds;
 
         this.name = jsonObj.objName;
-        this.variables = [];
         this.costumes = [];
         if (costumeObjs != null) {
             for (const costumeObj of costumeObjs) {

@@ -1,5 +1,6 @@
 import Project from '../Project';
 import Scriptable from './Scriptable';
+import VariableFrame from './VariableFrame';
 
 export default class Sprite extends Scriptable {
     x: number;
@@ -19,6 +20,8 @@ export default class Sprite extends Scriptable {
         };
 
         super.readSB2(jsonObj, project);
+        this.variables = new VariableFrame(project.globalVars).readScriptableSB2(this);
+
         this.x = jsonObj.scratchX;
         this.y = jsonObj.scratchY;
         this.hidden = !jsonObj.visible;
