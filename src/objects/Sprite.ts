@@ -1,18 +1,33 @@
+import Project from '../Project';
 import Scriptable from './Scriptable';
 
 export default class Sprite extends Scriptable {
     x: number;
     y: number;
-    visible: boolean;
-    size: number;
+    hidden: boolean;
+    scale: number;
     direction: number;
-    rotationStyle: RotationStyle;
+    rotationStyle: number;
     draggable: boolean;
     libraryIndex: number;
-}
 
-export enum RotationStyle {
-    Normal,
-    LeftRight,
-    None,
+    readSB2(jsonObj: any, project: Project): Sprite {
+        const rotationStyles = {
+            normal: 1,
+            leftRight: 2,
+            none: 0,
+        };
+
+        super.readSB2(jsonObj, project);
+        this.x = jsonObj.scratchX;
+        this.y = jsonObj.scratchY;
+        this.hidden = !jsonObj.visible;
+        this.scale = jsonObj.scale;
+        this.direction = jsonObj.direction;
+        this.rotationStyle = rotationStyles[jsonObj.rotationStyle] || 1;
+        this.draggable = jsonObj.isDraggable;
+        this.libraryIndex = jsonObj.indexInLibrary;
+
+        return this;
+    }
 }
