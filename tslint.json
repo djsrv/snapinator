@@ -9,15 +9,7 @@
     "member-access": false,
     "no-console": false,
     "object-literal-sort-keys": false,
-    "quotemark": [true, "single"],
-    "trailing-comma": [
-      true,
-      {
-        "multiline": {
-          "functions": "never"
-        }
-      }
-    ]
+    "quotemark": [true, "single"]
   },
   "rulesDirectory": []
 }
