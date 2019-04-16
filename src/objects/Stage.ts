@@ -1,4 +1,5 @@
 import Project from '../Project';
+import XMLDoc from '../XMLDoc';
 import Scriptable from './Scriptable';
 import Sprite from './Sprite';
 import VariableFrame from './VariableFrame';
@@ -6,7 +7,8 @@ import Watcher from './Watcher';
 
 export default class Stage extends Scriptable {
     tempo: number;
-    children: Array<Sprite | Watcher>;
+    // children: Array<Sprite | Watcher>;
+    children: Sprite[];
 
     readSB2(jsonObj: any, project: Project): Stage {
         const childObjs  = jsonObj.children;
@@ -25,5 +27,27 @@ export default class Stage extends Scriptable {
         }
 
         return this;
+    }
+
+    toXML(xml: XMLDoc): Element {
+        return xml.el('stage', {
+            name: this.name,
+            width: 480,
+            height: 360,
+            costume: this.costumeIndex + 1,
+            tempo: this.tempo,
+            threadsafe: false,
+            lines: 'round',
+            codify: false,
+            scheduled: false,
+        }, [
+            this.costumesXML(xml),
+            this.soundsXML(xml),
+            xml.el('variables'),
+            this.blocksXML(xml),
+            this.scriptsXML(xml),
+            // xml.el('sprites', null, this.children.map((child) => child.toXML(xml))),
+            xml.el('sprites'),
+        ]);
     }
 }

@@ -1,4 +1,5 @@
 import Project from '../Project';
+import XMLDoc from '../XMLDoc';
 import Scriptable from './Scriptable';
 import VariableFrame from './VariableFrame';
 
@@ -32,5 +33,9 @@ export default class Sprite extends Scriptable {
         this.libraryIndex = jsonObj.indexInLibrary;
 
         return this;
+    }
+
+    toXML(xml: XMLDoc): Element {
+        return xml.el('sprite');
     }
 }

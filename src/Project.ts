@@ -4,6 +4,7 @@ import MediaFile from './media/MediaFile';
 import SoundFile from './media/SoundFile';
 import Stage from './objects/Stage';
 import VariableFrame from './objects/VariableFrame';
+import XMLDoc from './XMLDoc';
 
 export default class Project {
     zip: JSZip;
@@ -53,11 +54,9 @@ export default class Project {
                     const baseLayerExt = baseLayerMD5Ext.split('.')[1];
                     if (!media[baseLayerMD5Ext]) {
                         const baseLayerData = await getAsset(costumeObj.baseLayerID, baseLayerExt);
-                        const baseLayerFile: ImageFile = {
-                            dataFormat: baseLayerExt,
-                            data: baseLayerData,
-                            resolution: costumeObj.bitmapResolution,
-                        };
+                        const baseLayerFile: ImageFile = new ImageFile(
+                            baseLayerExt, baseLayerData, costumeObj.bitmapResolution,
+                        );
                         media[baseLayerMD5Ext] = baseLayerFile;
                     }
 
@@ -66,11 +65,9 @@ export default class Project {
                         const textLayerExt = textLayerMD5Ext.split('.')[1];
                         if (!media[textLayerMD5Ext]) {
                             const textLayerData = await getAsset(costumeObj.textLayerID, textLayerExt);
-                            const baseLayerFile: ImageFile = {
-                                dataFormat: textLayerExt,
-                                data: textLayerData,
-                                resolution: costumeObj.bitmapResolution,
-                            };
+                            const baseLayerFile: ImageFile = new ImageFile(
+                                textLayerExt, textLayerData, costumeObj.bitmapResolution,
+                            );
                             media[textLayerMD5Ext] = baseLayerFile;
                         }
                     }
@@ -83,10 +80,7 @@ export default class Project {
                     const ext = md5Ext.split('.')[1];
                     if (!media[md5Ext]) {
                         const data = await getAsset(soundObj.soundID, ext);
-                        const file: SoundFile = {
-                            dataFormat: ext,
-                            data,
-                        };
+                        const file: SoundFile = new SoundFile(ext, data);
                         media[md5Ext] = file;
                     }
                 }
@@ -101,5 +95,19 @@ export default class Project {
         }
 
         return media;
+    }
+
+    toXML(): XMLDoc {
+        const xml = new XMLDoc();
+        const proj = xml.el('project', {
+            name: 'TEST',
+            app: 'Snapinator',
+            version: 1,
+        }, [
+            xml.el('notes', null, 'Converted by Snapinator'),
+            this.stage.toXML(xml),
+        ]);
+        xml.doc.appendChild(proj);
+        return xml;
     }
 }

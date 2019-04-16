@@ -1,4 +1,5 @@
 import Project from '../Project';
+import XMLDoc from '../XMLDoc';
 import Costume from './Costume';
 import Script from './Script';
 import Sound from './Sound';
@@ -32,5 +33,27 @@ export default class Scriptable {
         this.costumeIndex = jsonObj.currentCostumeIndex;
 
         return this;
+    }
+
+    costumesXML(xml: XMLDoc) {
+        return xml.el('costumes', null, [
+            xml.el('list', null, this.costumes.map(
+                (costume) => xml.el('item', null, [costume.toXML(xml)]),
+            )),
+        ]);
+    }
+
+    soundsXML(xml: XMLDoc): Element {
+        return xml.el('sounds', null, [
+            xml.el('list'),
+        ]);
+    }
+
+    blocksXML(xml: XMLDoc): Element {
+        return xml.el('blocks');
+    }
+
+    scriptsXML(xml: XMLDoc): Element {
+        return xml.el('scripts');
     }
 }
