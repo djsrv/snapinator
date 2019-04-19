@@ -106,6 +106,10 @@ export default class Project {
         }, [
             xml.el('notes', null, 'Converted by Snapinator'),
             this.stage.toXML(xml),
+            xml.el('hidden'),
+            xml.el('headers'),
+            xml.el('code'),
+            this.globalVars.toXML(xml),
         ]);
         xml.doc.appendChild(proj);
         return xml;

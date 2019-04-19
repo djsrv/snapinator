@@ -22,7 +22,7 @@ export default class Sprite extends Scriptable {
         };
 
         super.readSB2(jsonObj, project);
-        this.variables = new VariableFrame(project.globalVars).readScriptableSB2(this);
+        this.variables = new VariableFrame(project.globalVars).readScriptableSB2(jsonObj);
 
         this.x = jsonObj.scratchX;
         this.y = jsonObj.scratchY;
@@ -57,7 +57,7 @@ export default class Sprite extends Scriptable {
         return xml.el('sprite', props, [
             this.costumesXML(xml),
             this.soundsXML(xml),
-            xml.el('variables'),
+            this.variables.toXML(xml),
             this.blocksXML(xml),
             this.scriptsXML(xml),
         ]);

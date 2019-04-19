@@ -1,35 +1,28 @@
+import XMLDoc from '../XMLDoc';
 import List from './List';
 import Variable from './Variable';
 
 export default class VariableFrame {
     parent: VariableFrame;
-    variables: {[name: string]: Variable};
-    lists: {[name: string]: Variable};
-    params: {[name: string]: Variable};
+    vars: Variable[];
+    listNameMap: {[name: string]: string};
+    paramNameMap: {[name: string]: string};
 
     constructor(parent?: VariableFrame) {
         this.parent = parent;
-        this.variables = {};
-        this.lists = {};
-        this.params = {};
+        this.vars = [];
+        this.listNameMap = {};
+        this.paramNameMap = {};
     }
 
     varNameUsed(name: string) {
-        if (this.variables[name]) {
-            return true;
+        for (const variable of this.vars) {
+            if (variable.name === name) {
+                return true;
+            }
         }
         if (this.parent) {
             return this.parent.varNameUsed(name);
-        }
-        return false;
-    }
-
-    varOrListNameUsed(name: string) {
-        if (this.variables[name] || this.lists[name]) {
-            return true;
-        }
-        if (this.parent) {
-            return this.parent.varOrListNameUsed(name);
         }
         return false;
     }
@@ -40,27 +33,25 @@ export default class VariableFrame {
 
         if (variableObjs != null) {
             for (const varObj of variableObjs) {
-                const variable: Variable = {
-                    name: varObj.name,
-                    value: varObj.value,
-                };
-                this.variables[varObj.name] = variable;
+                const variable = new Variable(varObj.name, varObj.value);
+                this.vars.push(variable);
             }
         }
         if (listObjs != null) {
             for (const listObj of listObjs) {
                 const oldName = listObj.listName;
-                const newName = this.varNameUsed(oldName)
-                                    ? oldName + ' (list)'
-                                    : oldName;
-                const variable: Variable = {
-                    name: newName,
-                    value: new List(listObj.contents),
-                };
-                this.lists[newName] = variable;
+                // TODO: Handle name edge cases
+                const newName = '(list) ' + oldName;
+                const variable = new Variable(newName, new List(listObj.contents));
+                this.vars.push(variable);
+                this.listNameMap[oldName] = newName;
             }
         }
 
         return this;
+    }
+
+    toXML(xml: XMLDoc): Element {
+        return xml.el('variables', null, this.vars.map((variable) => variable.toXML(xml)));
     }
 }
