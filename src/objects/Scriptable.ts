@@ -30,7 +30,7 @@ export default class Scriptable {
                 this.sounds.push(new Sound().readSB2(soundObj, project));
             }
         }
-        this.costumeIndex = jsonObj.currentCostumeIndex;
+        this.costumeIndex = jsonObj.currentCostumeIndex + 1;
 
         return this;
     }

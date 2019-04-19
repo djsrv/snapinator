@@ -34,7 +34,7 @@ export default class Stage extends Scriptable {
             name: this.name,
             width: 480,
             height: 360,
-            costume: this.costumeIndex + 1,
+            costume: this.costumeIndex,
             tempo: this.tempo,
             threadsafe: false,
             lines: 'round',
@@ -46,8 +46,7 @@ export default class Stage extends Scriptable {
             xml.el('variables'),
             this.blocksXML(xml),
             this.scriptsXML(xml),
-            // xml.el('sprites', null, this.children.map((child) => child.toXML(xml))),
-            xml.el('sprites'),
+            xml.el('sprites', null, this.children.map((child) => child.toXML(xml))),
         ]);
     }
 }
