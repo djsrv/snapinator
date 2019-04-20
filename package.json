@@ -8,15 +8,15 @@
   "author": "djsrv",
   "license": "MIT",
   "devDependencies": {
-    "@types/jszip": "^3.1.4",
-    "ts-loader": "^4.4.2",
-    "tslint": "^5.10.0",
+    "@types/jszip": "^3.1.5",
+    "ts-loader": "^4.5.0",
+    "tslint": "^5.16.0",
     "typescript": "^2.9.2",
-    "webpack": "^4.14.0",
-    "webpack-cli": "^3.0.8"
+    "webpack": "^4.30.0",
+    "webpack-cli": "^3.3.0"
   },
   "dependencies": {
-    "jszip": "^3.1.5",
-    "npm": "^6.1.0"
+    "jszip": "^3.2.1",
+    "npm": "^6.9.0"
   }
 }
