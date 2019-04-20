@@ -1,6 +1,6 @@
 {
   "name": "snapinator",
-  "version": "1.0.0",
+  "version": "3.0.0",
   "description": "Converts Scratch projects/sprites to Snap!",
   "scripts": {
     "build": "webpack"
