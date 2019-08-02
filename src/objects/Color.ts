@@ -4,7 +4,7 @@ export default class Color {
         const g = (color >> 8) & 0xff;
         const b = color & 0xff;
         const a = ((color >> 24) & 0xff) / 0xff;
-        return  new Color(r, g, b, a);
+        return new Color(r, g, b, a);
     }
 
     r: number;

@@ -1,21 +1,29 @@
 import Project from '../Project';
 import XMLDoc from '../XMLDoc';
+import BlockDefinition from './BlockDefinition';
 import Costume from './Costume';
 import Script from './Script';
+import ScriptComment from './ScriptComment';
 import Sound from './Sound';
 import VariableFrame from './VariableFrame';
 
 export default class Scriptable {
     name: string;
-    variables: VariableFrame;
-    scripts: Script[];
     costumes: Costume[];
     sounds: Sound[];
     costumeIndex: number;
+    variables: VariableFrame;
+    blocks: BlockDefinition[];
+    scripts: Array<Script | ScriptComment>;
 
     readSB2(jsonObj: any, project: Project): Scriptable {
         const costumeObjs = jsonObj.costumes;
         const soundObjs = jsonObj.sounds;
+        const commentObjs = jsonObj.scriptComments;
+        const scriptObjs = jsonObj.scripts;
+
+        const blockComments = [];
+        let nextBlockID = 0;
 
         this.name = jsonObj.objName;
         this.costumes = [];
@@ -31,6 +39,38 @@ export default class Scriptable {
             }
         }
         this.costumeIndex = jsonObj.currentCostumeIndex + 1;
+        this.blocks = [];
+        this.scripts = [];
+        if (commentObjs != null) {
+            for (const commentObj of commentObjs) {
+                const blockID = commentObj[5];
+                const comment = new ScriptComment().readSB2(commentObj);
+                if (blockID === -1) {
+                    this.scripts.push(comment);
+                } else {
+                    blockComments[blockID] = comment;
+                }
+            }
+        }
+        console.log(blockComments);
+        if (scriptObjs != null) {
+            for (const scriptObj of scriptObjs) {
+                const blockStackObj = scriptObj[2];
+                const firstBlockObj = blockStackObj[0];
+                const firstOp = firstBlockObj[0];
+                if (firstOp === 'procDef') {
+                    // let blockDef;
+                    // [blockDef, nextBlockID] = new BlockDefinition().readSB2(
+                    //     scriptObj, nextBlockID, blockComments, this.variables,
+                    // );
+                    // this.blocks.push(blockDef);
+                } else {
+                    let script;
+                    [script, nextBlockID] = new Script().readSB2(scriptObj, nextBlockID, blockComments);
+                    this.scripts.push(script);
+                }
+            }
+        }
 
         return this;
     }
@@ -54,6 +94,13 @@ export default class Scriptable {
     }
 
     scriptsXML(xml: XMLDoc): Element {
-        return xml.el('scripts');
+        return xml.el('scripts', null, this.scripts.map((scriptOrComment) => {
+            if (scriptOrComment instanceof ScriptComment) {
+                const comment: ScriptComment = scriptOrComment;
+                return comment.toXML(xml);
+            }
+            const script: Script = scriptOrComment;
+            return script.toXML(xml, this, this.variables);
+        }));
     }
 }

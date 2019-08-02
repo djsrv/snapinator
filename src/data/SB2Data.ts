@@ -32,7 +32,7 @@
 
 */
 
-export const specMap = {
+export const SB2_TO_SB3_OP_MAP = {
     'forward:': 'motion_movesteps',
     'turnRight:': 'motion_turnright',
     'turnLeft:': 'motion_turnleft',
@@ -72,7 +72,7 @@ export const specMap = {
     'setSizeTo:': 'looks_setsizeto',
     'changeStretchBy:': 'looks_changestretchby',
     'setStretchTo:': 'looks_setstretchto',
-    'comeToFront': 'looks_gotofrontback',
+    // 'comeToFront': 'looks_gotofrontback',
     'goBackByLayers:': 'looks_goforwardbackwardlayers',
     // 'costumeIndex': 'looks_costumenumbername',
     // 'costumeName': 'looks_costumenumbername',
@@ -80,7 +80,7 @@ export const specMap = {
     'scale': 'looks_size',
     'startSceneAndWait': 'looks_switchbackdroptoandwait',
     'nextScene': 'looks_nextbackdrop',
-    'backgroundIndex': 'looks_backdropnumbername',
+    // 'backgroundIndex': 'looks_backdropnumbername',
     'playSound:': 'sound_play',
     'doPlaySoundAndWait': 'sound_playuntildone',
     'stopAllSounds': 'sound_stopallsounds',

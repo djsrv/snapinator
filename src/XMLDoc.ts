@@ -15,7 +15,7 @@ export default class XMLDoc {
             }
         }
         if (content != null) {
-            if (content.constructor !== Array) {
+            if (!Array.isArray(content)) {
                 content = [content];
             }
             for (const c of content) {
