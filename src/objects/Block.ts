@@ -45,8 +45,7 @@ export default class Block {
     }
 
     toXML(xml: XMLDoc, scriptable: Scriptable, variables: VariableFrame): Element {
-        // const snapOp = SB3_TO_SNAP_OP_MAP[this.op];
-        const snapOp = this.op;
+        const snapOp = SB3_TO_SNAP_OP_MAP[this.op] || this.op;
         if (!snapOp) {
             throw new Error('Unsupported block ' + this.op);
         }
