@@ -5,6 +5,7 @@ import Costume from './Costume';
 import Script from './Script';
 import ScriptComment from './ScriptComment';
 import Sound from './Sound';
+import Stage from './Stage';
 import VariableFrame from './VariableFrame';
 
 export default class Scriptable {
@@ -52,7 +53,6 @@ export default class Scriptable {
                 }
             }
         }
-        console.log(blockComments);
         if (scriptObjs != null) {
             for (const scriptObj of scriptObjs) {
                 const blockStackObj = scriptObj[2];
@@ -66,7 +66,9 @@ export default class Scriptable {
                     // this.blocks.push(blockDef);
                 } else {
                     let script;
-                    [script, nextBlockID] = new Script().readSB2(scriptObj, nextBlockID, blockComments);
+                    [script, nextBlockID] = new Script().readSB2(
+                        scriptObj, nextBlockID, blockComments,
+                    );
                     this.scripts.push(script);
                 }
             }
@@ -100,7 +102,7 @@ export default class Scriptable {
                 return comment.toXML(xml);
             }
             const script: Script = scriptOrComment;
-            return script.toXML(xml, this, this.variables);
+            return script.toXML(xml, this instanceof Stage, this.variables);
         }));
     }
 }

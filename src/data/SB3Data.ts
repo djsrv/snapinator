@@ -6,6 +6,7 @@ export const SB3_TO_SNAP_OP_MAP = {
     'motion_pointtowards': 'doFaceTowards',
     'motion_gotoxy': 'gotoXY',
     'motion_goto': 'doGotoObject',
+    // 'motion_glideto': '',
     'motion_glidesecstoxy': 'doGlide',
     'motion_changexby': 'changeXPosition',
     'motion_setx': 'setXPosition',
@@ -68,14 +69,15 @@ export const SB3_TO_SNAP_OP_MAP = {
     'pen_stamp': 'doStamp',
     'pen_penDown': 'down',
     'pen_penUp': 'up',
-    // 'pen_setPenColorToColor': '',
+    'pen_setPenColorToColor': 'setColor',
+    'pen_changePenColorParamBy': 'setPenHSVA',
+    'pen_setPenColorParamTo': 'changePenHSVA',
     // 'pen_changePenHueBy': '',
     // 'pen_setPenHueToNumber': '',
     // 'pen_changePenShadeBy': '',
     // 'pen_setPenShadeToNumber': '',
     'pen_changePenSizeBy': 'changeSize',
     'pen_setPenSizeTo': 'setSize',
-    // 'videoSensing_videoOn': '',
     'event_whenflagclicked': 'receiveGo',
     'event_whenkeypressed': 'receiveKey',
     // 'event_whenthisspriteclicked': '',
@@ -110,8 +112,10 @@ export const SB3_TO_SNAP_OP_MAP = {
     'sensing_mousedown': 'reportMouseDown',
     'sensing_mousex': 'reportMouseX',
     'sensing_mousey': 'reportMouseY',
+    // 'sensing_setdragmode': '',
     // 'sensing_loudness': '',
     // 'sensing_loud': '',
+    'videoSensing_videoOn': 'reportVideo',
     // 'videoSensing_videoToggle': '',
     'videoSensing_setVideoTransparency': 'doSetVideoTransparency',
     'sensing_timer': 'getTimer',
@@ -135,6 +139,7 @@ export const SB3_TO_SNAP_OP_MAP = {
     'operator_join': 'reportJoin',
     'operator_letter_of': 'reportLetter',
     'operator_length': 'repotrStringSize',
+    // 'operator_contains': '',
     'operator_mod': 'reportModulus',
     'operator_round': 'reportRound',
     'operator_mathop': 'reportMonadic',
@@ -166,4 +171,38 @@ export const C_ARGS = {
     'control_repeat_until': [1],
     'control_while': [1],
     'control_for_each': [3],
+};
+
+export const LIST_ARGS = {
+    'data_addtolist': [1],
+    'data_deleteoflist': [1],
+    'data_insertatlist': [2],
+    'data_replaceitemoflist': [1],
+    'data_itemoflist': [1],
+    'data_lengthoflist': [0],
+    'data_listcontainsitem': [0]
+};
+
+export const COLOR_ARGS = {
+    'pen_setPenColorToColor': [0],
+    'sensing_touchingcolor': [0],
+    'sensing_coloristouchingcolor': [0, 1]
+};
+
+export const OPTION_ARGS = {
+    'looks_changeeffectby': [0],
+    'looks_seteffectto': [0],
+    'pen_changePenColorParamBy': [0],
+    'pen_setPenColorParamTo': [0],
+    'sensing_current': [0],
+    'videoSensing_videoOn': [0],
+    'data_deleteoflist': [0]
+};
+
+export const OBJECT_NAMES = {
+    '_edge_': 'edge',
+    '_mouse_': 'mouse-pointer',
+    '_myself_': 'myself',
+    '_random_': 'random position',
+    '_stage_': 'Stage',
 };

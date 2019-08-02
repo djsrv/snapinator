@@ -1,3 +1,5 @@
+import XMLDoc from '../XMLDoc';
+
 export default class Color {
     static fromARGB(color: number): Color {
         const r = (color >> 16) & 0xff;
@@ -20,9 +22,13 @@ export default class Color {
     }
 
     toString(): string {
-        return Math.round(this.r) + ',' +
-            Math.round(this.g) + ',' +
-            Math.round(this.b) + ',' +
-            this.a;
+        return Math.round(this.r) + ','
+            + Math.round(this.g) + ','
+            + Math.round(this.b) + ','
+            + this.a;
+    }
+
+    toXML(xml: XMLDoc): Element {
+        return xml.el('color', null, this);
     }
 }

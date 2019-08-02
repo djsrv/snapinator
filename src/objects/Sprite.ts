@@ -1,3 +1,4 @@
+import { SB2_ROTATION_STYLES } from '../data/SB2Data';
 import Project from '../Project';
 import XMLDoc from '../XMLDoc';
 import Color from './Color';
@@ -15,12 +16,6 @@ export default class Sprite extends Scriptable {
     libraryIndex: number;
 
     readSB2(jsonObj: any, project: Project): Sprite {
-        const rotationStyles = {
-            normal: 1,
-            leftRight: 2,
-            none: 0,
-        };
-
         super.readSB2(jsonObj, project);
         this.variables = new VariableFrame(project.globalVars).readScriptableSB2(jsonObj);
 
@@ -29,7 +24,7 @@ export default class Sprite extends Scriptable {
         this.hidden = !jsonObj.visible;
         this.scale = jsonObj.scale;
         this.direction = jsonObj.direction;
-        this.rotationStyle = rotationStyles[jsonObj.rotationStyle] || 1;
+        this.rotationStyle = SB2_ROTATION_STYLES[jsonObj.rotationStyle] || 1;
         this.draggable = jsonObj.isDraggable;
         this.libraryIndex = jsonObj.indexInLibrary;
 

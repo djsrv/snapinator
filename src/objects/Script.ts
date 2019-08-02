@@ -35,12 +35,12 @@ export default class Script {
         return [this, nextBlockID];
     }
 
-    toXML(xml: XMLDoc, scriptable: Scriptable, variables: VariableFrame): Element {
+    toXML(xml: XMLDoc, forStage: boolean, variables: VariableFrame): Element {
         const props: any = {};
         if (this.x != null && this.y != null) {
             props.x = this.x;
             props.y = this.y;
         }
-        return xml.el('script', props, this.stack.map((block) => block.toXML(xml, scriptable, variables)));
+        return xml.el('script', props, this.stack.map((block) => block.toXML(xml, forStage, variables)));
     }
 }
