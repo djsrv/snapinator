@@ -1,6 +1,5 @@
 import XMLDoc from '../XMLDoc';
 import Block from './Block';
-import Scriptable from './Scriptable';
 import ScriptComment from './ScriptComment';
 import VariableFrame from './VariableFrame';
 
@@ -13,6 +12,7 @@ export default class Script {
         jsonArr: any[],
         nextBlockID: number,
         blockComments: ScriptComment[],
+        variables: VariableFrame,
         embedded: boolean = false,
     ): [Script, number] {
         let blockObjs;
@@ -27,7 +27,7 @@ export default class Script {
         console.log('START SCRIPT');
         for (const blockObj of blockObjs) {
             let block;
-            [block, nextBlockID] = new Block().readSB2(blockObj, nextBlockID, blockComments);
+            [block, nextBlockID] = new Block().readSB2(blockObj, nextBlockID, blockComments, variables);
             this.stack.push(block);
         }
         console.log('END SCRIPT');

@@ -17,7 +17,6 @@ export default class Sprite extends Scriptable {
 
     readSB2(jsonObj: any, project: Project): Sprite {
         super.readSB2(jsonObj, project);
-        this.variables = new VariableFrame(project.globalVars).readScriptableSB2(jsonObj);
 
         this.x = jsonObj.scratchX;
         this.y = jsonObj.scratchY;
@@ -29,6 +28,10 @@ export default class Sprite extends Scriptable {
         this.libraryIndex = jsonObj.indexInLibrary;
 
         return this;
+    }
+
+    readVariablesSB2(jsonObj: any, project: Project) {
+        this.variables = new VariableFrame(project.globalVars).readScriptableSB2(jsonObj);
     }
 
     toXML(xml: XMLDoc): Element {

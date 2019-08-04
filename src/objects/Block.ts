@@ -110,16 +110,21 @@ export default class Block {
         return this;
     }
 
-    readSB2(jsonObj: any[], nextBlockID: number, blockComments: ScriptComment[]): [Block, number] {
+    readSB2(
+        jsonObj: any[],
+        nextBlockID: number,
+        blockComments: ScriptComment[],
+        variables: VariableFrame,
+    ): [Block, number] {
         const blockID = nextBlockID;
         const sb2Op = jsonObj[0];
         this.op = SB2_TO_SB3_OP_MAP[sb2Op] || sb2Op;
-        console.log('START BLOCK')
+        console.log('START BLOCK');
         console.log(nextBlockID, this.op);
         nextBlockID += 1;
         this.args = jsonObj.slice(1).map((argObj, argIndex) => {
             let arg;
-            [arg, nextBlockID] = this.readArgSB2(argObj, argIndex, nextBlockID, blockComments);
+            [arg, nextBlockID] = this.readArgSB2(argObj, argIndex, nextBlockID, blockComments, variables);
             return arg;
         });
         console.log('END BLOCK');
@@ -130,16 +135,22 @@ export default class Block {
         return [this, nextBlockID];
     }
 
-    readArgSB2(arg: any, argIndex: number, nextBlockID: number, blockComments: ScriptComment[]): [any, number] {
+    readArgSB2(
+        arg: any,
+        argIndex: number,
+        nextBlockID: number,
+        blockComments: ScriptComment[],
+        variables: VariableFrame,
+    ): [any, number] {
         if (C_ARGS[this.op] && C_ARGS[this.op].includes(argIndex)) {
-            return new Script().readSB2(arg, nextBlockID, blockComments, true);
+            return new Script().readSB2(arg, nextBlockID, blockComments, variables, true);
         }
         if (Array.isArray(arg)) {
-            return new Block().readSB2(arg, nextBlockID, blockComments);
+            return new Block().readSB2(arg, nextBlockID, blockComments, variables);
         }
         console.log(arg);
         if (LIST_ARGS[this.op] && LIST_ARGS[this.op].includes(argIndex)) {
-            return [Block.forVar(arg), nextBlockID];
+            return [Block.forVar(variables.getListName(arg)), nextBlockID];
         }
         if (COLOR_ARGS[this.op] && COLOR_ARGS[this.op].includes(argIndex)) {
             return [Color.fromARGB(arg), nextBlockID];

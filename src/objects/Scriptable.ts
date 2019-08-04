@@ -40,6 +40,9 @@ export default class Scriptable {
             }
         }
         this.costumeIndex = jsonObj.currentCostumeIndex + 1;
+
+        this.readVariablesSB2(jsonObj, project);
+
         this.blocks = [];
         this.scripts = [];
         if (commentObjs != null) {
@@ -67,7 +70,7 @@ export default class Scriptable {
                 } else {
                     let script;
                     [script, nextBlockID] = new Script().readSB2(
-                        scriptObj, nextBlockID, blockComments,
+                        scriptObj, nextBlockID, blockComments, this.variables,
                     );
                     this.scripts.push(script);
                 }
@@ -75,6 +78,10 @@ export default class Scriptable {
         }
 
         return this;
+    }
+
+    readVariablesSB2(jsonObj: any, project: Project) {
+        this.variables = new VariableFrame(project.globalVars);
     }
 
     costumesXML(xml: XMLDoc) {

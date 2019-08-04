@@ -15,7 +15,7 @@ export default class VariableFrame {
         this.paramNameMap = {};
     }
 
-    varNameUsed(name: string) {
+    varNameUsed(name: string): boolean {
         for (const variable of this.vars) {
             if (variable.name === name) {
                 return true;
@@ -25,6 +25,26 @@ export default class VariableFrame {
             return this.parent.varNameUsed(name);
         }
         return false;
+    }
+
+    getListName(oldName: string): string {
+        if (this.listNameMap[oldName]) {
+            return this.listNameMap[oldName];
+        }
+        if (this.parent) {
+            return this.parent.getListName(oldName);
+        }
+        return null;
+    }
+
+    getParamName(oldName: string): string {
+        if (this.paramNameMap[oldName]) {
+            return this.paramNameMap[oldName];
+        }
+        if (this.parent) {
+            return this.parent.getParamName(oldName);
+        }
+        return null;
     }
 
     readScriptableSB2(jsonObj: any): VariableFrame {
