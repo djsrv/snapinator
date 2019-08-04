@@ -11,6 +11,8 @@ const SPECIAL_CASE_ARGS = {
     'motion_pointtowards': {},
     'motion_goto': {},
     'motion_glideto': {},
+    'pen_changePenColorParamBy': {},
+    'pen_setPenColorParamTo': {},
     'event_whenkeypressed': {},
     'control_stop': {},
     'control_create_clone_of': {},
@@ -45,9 +47,17 @@ SPECIAL_CASE_ARGS['control_create_clone_of'][0] = (arg: any) => {
 SPECIAL_CASE_ARGS['sensing_touchingobject'][0] = (arg: any) => {
     return handleObjArg(arg, ['_mouse_', '_edge_']);
 };
-SPECIAL_CASE_ARGS['sensing_of'][1] = (arg: any) => {
-    return handleObjArg(arg, ['_stage_']);
+SPECIAL_CASE_ARGS['videoSensing_videoOn'][0] = (arg: any) => {
+    return handleObjArg(arg, ['this sprite']);
 };
+
+SPECIAL_CASE_ARGS['pen_changePenColorParamBy'][0] =
+SPECIAL_CASE_ARGS['pen_setPenColorParamTo'][0] = (arg: any) => {
+    if (arg === 'color') {
+        arg = 'hue';
+    }
+    return new Primitive(arg, true);
+}
 
 SPECIAL_CASE_ARGS['event_whenkeypressed'][0] =
 SPECIAL_CASE_ARGS['sensing_keypressed'][0] = (arg: any) => {
@@ -77,6 +87,12 @@ SPECIAL_CASE_ARGS['sensing_of'][0] = (arg: any) => {
     }
     if (OPTIONS.includes(arg)) {
         return new Primitive(arg, true);
+    }
+    return new Primitive(arg);
+};
+SPECIAL_CASE_ARGS['sensing_of'][1] = (arg: any) => {
+    if (arg === '_stage_') {
+        arg = 'Stage';
     }
     return new Primitive(arg);
 };

@@ -180,23 +180,21 @@ export const LIST_ARGS = {
     'data_replaceitemoflist': [1],
     'data_itemoflist': [1],
     'data_lengthoflist': [0],
-    'data_listcontainsitem': [0]
+    'data_listcontainsitem': [0],
 };
 
 export const COLOR_ARGS = {
     'pen_setPenColorToColor': [0],
     'sensing_touchingcolor': [0],
-    'sensing_coloristouchingcolor': [0, 1]
+    'sensing_coloristouchingcolor': [0, 1],
 };
 
 export const OPTION_ARGS = {
     'looks_changeeffectby': [0],
     'looks_seteffectto': [0],
-    'pen_changePenColorParamBy': [0],
-    'pen_setPenColorParamTo': [0],
     'sensing_current': [0],
     'videoSensing_videoOn': [0],
-    'data_deleteoflist': [0]
+    'data_deleteoflist': [0],
 };
 
 export const OBJECT_NAMES = {
@@ -204,5 +202,5 @@ export const OBJECT_NAMES = {
     '_mouse_': 'mouse-pointer',
     '_myself_': 'myself',
     '_random_': 'random position',
-    '_stage_': 'Stage',
+    'this sprite': 'myself',
 };
