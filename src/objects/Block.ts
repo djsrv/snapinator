@@ -19,6 +19,7 @@ const SPECIAL_CASE_ARGS = {
     'sensing_touchingobject': {},
     'sensing_distanceto': {},
     'sensing_keypressed': {},
+    'videoSensing_videoOn': {},
     'sensing_of': {},
     'operator_mathop': {},
     'data_itemoflist': {},
