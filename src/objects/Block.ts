@@ -1,5 +1,14 @@
 import { SB2_TO_SB3_OP_MAP } from '../data/SB2Data';
-import { C_ARGS, COLOR_ARGS, LIST_ARGS, OBJECT_NAMES, OPTION_ARGS, SB3_TO_SNAP_OP_MAP } from '../data/SB3Data';
+import {
+    C_ARGS,
+    COLOR_ARGS,
+    LIST_ARGS,
+    OBJECT_NAMES,
+    OPTION_ARGS,
+    SB3_ARG_MAPS,
+    SB3_MAGIC_NUMBERS,
+    SB3_TO_SNAP_OP_MAP,
+} from '../data/SB3Data';
 import XMLDoc from '../XMLDoc';
 import Color from './Color';
 import Primitive from './Primitive';
@@ -178,6 +187,77 @@ export default class Block {
             return [SPECIAL_CASE_ARGS[this.op][argIndex](arg), nextBlockID];
         }
         return [new Primitive(arg), nextBlockID];
+    }
+
+    readSB3(jsonObj: any, blockMap: any, variables: VariableFrame): Block {
+        if (typeof jsonObj === 'string') { // block id
+            jsonObj = blockMap[jsonObj];
+        }
+        if (Array.isArray(jsonObj)) { // literal
+            return this.readPrimitiveSB3(jsonObj, variables);
+        }
+
+        this.op = jsonObj.opcode;
+        this.args = [];
+        const spec = SB3_ARG_MAPS[this.op];
+        if (spec) {
+            for (const argSpec of spec.argMap) {
+                this.args.push(this.readArgSB3(argSpec, jsonObj, blockMap, variables));
+            }
+        }
+
+        return this;
+    }
+
+    readPrimitiveSB3(jsonArr: any[], variables: VariableFrame): any {
+        const type = jsonArr[0];
+        const value = jsonArr[1];
+        if (type === SB3_MAGIC_NUMBERS.VAR_PRIMITIVE) {
+            this.initForVar(value);
+        } else if (type === SB3_MAGIC_NUMBERS.LIST_PRIMITIVE) {
+            this.initForVar(variables.getListName(value));
+        }
+        return this;
+    }
+
+    readArgSB3(argSpec: any, jsonObj: any, blockMap: any, variables: VariableFrame) {
+        if (argSpec.type === 'input') { // input
+            const argArr = jsonObj.inputs[argSpec.inputName];
+            if (argArr) {
+                const inputType = argArr[0];
+                const inputValue = argArr[1];
+                if (inputType === SB3_MAGIC_NUMBERS.INPUT_SAME_BLOCK_SHADOW) {
+                    if (typeof inputValue === 'string') {
+                        const inputObj = blockMap[inputValue];
+                        return new Primitive(inputObj.fields[argSpec.inputName][0]);
+                    } else if (Array.isArray(inputValue)) {
+                        const primitiveType = inputValue[0];
+                        const primitiveValue = inputValue[1];
+                        if (primitiveType === SB3_MAGIC_NUMBERS.VAR_PRIMITIVE) {
+                            return Block.forVar(primitiveValue);
+                        } else if (primitiveType === SB3_MAGIC_NUMBERS.LIST_PRIMITIVE) {
+                            return Block.forVar(variables.getListName(primitiveValue));
+                        } else {
+                            return new Primitive(primitiveValue);
+                        }
+                    }
+                } else if (
+                    inputType === SB3_MAGIC_NUMBERS.INPUT_BLOCK_NO_SHADOW
+                    || inputType === SB3_MAGIC_NUMBERS.INPUT_DIFF_BLOCK_SHADOW
+                ) {
+                    console.log(inputValue);
+                    if (argSpec.inputOp === 'substack') {
+                        return new Script().readSB3(inputValue, blockMap, variables, true);
+                    } else {
+                        return new Block().readSB3(inputValue, blockMap, variables);
+                    }
+                }
+            }
+        } else { // field
+            const argArr = jsonObj.fields[argSpec.fieldName];
+            return new Primitive(argArr[0]);
+        }
+        return new Primitive(null);
     }
 
     toXML(xml: XMLDoc, forStage: boolean, variables: VariableFrame): Element {

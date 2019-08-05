@@ -33,6 +33,25 @@ export default class Script {
         return [this, nextBlockID];
     }
 
+    readSB3(jsonObj: any, blockMap: any, variables: VariableFrame, embedded: boolean = false): Script {
+        if (!embedded) {
+            this.x = jsonObj.x;
+            this.y = jsonObj.y;
+        }
+        this.stack = [];
+        let blockObj = jsonObj;
+        while (blockObj) {
+            this.stack.push(new Block().readSB3(blockObj, blockMap, variables));
+            if (blockObj.next) {
+                blockObj = blockMap[blockObj.next];
+            } else {
+                blockObj = null;
+            }
+        }
+
+        return this;
+    }
+
     toXML(xml: XMLDoc, forStage: boolean, variables: VariableFrame): Element {
         const props: any = {};
         if (this.x != null && this.y != null) {

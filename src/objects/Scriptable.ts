@@ -85,6 +85,8 @@ export default class Scriptable {
     }
 
     readSB3(jsonObj: any, project: Project, libraryIndex: number): Scriptable {
+        const blockMap = jsonObj.blocks;
+
         this.name = jsonObj.name;
         this.costumes = [];
         this.sounds = [];
@@ -94,6 +96,14 @@ export default class Scriptable {
 
         this.blocks = [];
         this.scripts = [];
+        for (const blockID in blockMap) {
+            if (blockMap.hasOwnProperty(blockID)) {
+                const blockObj: any = blockMap[blockID];
+                if (blockObj.topLevel) {
+                    this.scripts.push(new Script().readSB3(blockObj, blockMap, this.variables));
+                }
+            }
+        }
 
         return this;
     }
