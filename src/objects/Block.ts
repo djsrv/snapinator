@@ -132,7 +132,7 @@ export default class Block {
 
     initForVar(varName: string) {
         this.op = 'data_variable';
-        this.args = [varName];
+        this.args = [new Primitive(varName)];
         return this;
     }
 

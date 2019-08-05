@@ -9,6 +9,10 @@ export default class Primitive {
         this.isOption = isOption;
     }
 
+    toString(): string {
+        return this.value.toString();
+    }
+
     toXML(xml: XMLDoc): Element {
         if (this.isOption) {
             return xml.el('l', null,
