@@ -6,7 +6,7 @@ import {
     OBJECT_NAMES,
     OPTION_ARGS,
     SB3_ARG_MAPS,
-    SB3_MAGIC_NUMBERS,
+    SB3_CONSTANTS,
     SB3_TO_SNAP_OP_MAP,
 } from '../data/SB3Data';
 import XMLDoc from '../XMLDoc';
@@ -193,7 +193,7 @@ export default class Block {
         if (typeof jsonObj === 'string') { // block id
             jsonObj = blockMap[jsonObj];
         }
-        if (Array.isArray(jsonObj)) { // literal
+        if (Array.isArray(jsonObj)) { // primitive array
             return this.readPrimitiveSB3(jsonObj, variables);
         }
 
@@ -212,40 +212,34 @@ export default class Block {
     readPrimitiveSB3(jsonArr: any[], variables: VariableFrame): any {
         const type = jsonArr[0];
         const value = jsonArr[1];
-        if (type === SB3_MAGIC_NUMBERS.VAR_PRIMITIVE) {
-            this.initForVar(value);
-        } else if (type === SB3_MAGIC_NUMBERS.LIST_PRIMITIVE) {
-            this.initForVar(variables.getListName(value));
+        if (type === SB3_CONSTANTS.VAR_PRIMITIVE) {
+            return this.initForVar(value);
+        }
+        if (type === SB3_CONSTANTS.LIST_PRIMITIVE) {
+            return this.initForVar(variables.getListName(value));
         }
         return this;
     }
 
     readArgSB3(argSpec: any, jsonObj: any, blockMap: any, variables: VariableFrame) {
-        if (argSpec.type === 'input') { // input
+        if (argSpec.type === 'input') { // input (blocks can be dropped here)
             const argArr = jsonObj.inputs[argSpec.inputName];
             if (argArr) {
                 const inputType = argArr[0];
                 const inputValue = argArr[1];
-                if (inputType === SB3_MAGIC_NUMBERS.INPUT_SAME_BLOCK_SHADOW) {
-                    if (typeof inputValue === 'string') {
+                if (inputType === SB3_CONSTANTS.INPUT_SAME_BLOCK_SHADOW) {
+                    // value is a primitive other than variable/list
+                    if (typeof inputValue === 'string') { // dropdown menu id
                         const inputObj = blockMap[inputValue];
                         return new Primitive(inputObj.fields[argSpec.inputName][0]);
-                    } else if (Array.isArray(inputValue)) {
-                        const primitiveType = inputValue[0];
-                        const primitiveValue = inputValue[1];
-                        if (primitiveType === SB3_MAGIC_NUMBERS.VAR_PRIMITIVE) {
-                            return Block.forVar(primitiveValue);
-                        } else if (primitiveType === SB3_MAGIC_NUMBERS.LIST_PRIMITIVE) {
-                            return Block.forVar(variables.getListName(primitiveValue));
-                        } else {
-                            return new Primitive(primitiveValue);
-                        }
+                    } else if (Array.isArray(inputValue)) { // primitive array
+                        return new Primitive(inputValue[1]);
                     }
                 } else if (
-                    inputType === SB3_MAGIC_NUMBERS.INPUT_BLOCK_NO_SHADOW
-                    || inputType === SB3_MAGIC_NUMBERS.INPUT_DIFF_BLOCK_SHADOW
+                    inputType === SB3_CONSTANTS.INPUT_BLOCK_NO_SHADOW
+                    || inputType === SB3_CONSTANTS.INPUT_DIFF_BLOCK_SHADOW
                 ) {
-                    console.log(inputValue);
+                    // value is a substack or block (including variable/list primitives)
                     if (argSpec.inputOp === 'substack') {
                         return new Script().readSB3(inputValue, blockMap, variables, true);
                     } else {
@@ -253,7 +247,7 @@ export default class Block {
                     }
                 }
             }
-        } else { // field
+        } else { // field (blocks cannot be dropped here)
             const argArr = jsonObj.fields[argSpec.fieldName];
             return new Primitive(argArr[0]);
         }

@@ -40,7 +40,7 @@ export const SB3_VAR_TYPES = {
     VAR_BROADCAST_MESSAGE_TYPE: 'broadcast_msg',
 };
 
-export const SB3_MAGIC_NUMBERS = {
+export const SB3_CONSTANTS = {
     INPUT_SAME_BLOCK_SHADOW: 1, // unobscured shadow
     INPUT_BLOCK_NO_SHADOW: 2, // no shadow
     INPUT_DIFF_BLOCK_SHADOW: 3, // obscured shadow
