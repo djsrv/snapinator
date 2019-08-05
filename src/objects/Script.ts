@@ -15,18 +15,18 @@ export default class Script {
         variables: VariableFrame,
         embedded: boolean = false,
     ): [Script, number] {
-        let blockObjs;
+        let blockArrs;
         if (embedded) {
-            blockObjs = jsonArr;
+            blockArrs = jsonArr;
         } else {
             this.x = jsonArr[0];
             this.y = jsonArr[1];
-            blockObjs = jsonArr[2];
+            blockArrs = jsonArr[2];
         }
         this.stack = [];
-        for (const blockObj of blockObjs) {
+        for (const blockArr of blockArrs) {
             let block;
-            [block, nextBlockID] = new Block().readSB2(blockObj, nextBlockID, blockComments, variables);
+            [block, nextBlockID] = new Block().readSB2(blockArr, nextBlockID, blockComments, variables);
             this.stack.push(block);
         }
 

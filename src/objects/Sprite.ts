@@ -1,4 +1,5 @@
 import { SB2_ROTATION_STYLES } from '../data/SB2Data';
+import { SB3_ROTATION_STYLES } from '../data/SB3Data';
 import Project from '../Project';
 import XMLDoc from '../XMLDoc';
 import Color from './Color';
@@ -32,6 +33,25 @@ export default class Sprite extends Scriptable {
 
     readVariablesSB2(jsonObj: any, project: Project) {
         this.variables = new VariableFrame(project.globalVars).readScriptableSB2(jsonObj);
+    }
+
+    readSB3(jsonObj: any, project: Project, libraryIndex: number): Sprite {
+        super.readSB3(jsonObj, project, libraryIndex);
+
+        this.x = jsonObj.x;
+        this.y = jsonObj.y;
+        this.hidden = !jsonObj.visible;
+        this.scale = jsonObj.size / 100;
+        this.direction = jsonObj.direction;
+        this.rotationStyle = SB3_ROTATION_STYLES[jsonObj.rotationStyle] || 1;
+        this.draggable = jsonObj.draggable;
+        this.libraryIndex = libraryIndex;
+
+        return this;
+    }
+
+    readVariablesSB3(jsonObj: any, project: Project) {
+        this.variables = new VariableFrame(project.globalVars).readScriptableSB3(jsonObj);
     }
 
     toXML(xml: XMLDoc): Element {

@@ -26,6 +26,11 @@ export default class Project {
             this.media = await this.readMediaSB2();
             this.globalVars = new VariableFrame().readScriptableSB2(this.jsonObj);
             this.stage = new Stage().readSB2(this.jsonObj, this);
+        } else if (this.jsonObj.targets) { // Scratch 3.0 project
+            const stageObj = this.jsonObj.targets.find((obj) => obj.isStage);
+            this.media = await this.readMediaSB3();
+            this.globalVars = new VariableFrame().readScriptableSB3(stageObj);
+            this.stage = new Stage().readProjectSB3(this.jsonObj, this);
         }
     }
 
@@ -92,6 +97,51 @@ export default class Project {
             if ('objName' in child) { // sprite
                 await readObj(child);
             }
+        }
+
+        return media;
+    }
+
+    async readMediaSB3() {
+        const zip = this.zip;
+        const media = {};
+
+        const getAsset = async (fileName: string): Promise<Uint8Array> => {
+            const file = zip.file(fileName);
+            if (!file) {
+                throw Error(fileName + ' does not exist');
+            }
+            const data = await file.async('uint8array');
+            return data;
+        };
+
+        const readObj = async (jsonObj: any) => {
+            const costumeObjs = jsonObj.costumes;
+            const soundObjs = jsonObj.sounds;
+
+            for (const costumeObj of costumeObjs) {
+                const md5Ext = costumeObj.md5ext;
+                if (!media[md5Ext]) {
+                    const data = await getAsset(md5Ext);
+                    const file: ImageFile = new ImageFile(
+                        costumeObj.dataFormat, data, costumeObj.bitmapResolution,
+                    );
+                    media[md5Ext] = file;
+                }
+            }
+
+            for (const soundObj of soundObjs) {
+                const md5Ext = soundObj.md5ext;
+                if (!media[md5Ext]) {
+                    const data = await getAsset(md5Ext);
+                    const file: SoundFile = new SoundFile(soundObj.dataFormat, data);
+                    media[md5Ext] = file;
+                }
+            }
+        };
+
+        for (const child of this.jsonObj.targets) {
+            await readObj(child);
         }
 
         return media;

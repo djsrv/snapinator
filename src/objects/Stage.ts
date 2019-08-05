@@ -11,7 +11,7 @@ export default class Stage extends Scriptable {
     children: Sprite[];
 
     readSB2(jsonObj: any, project: Project): Stage {
-        const childObjs  = jsonObj.children;
+        const childObjs = jsonObj.children;
 
         super.readSB2(jsonObj, project);
         this.variables = new VariableFrame(project.globalVars);
@@ -25,6 +25,30 @@ export default class Stage extends Scriptable {
                 }
             }
         }
+
+        return this;
+    }
+
+    readProjectSB3(jsonObj: any, project: Project): Stage {
+        const targetObjs = jsonObj.targets;
+
+        this.children = [];
+        for (let i = 0; i < targetObjs.length; i++) {
+            const targetObj = targetObjs[i];
+            if (targetObj.isStage) {
+                this.readSB3(targetObj, project, i);
+            } else {
+                this.children.push(new Sprite().readSB3(targetObj, project, i));
+            }
+        }
+
+        return this;
+    }
+
+    readSB3(jsonObj: any, project: Project, libraryIndex: number): Stage {
+        super.readSB3(jsonObj, project, libraryIndex);
+
+        this.tempo = jsonObj.tempo;
 
         return this;
     }

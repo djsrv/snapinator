@@ -14,9 +14,7 @@ export default class Variable {
         return xml.el('variable', {
             name: this.name,
         }, [
-            this.value instanceof List
-                ? this.value.toXML(xml)
-                : xml.el('l', null, this.value),
+            this.value.toXML(xml),
         ]);
     }
 }

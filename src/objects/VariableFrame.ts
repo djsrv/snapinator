@@ -1,5 +1,6 @@
 import XMLDoc from '../XMLDoc';
 import List from './List';
+import Primitive from './Primitive';
 import Variable from './Variable';
 
 export default class VariableFrame {
@@ -15,16 +16,38 @@ export default class VariableFrame {
         this.paramNameMap = {};
     }
 
-    varNameUsed(name: string): boolean {
+    isNameUsed(name: string): boolean {
         for (const variable of this.vars) {
             if (variable.name === name) {
                 return true;
             }
         }
         if (this.parent) {
-            return this.parent.varNameUsed(name);
+            return this.parent.isNameUsed(name);
         }
         return false;
+    }
+
+    getUnusedName(name: string) {
+        if (!this.isNameUsed(name)) {
+            return name;
+        }
+
+        const numIndex = name.search(/\d+$/);
+        let prefix;
+        let num;
+        if (numIndex > -1) {
+            prefix = name.substring(0, numIndex - 1);
+            num = +name.substring(numIndex);
+        } else {
+            prefix = name;
+            num = 1;
+        }
+        while (this.isNameUsed(name)) {
+            num += 1;
+            name = prefix + num;
+        }
+        return name;
     }
 
     getListName(oldName: string): string {
@@ -48,22 +71,43 @@ export default class VariableFrame {
     }
 
     readScriptableSB2(jsonObj: any): VariableFrame {
-        const variableObjs = jsonObj.variables;
+        const varObjs = jsonObj.variables;
         const listObjs = jsonObj.lists;
 
-        if (variableObjs != null) {
-            for (const varObj of variableObjs) {
-                const variable = new Variable(varObj.name, varObj.value);
-                this.vars.push(variable);
+        if (varObjs != null) {
+            for (const varObj of varObjs) {
+                this.vars.push(new Variable(varObj.name, new Primitive(varObj.value)));
             }
         }
         if (listObjs != null) {
             for (const listObj of listObjs) {
                 const oldName = listObj.listName;
-                // TODO: Handle name edge cases
-                const newName = '(list) ' + oldName;
-                const variable = new Variable(newName, new List(listObj.contents));
-                this.vars.push(variable);
+                const newName = this.getUnusedName(oldName);
+                this.vars.push(new Variable(newName, new List(listObj.contents)));
+                this.listNameMap[oldName] = newName;
+            }
+        }
+
+        return this;
+    }
+
+    readScriptableSB3(jsonObj: any): VariableFrame {
+        const varDict = jsonObj.variables;
+        const listDict = jsonObj.lists;
+
+        for (const varID in varDict) {
+            if (varDict.hasOwnProperty(varID)) {
+                const varArr = varDict[varID];
+                this.vars.push(new Variable(varArr[0], new Primitive(varArr[1])));
+            }
+        }
+
+        for (const listID in listDict) {
+            if (listDict.hasOwnProperty(listID)) {
+                const listArr = listDict[listID];
+                const oldName = listArr[0];
+                const newName = this.getUnusedName(oldName);
+                this.vars.push(new Variable(newName, new List(listArr[1])));
                 this.listNameMap[oldName] = newName;
             }
         }

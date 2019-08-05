@@ -128,16 +128,16 @@ export default class Block {
     }
 
     readSB2(
-        jsonObj: any[],
+        jsonArr: any[],
         nextBlockID: number,
         blockComments: ScriptComment[],
         variables: VariableFrame,
     ): [Block, number] {
         const blockID = nextBlockID;
-        const sb2Op = jsonObj[0];
+        const sb2Op = jsonArr[0];
         this.op = SB2_TO_SB3_OP_MAP[sb2Op] || sb2Op;
         nextBlockID += 1;
-        this.args = jsonObj.slice(1).map((argObj, argIndex) => {
+        this.args = jsonArr.slice(1).map((argObj, argIndex) => {
             let arg;
             [arg, nextBlockID] = this.readArgSB2(argObj, argIndex, nextBlockID, blockComments, variables);
             return arg;

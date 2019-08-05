@@ -204,3 +204,9 @@ export const OBJECT_NAMES = {
     '_random_': 'random position',
     'this sprite': 'myself',
 };
+
+export const SB3_ROTATION_STYLES = {
+    'all around': 1,
+    'left-right': 2,
+    'don\'t rotate': 0,
+}

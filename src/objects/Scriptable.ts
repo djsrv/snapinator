@@ -20,8 +20,8 @@ export default class Scriptable {
     readSB2(jsonObj: any, project: Project): Scriptable {
         const costumeObjs = jsonObj.costumes;
         const soundObjs = jsonObj.sounds;
-        const commentObjs = jsonObj.scriptComments;
-        const scriptObjs = jsonObj.scripts;
+        const commentArrs = jsonObj.scriptComments;
+        const scriptArrs = jsonObj.scripts;
 
         const blockComments = [];
         let nextBlockID = 0;
@@ -45,10 +45,10 @@ export default class Scriptable {
 
         this.blocks = [];
         this.scripts = [];
-        if (commentObjs != null) {
-            for (const commentObj of commentObjs) {
-                const blockID = commentObj[5];
-                const comment = new ScriptComment().readSB2(commentObj);
+        if (commentArrs != null) {
+            for (const commentArr of commentArrs) {
+                const blockID = commentArr[5];
+                const comment = new ScriptComment().readSB2(commentArr);
                 if (blockID === -1) {
                     this.scripts.push(comment);
                 } else {
@@ -56,9 +56,9 @@ export default class Scriptable {
                 }
             }
         }
-        if (scriptObjs != null) {
-            for (const scriptObj of scriptObjs) {
-                const blockStackObj = scriptObj[2];
+        if (scriptArrs != null) {
+            for (const scriptArr of scriptArrs) {
+                const blockStackObj = scriptArr[2];
                 const firstBlockObj = blockStackObj[0];
                 const firstOp = firstBlockObj[0];
                 if (firstOp === 'procDef') {
@@ -70,7 +70,7 @@ export default class Scriptable {
                 } else {
                     let script;
                     [script, nextBlockID] = new Script().readSB2(
-                        scriptObj, nextBlockID, blockComments, this.variables,
+                        scriptArr, nextBlockID, blockComments, this.variables,
                     );
                     this.scripts.push(script);
                 }
@@ -81,6 +81,24 @@ export default class Scriptable {
     }
 
     readVariablesSB2(jsonObj: any, project: Project) {
+        this.variables = new VariableFrame(project.globalVars);
+    }
+
+    readSB3(jsonObj: any, project: Project, libraryIndex: number): Scriptable {
+        this.name = jsonObj.name;
+        this.costumes = [];
+        this.sounds = [];
+        this.costumeIndex = jsonObj.currentCostume + 1;
+
+        this.readVariablesSB3(jsonObj, project);
+
+        this.blocks = [];
+        this.scripts = [];
+
+        return this;
+    }
+
+    readVariablesSB3(jsonObj: any, project: Project) {
         this.variables = new VariableFrame(project.globalVars);
     }
 
