@@ -135,15 +135,12 @@ export default class Block {
         const blockID = nextBlockID;
         const sb2Op = jsonObj[0];
         this.op = SB2_TO_SB3_OP_MAP[sb2Op] || sb2Op;
-        console.log('START BLOCK');
-        console.log(nextBlockID, this.op);
         nextBlockID += 1;
         this.args = jsonObj.slice(1).map((argObj, argIndex) => {
             let arg;
             [arg, nextBlockID] = this.readArgSB2(argObj, argIndex, nextBlockID, blockComments, variables);
             return arg;
         });
-        console.log('END BLOCK');
         if (blockComments[blockID]) {
             this.comment = blockComments[blockID];
         }
@@ -164,7 +161,6 @@ export default class Block {
         if (Array.isArray(arg)) {
             return new Block().readSB2(arg, nextBlockID, blockComments, variables);
         }
-        console.log(arg);
         if (LIST_ARGS[this.op] && LIST_ARGS[this.op].includes(argIndex)) {
             return [Block.forVar(variables.getListName(arg)), nextBlockID];
         }

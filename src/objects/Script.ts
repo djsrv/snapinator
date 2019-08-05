@@ -24,13 +24,11 @@ export default class Script {
             blockObjs = jsonArr[2];
         }
         this.stack = [];
-        console.log('START SCRIPT');
         for (const blockObj of blockObjs) {
             let block;
             [block, nextBlockID] = new Block().readSB2(blockObj, nextBlockID, blockComments, variables);
             this.stack.push(block);
         }
-        console.log('END SCRIPT');
 
         return [this, nextBlockID];
     }
