@@ -99,8 +99,8 @@ export default class Scriptable {
         for (const blockID in blockMap) {
             if (blockMap.hasOwnProperty(blockID)) {
                 const blockObj: any = blockMap[blockID];
-                if (blockObj.topLevel) {
-                    this.scripts.push(new Script().readSB3(blockObj, blockMap, this.variables));
+                if (blockObj.topLevel || Array.isArray(blockObj)) {
+                    this.scripts.push(new Script().readSB3(blockID, blockMap, this.variables));
                 }
             }
         }

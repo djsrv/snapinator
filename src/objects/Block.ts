@@ -187,10 +187,9 @@ export default class Block {
         return [new Primitive(arg), nextBlockID];
     }
 
-    readSB3(jsonObj: any, blockMap: any, variables: VariableFrame): Block {
-        if (typeof jsonObj === 'string') { // block id
-            jsonObj = blockMap[jsonObj];
-        }
+    readSB3(blockID: any, blockMap: any, variables: VariableFrame): Block {
+        const jsonObj = blockMap[blockID];
+
         if (Array.isArray(jsonObj)) { // primitive array
             return this.readPrimitiveSB3(jsonObj, variables);
         }
@@ -240,6 +239,8 @@ export default class Block {
                     // value is a substack or block (including variable/list primitives)
                     if (argSpec.inputOp === 'substack') {
                         return new Script().readSB3(inputValue, blockMap, variables, true);
+                    } else if (Array.isArray(inputValue)) { // primitive array
+                        return new Block().readPrimitiveSB3(inputValue, variables);
                     } else {
                         return new Block().readSB3(inputValue, blockMap, variables);
                     }

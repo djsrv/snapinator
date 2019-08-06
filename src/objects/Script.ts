@@ -33,18 +33,25 @@ export default class Script {
         return [this, nextBlockID];
     }
 
-    readSB3(jsonObj: any, blockMap: any, variables: VariableFrame, embedded: boolean = false): Script {
+    readSB3(blockID: string, blockMap: any, variables: VariableFrame, embedded: boolean = false): Script {
+        let blockObj: any = blockMap[blockID];
         if (!embedded) {
-            this.x = jsonObj.x;
-            this.y = jsonObj.y;
+            if (Array.isArray(blockObj)) {
+                this.x = blockObj[3];
+                this.y = blockObj[4];
+            } else {
+                this.x = blockObj.x;
+                this.y = blockObj.y;
+            }
         }
         this.stack = [];
-        let blockObj = jsonObj;
-        while (blockObj) {
-            this.stack.push(new Block().readSB3(blockObj, blockMap, variables));
-            if (blockObj.next) {
+        while (blockID) {
+            this.stack.push(new Block().readSB3(blockID, blockMap, variables));
+            if (!Array.isArray(blockObj) && blockObj.next) {
+                blockID = blockObj.next;
                 blockObj = blockMap[blockObj.next];
             } else {
+                blockID = null;
                 blockObj = null;
             }
         }
