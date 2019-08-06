@@ -223,627 +223,481 @@ export const SB3_TO_SNAP_OP_MAP = {
 };
 
 export const SB3_ARG_MAPS = {
-    'motion_movesteps': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'math_number',
-                inputName: 'STEPS',
-            },
-        ],
-    },
-    'motion_turnright': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'math_number',
-                inputName: 'DEGREES',
-            },
-        ],
-    },
-    'motion_turnleft': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'math_number',
-                inputName: 'DEGREES',
-            },
-        ],
-    },
-    'motion_pointindirection': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'math_angle',
-                inputName: 'DIRECTION',
-            },
-        ],
-    },
-    'motion_pointtowards': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'motion_pointtowards_menu',
-                inputName: 'TOWARDS',
-            },
-        ],
-    },
-    'motion_gotoxy': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'math_number',
-                inputName: 'X',
-            },
-            {
-                type: 'input',
-                inputOp: 'math_number',
-                inputName: 'Y',
-            },
-        ],
-    },
-    'motion_goto': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'motion_goto_menu',
-                inputName: 'TO',
-            },
-        ],
-    },
-    'motion_glidesecstoxy': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'math_number',
-                inputName: 'SECS',
-            },
-            {
-                type: 'input',
-                inputOp: 'math_number',
-                inputName: 'X',
-            },
-            {
-                type: 'input',
-                inputOp: 'math_number',
-                inputName: 'Y',
-            },
-        ],
-    },
-    'motion_changexby': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'math_number',
-                inputName: 'DX',
-            },
-        ],
-    },
-    'motion_setx': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'math_number',
-                inputName: 'X',
-            },
-        ],
-    },
-    'motion_changeyby': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'math_number',
-                inputName: 'DY',
-            },
-        ],
-    },
-    'motion_sety': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'math_number',
-                inputName: 'Y',
-            },
-        ],
-    },
-    'motion_ifonedgebounce': {
-        argMap: [
-        ],
-    },
-    'motion_setrotationstyle': {
-        argMap: [
-            {
-                type: 'field',
-                fieldName: 'STYLE',
-            },
-        ],
-    },
-    'motion_xposition': {
-        argMap: [
-        ],
-    },
-    'motion_yposition': {
-        argMap: [
-        ],
-    },
-    'motion_direction': {
-        argMap: [
-        ],
-    },
-    'motion_scroll_right': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'math_number',
-                inputName: 'DISTANCE',
-            },
-        ],
-    },
-    'motion_scroll_up': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'math_number',
-                inputName: 'DISTANCE',
-            },
-        ],
-    },
-    'motion_align_scene': {
-        argMap: [
-            {
-                type: 'field',
-                fieldName: 'ALIGNMENT',
-            },
-        ],
-    },
-    'motion_xscroll': {
-        argMap: [
-        ],
-    },
-    'motion_yscroll': {
-        argMap: [
-        ],
-    },
-    'looks_sayforsecs': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'text',
-                inputName: 'MESSAGE',
-            },
-            {
-                type: 'input',
-                inputOp: 'math_number',
-                inputName: 'SECS',
-            },
-        ],
-    },
-    'looks_say': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'text',
-                inputName: 'MESSAGE',
-            },
-        ],
-    },
-    'looks_thinkforsecs': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'text',
-                inputName: 'MESSAGE',
-            },
-            {
-                type: 'input',
-                inputOp: 'math_number',
-                inputName: 'SECS',
-            },
-        ],
-    },
-    'looks_think': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'text',
-                inputName: 'MESSAGE',
-            },
-        ],
-    },
-    'looks_show': {
-        argMap: [
-        ],
-    },
-    'looks_hide': {
-        argMap: [
-        ],
-    },
-    'looks_hideallsprites': {
-        argMap: [
-        ],
-    },
-    'looks_switchcostumeto': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'looks_costume',
-                inputName: 'COSTUME',
-            },
-        ],
-    },
-    'looks_nextcostume': {
-        argMap: [
-        ],
-    },
-    'looks_switchbackdropto': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'looks_backdrops',
-                inputName: 'BACKDROP',
-            },
-        ],
-    },
-    'looks_changeeffectby': {
-        argMap: [
-            {
-                type: 'field',
-                fieldName: 'EFFECT',
-            },
-            {
-                type: 'input',
-                inputOp: 'math_number',
-                inputName: 'CHANGE',
-            },
-        ],
-    },
-    'looks_seteffectto': {
-        argMap: [
-            {
-                type: 'field',
-                fieldName: 'EFFECT',
-            },
-            {
-                type: 'input',
-                inputOp: 'math_number',
-                inputName: 'VALUE',
-            },
-        ],
-    },
-    'looks_cleargraphiceffects': {
-        argMap: [
-        ],
-    },
-    'looks_changesizeby': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'math_number',
-                inputName: 'CHANGE',
-            },
-        ],
-    },
-    'looks_setsizeto': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'math_number',
-                inputName: 'SIZE',
-            },
-        ],
-    },
-    'looks_changestretchby': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'math_number',
-                inputName: 'CHANGE',
-            },
-        ],
-    },
-    'looks_setstretchto': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'math_number',
-                inputName: 'STRETCH',
-            },
-        ],
-    },
-    'looks_gotofrontback': {
-        argMap: [
-        ],
-    },
-    'looks_goforwardbackwardlayers': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'math_integer',
-                inputName: 'NUM',
-            },
-        ],
-    },
-    'looks_costumenumbername': {
-        argMap: [
-        ],
-    },
-    'looks_backdropnumbername': {
-        argMap: [
-        ],
-    },
-    'looks_size': {
-        argMap: [
-        ],
-    },
-    'looks_switchbackdroptoandwait': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'looks_backdrops',
-                inputName: 'BACKDROP',
-            },
-        ],
-    },
-    'looks_nextbackdrop': {
-        argMap: [
-        ],
-    },
-    'sound_play': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'sound_sounds_menu',
-                inputName: 'SOUND_MENU',
-            },
-        ],
-    },
-    'sound_playuntildone': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'sound_sounds_menu',
-                inputName: 'SOUND_MENU',
-            },
-        ],
-    },
-    'sound_stopallsounds': {
-        argMap: [
-        ],
-    },
-    'music_playDrumForBeats': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'music_menu_DRUM',
-                inputName: 'DRUM',
-            },
-            {
-                type: 'input',
-                inputOp: 'math_number',
-                inputName: 'BEATS',
-            },
-        ],
-    },
-    'music_midiPlayDrumForBeats': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'math_number',
-                inputName: 'DRUM',
-            },
-            {
-                type: 'input',
-                inputOp: 'math_number',
-                inputName: 'BEATS',
-            },
-        ],
-    },
-    'music_restForBeats': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'math_number',
-                inputName: 'BEATS',
-            },
-        ],
-    },
-    'music_playNoteForBeats': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'note',
-                inputName: 'NOTE',
-            },
-            {
-                type: 'input',
-                inputOp: 'math_number',
-                inputName: 'BEATS',
-            },
-        ],
-    },
-    'music_setInstrument': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'music_menu_INSTRUMENT',
-                inputName: 'INSTRUMENT',
-            },
-        ],
-    },
-    'music_midiSetInstrument': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'math_number',
-                inputName: 'INSTRUMENT',
-            },
-        ],
-    },
-    'sound_changevolumeby': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'math_number',
-                inputName: 'VOLUME',
-            },
-        ],
-    },
-    'sound_setvolumeto': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'math_number',
-                inputName: 'VOLUME',
-            },
-        ],
-    },
-    'sound_volume': {
-        argMap: [
-        ],
-    },
-    'music_changeTempo': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'math_number',
-                inputName: 'TEMPO',
-            },
-        ],
-    },
-    'music_setTempo': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'math_number',
-                inputName: 'TEMPO',
-            },
-        ],
-    },
-    'music_getTempo': {
-        argMap: [
-        ],
-    },
-    'pen_clear': {
-        argMap: [
-        ],
-    },
-    'pen_stamp': {
-        argMap: [
-        ],
-    },
-    'pen_penDown': {
-        argMap: [
-        ],
-    },
-    'pen_penUp': {
-        argMap: [
-        ],
-    },
-    'pen_setPenColorToColor': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'colour_picker',
-                inputName: 'COLOR',
-            },
-        ],
-    },
-    'pen_changePenHueBy': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'math_number',
-                inputName: 'HUE',
-            },
-        ],
-    },
-    'pen_setPenHueToNumber': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'math_number',
-                inputName: 'HUE',
-            },
-        ],
-    },
-    'pen_changePenShadeBy': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'math_number',
-                inputName: 'SHADE',
-            },
-        ],
-    },
-    'pen_setPenShadeToNumber': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'math_number',
-                inputName: 'SHADE',
-            },
-        ],
-    },
-    'pen_changePenSizeBy': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'math_number',
-                inputName: 'SIZE',
-            },
-        ],
-    },
-    'pen_setPenSizeTo': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'math_number',
-                inputName: 'SIZE',
-            },
-        ],
-    },
-    'videoSensing_videoOn': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'videoSensing_menu_ATTRIBUTE',
-                inputName: 'ATTRIBUTE',
-            },
-            {
-                type: 'input',
-                inputOp: 'videoSensing_menu_SUBJECT',
-                inputName: 'SUBJECT',
-            },
-        ],
-    },
-    'event_whenflagclicked': {
-        argMap: [
-        ],
-    },
-    'event_whenkeypressed': {
-        argMap: [
-            {
-                type: 'field',
-                fieldName: 'KEY_OPTION',
-            },
-        ],
-    },
-    'event_whenthisspriteclicked': {
-        argMap: [
-        ],
-    },
-    'event_whenbackdropswitchesto': {
-        argMap: [
-            {
-                type: 'field',
-                fieldName: 'BACKDROP',
-            },
-        ],
-    },
+    'motion_movesteps': [
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'STEPS',
+        },
+    ],
+    'motion_turnright': [
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'DEGREES',
+        },
+    ],
+    'motion_turnleft': [
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'DEGREES',
+        },
+    ],
+    'motion_pointindirection': [
+        {
+            type: 'input',
+            inputOp: 'math_angle',
+            inputName: 'DIRECTION',
+        },
+    ],
+    'motion_pointtowards': [
+        {
+            type: 'input',
+            inputOp: 'motion_pointtowards_menu',
+            inputName: 'TOWARDS',
+        },
+    ],
+    'motion_gotoxy': [
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'X',
+        },
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'Y',
+        },
+    ],
+    'motion_goto': [
+        {
+            type: 'input',
+            inputOp: 'motion_goto_menu',
+            inputName: 'TO',
+        },
+    ],
+    'motion_glidesecstoxy': [
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'SECS',
+        },
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'X',
+        },
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'Y',
+        },
+    ],
+    'motion_changexby': [
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'DX',
+        },
+    ],
+    'motion_setx': [
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'X',
+        },
+    ],
+    'motion_changeyby': [
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'DY',
+        },
+    ],
+    'motion_sety': [
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'Y',
+        },
+    ],
+    'motion_ifonedgebounce': [],
+    'motion_setrotationstyle': [
+        {
+            type: 'field',
+            fieldName: 'STYLE',
+        },
+    ],
+    'motion_xposition': [],
+    'motion_yposition': [],
+    'motion_direction': [],
+    'motion_scroll_right': [
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'DISTANCE',
+        },
+    ],
+    'motion_scroll_up': [
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'DISTANCE',
+        },
+    ],
+    'motion_align_scene': [
+        {
+            type: 'field',
+            fieldName: 'ALIGNMENT',
+        },
+    ],
+    'motion_xscroll': [],
+    'motion_yscroll': [],
+    'looks_sayforsecs': [
+        {
+            type: 'input',
+            inputOp: 'text',
+            inputName: 'MESSAGE',
+        },
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'SECS',
+        },
+    ],
+    'looks_say': [
+        {
+            type: 'input',
+            inputOp: 'text',
+            inputName: 'MESSAGE',
+        },
+    ],
+    'looks_thinkforsecs': [
+        {
+            type: 'input',
+            inputOp: 'text',
+            inputName: 'MESSAGE',
+        },
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'SECS',
+        },
+    ],
+    'looks_think': [
+        {
+            type: 'input',
+            inputOp: 'text',
+            inputName: 'MESSAGE',
+        },
+    ],
+    'looks_show': [],
+    'looks_hide': [],
+    'looks_hideallsprites': [],
+    'looks_switchcostumeto': [
+        {
+            type: 'input',
+            inputOp: 'looks_costume',
+            inputName: 'COSTUME',
+        },
+    ],
+    'looks_nextcostume': [],
+    'looks_switchbackdropto': [
+        {
+            type: 'input',
+            inputOp: 'looks_backdrops',
+            inputName: 'BACKDROP',
+        },
+    ],
+    'looks_changeeffectby': [
+        {
+            type: 'field',
+            fieldName: 'EFFECT',
+            snapOptionInput: true,
+        },
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'CHANGE',
+        },
+    ],
+    'looks_seteffectto': [
+        {
+            type: 'field',
+            fieldName: 'EFFECT',
+            snapOptionInput: true,
+        },
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'VALUE',
+        },
+    ],
+    'looks_cleargraphiceffects': [],
+    'looks_changesizeby': [
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'CHANGE',
+        },
+    ],
+    'looks_setsizeto': [
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'SIZE',
+        },
+    ],
+    'looks_changestretchby': [
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'CHANGE',
+        },
+    ],
+    'looks_setstretchto': [
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'STRETCH',
+        },
+    ],
+    'looks_gotofrontback': [
+        {
+            type: 'field',
+            fieldName: 'FRONT_BACK',
+        },
+    ],
+    'looks_goforwardbackwardlayers': [
+        {
+            type: 'field',
+            fieldName: 'FORWARD_BACKWARD',
+        },
+        {
+            type: 'input',
+            inputOp: 'math_integer',
+            inputName: 'NUM',
+        },
+    ],
+    'looks_costumenumbername': [
+        {
+            type: 'field',
+            fieldName: 'NUMBER_NAME',
+        },
+    ],
+    'looks_backdropnumbername': [
+        {
+            type: 'field',
+            fieldName: 'NUMBER_NAME',
+        },
+    ],
+    'looks_size': [],
+    'looks_switchbackdroptoandwait': [
+        {
+            type: 'input',
+            inputOp: 'looks_backdrops',
+            inputName: 'BACKDROP',
+        },
+    ],
+    'looks_nextbackdrop': [],
+    'sound_play': [
+        {
+            type: 'input',
+            inputOp: 'sound_sounds_menu',
+            inputName: 'SOUND_MENU',
+        },
+    ],
+    'sound_playuntildone': [
+        {
+            type: 'input',
+            inputOp: 'sound_sounds_menu',
+            inputName: 'SOUND_MENU',
+        },
+    ],
+    'sound_stopallsounds': [],
+    'music_playDrumForBeats': [
+        {
+            type: 'input',
+            inputOp: 'music_menu_DRUM',
+            inputName: 'DRUM',
+        },
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'BEATS',
+        },
+    ],
+    'music_midiPlayDrumForBeats': [
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'DRUM',
+        },
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'BEATS',
+        },
+    ],
+    'music_restForBeats': [
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'BEATS',
+        },
+    ],
+    'music_playNoteForBeats': [
+        {
+            type: 'input',
+            inputOp: 'note',
+            inputName: 'NOTE',
+        },
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'BEATS',
+        },
+    ],
+    'music_setInstrument': [
+        {
+            type: 'input',
+            inputOp: 'music_menu_INSTRUMENT',
+            inputName: 'INSTRUMENT',
+        },
+    ],
+    'music_midiSetInstrument': [
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'INSTRUMENT',
+        },
+    ],
+    'sound_changevolumeby': [
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'VOLUME',
+        },
+    ],
+    'sound_setvolumeto': [
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'VOLUME',
+        },
+    ],
+    'sound_volume': [],
+    'music_changeTempo': [
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'TEMPO',
+        },
+    ],
+    'music_setTempo': [
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'TEMPO',
+        },
+    ],
+    'music_getTempo': [],
+    'pen_clear': [],
+    'pen_stamp': [],
+    'pen_penDown': [],
+    'pen_penUp': [],
+    'pen_setPenColorToColor': [
+        {
+            type: 'input',
+            inputOp: 'colour_picker',
+            inputName: 'COLOR',
+        },
+    ],
+    'pen_changePenColorParamBy': [
+        {
+            type: 'input',
+            inputOp: 'text',
+            inputName: 'COLOR_PARAM',
+        },
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'VALUE',
+        },
+    ],
+    'pen_setPenColorParamTo': [
+        {
+            type: 'input',
+            inputOp: 'text',
+            inputName: 'COLOR_PARAM',
+        },
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'VALUE',
+        },
+    ],
+    'pen_changePenHueBy': [
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'HUE',
+        },
+    ],
+    'pen_setPenHueToNumber': [
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'HUE',
+        },
+    ],
+    'pen_changePenShadeBy': [
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'SHADE',
+        },
+    ],
+    'pen_setPenShadeToNumber': [
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'SHADE',
+        },
+    ],
+    'pen_changePenSizeBy': [
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'SIZE',
+        },
+    ],
+    'pen_setPenSizeTo': [
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'SIZE',
+        },
+    ],
+    'event_whenflagclicked': [],
+    'event_whenkeypressed': [
+        {
+            type: 'field',
+            fieldName: 'KEY_OPTION',
+        },
+    ],
+    'event_whenthisspriteclicked': [],
+    'event_whenbackdropswitchesto': [
+        {
+            type: 'field',
+            fieldName: 'BACKDROP',
+        },
+    ],
     // 'whenSensorGreaterThan': ([, sensor]) => {
     //     if (sensor === 'video motion') {
     //         return {
-    //             'opcode': 'videoSensing_whenMotionGreaterThan',
+    //                 'opcode': 'videoSensing_whenMotionGreaterThan',
     //             argMap: [
     //                 // skip the first arg, since we converted to a video specific sensing block
     //                 {},
@@ -856,7 +710,7 @@ export const SB3_ARG_MAPS = {
     //         };
     //     }
     //     return {
-    //         'opcode': 'event_whengreaterthan',
+    //             'opcode': 'event_whengreaterthan',
     //         argMap: [
     //             {
     //                 type: 'field',
@@ -870,770 +724,615 @@ export const SB3_ARG_MAPS = {
     //         ]
     //     };
     // },
-    'event_whenbroadcastreceived': {
-        argMap: [
-            {
-                type: 'field',
-                fieldName: 'BROADCAST_OPTION',
-                variableType: SB3_VAR_TYPES.VAR_BROADCAST_MESSAGE_TYPE,
-            },
-        ],
-    },
-    'event_broadcast': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'event_broadcast_menu',
-                inputName: 'BROADCAST_INPUT',
-                variableType: SB3_VAR_TYPES.VAR_BROADCAST_MESSAGE_TYPE,
-            },
-        ],
-    },
-    'event_broadcastandwait': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'event_broadcast_menu',
-                inputName: 'BROADCAST_INPUT',
-                variableType: SB3_VAR_TYPES.VAR_BROADCAST_MESSAGE_TYPE,
-            },
-        ],
-    },
-    'control_wait': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'math_positive_number',
-                inputName: 'DURATION',
-            },
-        ],
-    },
-    'control_repeat': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'math_whole_number',
-                inputName: 'TIMES',
-            },
-            {
-                type: 'input',
-                inputOp: 'substack',
-                inputName: 'SUBSTACK',
-            },
-        ],
-    },
-    'control_forever': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'substack',
-                inputName: 'SUBSTACK',
-            },
-        ],
-    },
-    'control_if': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'boolean',
-                inputName: 'CONDITION',
-            },
-            {
-                type: 'input',
-                inputOp: 'substack',
-                inputName: 'SUBSTACK',
-            },
-        ],
-    },
-    'control_if_else': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'boolean',
-                inputName: 'CONDITION',
-            },
-            {
-                type: 'input',
-                inputOp: 'substack',
-                inputName: 'SUBSTACK',
-            },
-            {
-                type: 'input',
-                inputOp: 'substack',
-                inputName: 'SUBSTACK2',
-            },
-        ],
-    },
-    'control_wait_until': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'boolean',
-                inputName: 'CONDITION',
-            },
-        ],
-    },
-    'control_repeat_until': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'boolean',
-                inputName: 'CONDITION',
-            },
-            {
-                type: 'input',
-                inputOp: 'substack',
-                inputName: 'SUBSTACK',
-            },
-        ],
-    },
-    'control_while': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'boolean',
-                inputName: 'CONDITION',
-            },
-            {
-                type: 'input',
-                inputOp: 'substack',
-                inputName: 'SUBSTACK',
-            },
-        ],
-    },
-    'control_for_each': {
-        argMap: [
-            {
-                type: 'field',
-                fieldName: 'VARIABLE',
-            },
-            {
-                type: 'input',
-                inputOp: 'text',
-                inputName: 'VALUE',
-            },
-            {
-                type: 'input',
-                inputOp: 'substack',
-                inputName: 'SUBSTACK',
-            },
-        ],
-    },
-    'control_stop': {
-        argMap: [
-            {
-                type: 'field',
-                fieldName: 'STOP_OPTION',
-            },
-        ],
-    },
-    'control_start_as_clone': {
-        argMap: [
-        ],
-    },
-    'control_create_clone_of': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'control_create_clone_of_menu',
-                inputName: 'CLONE_OPTION',
-            },
-        ],
-    },
-    'control_delete_this_clone': {
-        argMap: [
-        ],
-    },
-    'control_get_counter': {
-        argMap: [
-        ],
-    },
-    'control_incr_counter': {
-        argMap: [
-        ],
-    },
-    'control_clear_counter': {
-        argMap: [
-        ],
-    },
-    'control_all_at_once': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'substack',
-                inputName: 'SUBSTACK',
-            },
-        ],
-    },
-    'sensing_touchingobject': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'sensing_touchingobjectmenu',
-                inputName: 'TOUCHINGOBJECTMENU',
-            },
-        ],
-    },
-    'sensing_touchingcolor': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'colour_picker',
-                inputName: 'COLOR',
-            },
-        ],
-    },
-    'sensing_coloristouchingcolor': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'colour_picker',
-                inputName: 'COLOR',
-            },
-            {
-                type: 'input',
-                inputOp: 'colour_picker',
-                inputName: 'COLOR2',
-            },
-        ],
-    },
-    'sensing_distanceto': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'sensing_distancetomenu',
-                inputName: 'DISTANCETOMENU',
-            },
-        ],
-    },
-    'sensing_askandwait': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'text',
-                inputName: 'QUESTION',
-            },
-        ],
-    },
-    'sensing_answer': {
-        argMap: [
-        ],
-    },
-    'sensing_keypressed': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'sensing_keyoptions',
-                inputName: 'KEY_OPTION',
-            },
-        ],
-    },
-    'sensing_mousedown': {
-        argMap: [
-        ],
-    },
-    'sensing_mousex': {
-        argMap: [
-        ],
-    },
-    'sensing_mousey': {
-        argMap: [
-        ],
-    },
-    'sensing_loudness': {
-        argMap: [
-        ],
-    },
-    'sensing_loud': {
-        argMap: [
-        ],
-    },
-    'sensing_videoon': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'sensing_videoonmenuone',
-                inputName: 'VIDEOONMENU1',
-            },
-            {
-                type: 'input',
-                inputOp: 'sensing_videoonmenutwo',
-                inputName: 'VIDEOONMENU2',
-            },
-        ],
-    },
-    'videoSensing_videoToggle': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'videoSensing_menu_VIDEO_STATE',
-                inputName: 'VIDEO_STATE',
-            },
-        ],
-    },
-    'videoSensing_setVideoTransparency': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'math_number',
-                inputName: 'TRANSPARENCY',
-            },
-        ],
-    },
-    'sensing_timer': {
-        argMap: [
-        ],
-    },
-    'sensing_resettimer': {
-        argMap: [
-        ],
-    },
-    'sensing_of': {
-        argMap: [
-            {
-                type: 'field',
-                fieldName: 'PROPERTY',
-            },
-            {
-                type: 'input',
-                inputOp: 'sensing_of_object_menu',
-                inputName: 'OBJECT',
-            },
-        ],
-    },
-    'sensing_current': {
-        argMap: [
-            {
-                type: 'field',
-                fieldName: 'CURRENTMENU',
-            },
-        ],
-    },
-    'sensing_dayssince2000': {
-        argMap: [
-        ],
-    },
-    'sensing_username': {
-        argMap: [
-        ],
-    },
-    'sensing_userid': {
-        argMap: [
-        ],
-    },
-    'operator_add': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'math_number',
-                inputName: 'NUM1',
-            },
-            {
-                type: 'input',
-                inputOp: 'math_number',
-                inputName: 'NUM2',
-            },
-        ],
-    },
-    'operator_subtract': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'math_number',
-                inputName: 'NUM1',
-            },
-            {
-                type: 'input',
-                inputOp: 'math_number',
-                inputName: 'NUM2',
-            },
-        ],
-    },
-    'operator_multiply': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'math_number',
-                inputName: 'NUM1',
-            },
-            {
-                type: 'input',
-                inputOp: 'math_number',
-                inputName: 'NUM2',
-            },
-        ],
-    },
-    'operator_divide': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'math_number',
-                inputName: 'NUM1',
-            },
-            {
-                type: 'input',
-                inputOp: 'math_number',
-                inputName: 'NUM2',
-            },
-        ],
-    },
-    'operator_random': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'math_number',
-                inputName: 'FROM',
-            },
-            {
-                type: 'input',
-                inputOp: 'math_number',
-                inputName: 'TO',
-            },
-        ],
-    },
-    'operator_lt': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'text',
-                inputName: 'OPERAND1',
-            },
-            {
-                type: 'input',
-                inputOp: 'text',
-                inputName: 'OPERAND2',
-            },
-        ],
-    },
-    'operator_equals': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'text',
-                inputName: 'OPERAND1',
-            },
-            {
-                type: 'input',
-                inputOp: 'text',
-                inputName: 'OPERAND2',
-            },
-        ],
-    },
-    'operator_gt': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'text',
-                inputName: 'OPERAND1',
-            },
-            {
-                type: 'input',
-                inputOp: 'text',
-                inputName: 'OPERAND2',
-            },
-        ],
-    },
-    'operator_and': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'boolean',
-                inputName: 'OPERAND1',
-            },
-            {
-                type: 'input',
-                inputOp: 'boolean',
-                inputName: 'OPERAND2',
-            },
-        ],
-    },
-    'operator_or': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'boolean',
-                inputName: 'OPERAND1',
-            },
-            {
-                type: 'input',
-                inputOp: 'boolean',
-                inputName: 'OPERAND2',
-            },
-        ],
-    },
-    'operator_not': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'boolean',
-                inputName: 'OPERAND',
-            },
-        ],
-    },
-    'operator_join': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'text',
-                inputName: 'STRING1',
-            },
-            {
-                type: 'input',
-                inputOp: 'text',
-                inputName: 'STRING2',
-            },
-        ],
-    },
-    'operator_letter_of': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'math_whole_number',
-                inputName: 'LETTER',
-            },
-            {
-                type: 'input',
-                inputOp: 'text',
-                inputName: 'STRING',
-            },
-        ],
-    },
-    'operator_length': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'text',
-                inputName: 'STRING',
-            },
-        ],
-    },
-    'operator_mod': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'math_number',
-                inputName: 'NUM1',
-            },
-            {
-                type: 'input',
-                inputOp: 'math_number',
-                inputName: 'NUM2',
-            },
-        ],
-    },
-    'operator_round': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'math_number',
-                inputName: 'NUM',
-            },
-        ],
-    },
-    'operator_mathop': {
-        argMap: [
-            {
-                type: 'field',
-                fieldName: 'OPERATOR',
-            },
-            {
-                type: 'input',
-                inputOp: 'math_number',
-                inputName: 'NUM',
-            },
-        ],
-    },
-    'data_variable': {
-        argMap: [
-            {
-                type: 'field',
-                fieldName: 'VARIABLE',
-                variableType: SB3_VAR_TYPES.VAR_SCALAR_TYPE,
-            },
-        ],
-    },
-    'data_setvariableto': {
-        argMap: [
-            {
-                type: 'field',
-                fieldName: 'VARIABLE',
-                variableType: SB3_VAR_TYPES.VAR_SCALAR_TYPE,
-            },
-            {
-                type: 'input',
-                inputOp: 'text',
-                inputName: 'VALUE',
-            },
-        ],
-    },
-    'data_changevariableby': {
-        argMap: [
-            {
-                type: 'field',
-                fieldName: 'VARIABLE',
-                variableType: SB3_VAR_TYPES.VAR_SCALAR_TYPE,
-            },
-            {
-                type: 'input',
-                inputOp: 'math_number',
-                inputName: 'VALUE',
-            },
-        ],
-    },
-    'data_showvariable': {
-        argMap: [
-            {
-                type: 'field',
-                fieldName: 'VARIABLE',
-                variableType: SB3_VAR_TYPES.VAR_SCALAR_TYPE,
-            },
-        ],
-    },
-    'data_hidevariable': {
-        argMap: [
-            {
-                type: 'field',
-                fieldName: 'VARIABLE',
-                variableType: SB3_VAR_TYPES.VAR_SCALAR_TYPE,
-            },
-        ],
-    },
-    'data_listcontents': {
-        argMap: [
-            {
-                type: 'field',
-                fieldName: 'LIST',
-                variableType: SB3_VAR_TYPES.VAR_LIST_TYPE,
-            },
-        ],
-    },
-    'data_addtolist': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'text',
-                inputName: 'ITEM',
-            },
-            {
-                type: 'field',
-                fieldName: 'LIST',
-                variableType: SB3_VAR_TYPES.VAR_LIST_TYPE,
-            },
-        ],
-    },
-    'data_deleteoflist': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'math_integer',
-                inputName: 'INDEX',
-            },
-            {
-                type: 'field',
-                fieldName: 'LIST',
-                variableType: SB3_VAR_TYPES.VAR_LIST_TYPE,
-            },
-        ],
-    },
-    'data_insertatlist': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'text',
-                inputName: 'ITEM',
-            },
-            {
-                type: 'input',
-                inputOp: 'math_integer',
-                inputName: 'INDEX',
-            },
-            {
-                type: 'field',
-                fieldName: 'LIST',
-                variableType: SB3_VAR_TYPES.VAR_LIST_TYPE,
-            },
-        ],
-    },
-    'data_replaceitemoflist': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'math_integer',
-                inputName: 'INDEX',
-            },
-            {
-                type: 'field',
-                fieldName: 'LIST',
-                variableType: SB3_VAR_TYPES.VAR_LIST_TYPE,
-            },
-            {
-                type: 'input',
-                inputOp: 'text',
-                inputName: 'ITEM',
-            },
-        ],
-    },
-    'data_itemoflist': {
-        argMap: [
-            {
-                type: 'input',
-                inputOp: 'math_integer',
-                inputName: 'INDEX',
-            },
-            {
-                type: 'field',
-                fieldName: 'LIST',
-                variableType: SB3_VAR_TYPES.VAR_LIST_TYPE,
-            },
-        ],
-    },
-    'data_lengthoflist': {
-        argMap: [
-            {
-                type: 'field',
-                fieldName: 'LIST',
-                variableType: SB3_VAR_TYPES.VAR_LIST_TYPE,
-            },
-        ],
-    },
-    'data_listcontainsitem': {
-        argMap: [
-            {
-                type: 'field',
-                fieldName: 'LIST',
-                variableType: SB3_VAR_TYPES.VAR_LIST_TYPE,
-            },
-            {
-                type: 'input',
-                inputOp: 'text',
-                inputName: 'ITEM',
-            },
-        ],
-    },
-    'data_showlist': {
-        argMap: [
-            {
-                type: 'field',
-                fieldName: 'LIST',
-                variableType: SB3_VAR_TYPES.VAR_LIST_TYPE,
-            },
-        ],
-    },
-    'data_hidelist': {
-        argMap: [
-            {
-                type: 'field',
-                fieldName: 'LIST',
-                variableType: SB3_VAR_TYPES.VAR_LIST_TYPE,
-            },
-        ],
-    },
+    'event_whenbroadcastreceived': [
+        {
+            type: 'field',
+            fieldName: 'BROADCAST_OPTION',
+            variableType: SB3_VAR_TYPES.VAR_BROADCAST_MESSAGE_TYPE,
+        },
+    ],
+    'event_broadcast': [
+        {
+            type: 'input',
+            inputOp: 'event_broadcast_menu',
+            inputName: 'BROADCAST_INPUT',
+            variableType: SB3_VAR_TYPES.VAR_BROADCAST_MESSAGE_TYPE,
+        },
+    ],
+    'event_broadcastandwait': [
+        {
+            type: 'input',
+            inputOp: 'event_broadcast_menu',
+            inputName: 'BROADCAST_INPUT',
+            variableType: SB3_VAR_TYPES.VAR_BROADCAST_MESSAGE_TYPE,
+        },
+    ],
+    'control_wait': [
+        {
+            type: 'input',
+            inputOp: 'math_positive_number',
+            inputName: 'DURATION',
+        },
+    ],
+    'control_repeat': [
+        {
+            type: 'input',
+            inputOp: 'math_whole_number',
+            inputName: 'TIMES',
+        },
+        {
+            type: 'input',
+            inputOp: 'substack',
+            inputName: 'SUBSTACK',
+        },
+    ],
+    'control_forever': [
+        {
+            type: 'input',
+            inputOp: 'substack',
+            inputName: 'SUBSTACK',
+        },
+    ],
+    'control_if': [
+        {
+            type: 'input',
+            inputOp: 'boolean',
+            inputName: 'CONDITION',
+        },
+        {
+            type: 'input',
+            inputOp: 'substack',
+            inputName: 'SUBSTACK',
+        },
+    ],
+    'control_if_else': [
+        {
+            type: 'input',
+            inputOp: 'boolean',
+            inputName: 'CONDITION',
+        },
+        {
+            type: 'input',
+            inputOp: 'substack',
+            inputName: 'SUBSTACK',
+        },
+        {
+            type: 'input',
+            inputOp: 'substack',
+            inputName: 'SUBSTACK2',
+        },
+    ],
+    'control_wait_until': [
+        {
+            type: 'input',
+            inputOp: 'boolean',
+            inputName: 'CONDITION',
+        },
+    ],
+    'control_repeat_until': [
+        {
+            type: 'input',
+            inputOp: 'boolean',
+            inputName: 'CONDITION',
+        },
+        {
+            type: 'input',
+            inputOp: 'substack',
+            inputName: 'SUBSTACK',
+        },
+    ],
+    'control_while': [
+        {
+            type: 'input',
+            inputOp: 'boolean',
+            inputName: 'CONDITION',
+        },
+        {
+            type: 'input',
+            inputOp: 'substack',
+            inputName: 'SUBSTACK',
+        },
+    ],
+    'control_for_each': [
+        {
+            type: 'field',
+            fieldName: 'VARIABLE',
+        },
+        {
+            type: 'input',
+            inputOp: 'text',
+            inputName: 'VALUE',
+        },
+        {
+            type: 'input',
+            inputOp: 'substack',
+            inputName: 'SUBSTACK',
+        },
+    ],
+    'control_stop': [
+        {
+            type: 'field',
+            fieldName: 'STOP_OPTION',
+        },
+    ],
+    'control_start_as_clone': [],
+    'control_create_clone_of': [
+        {
+            type: 'input',
+            inputOp: 'control_create_clone_of_menu',
+            inputName: 'CLONE_OPTION',
+        },
+    ],
+    'control_delete_this_clone': [],
+    'control_get_counter': [],
+    'control_incr_counter': [],
+    'control_clear_counter': [],
+    'control_all_at_once': [
+        {
+            type: 'input',
+            inputOp: 'substack',
+            inputName: 'SUBSTACK',
+        },
+    ],
+    'sensing_touchingobject': [
+        {
+            type: 'input',
+            inputOp: 'sensing_touchingobjectmenu',
+            inputName: 'TOUCHINGOBJECTMENU',
+        },
+    ],
+    'sensing_touchingcolor': [
+        {
+            type: 'input',
+            inputOp: 'colour_picker',
+            inputName: 'COLOR',
+        },
+    ],
+    'sensing_coloristouchingcolor': [
+        {
+            type: 'input',
+            inputOp: 'colour_picker',
+            inputName: 'COLOR',
+        },
+        {
+            type: 'input',
+            inputOp: 'colour_picker',
+            inputName: 'COLOR2',
+        },
+    ],
+    'sensing_distanceto': [
+        {
+            type: 'input',
+            inputOp: 'sensing_distancetomenu',
+            inputName: 'DISTANCETOMENU',
+        },
+    ],
+    'sensing_askandwait': [
+        {
+            type: 'input',
+            inputOp: 'text',
+            inputName: 'QUESTION',
+        },
+    ],
+    'sensing_answer': [],
+    'sensing_keypressed': [
+        {
+            type: 'input',
+            inputOp: 'sensing_keyoptions',
+            inputName: 'KEY_OPTION',
+        },
+    ],
+    'sensing_mousedown': [],
+    'sensing_mousex': [],
+    'sensing_mousey': [],
+    'sensing_setdragmode': [
+        {
+            type: 'field',
+            fieldName: 'DRAG_MODE',
+        },
+    ],
+    'sensing_loudness': [],
+    'sensing_loud': [],
+    'videoSensing_videoOn': [
+        {
+            type: 'input',
+            inputOp: 'videoSensing_menu_ATTRIBUTE',
+            inputName: 'ATTRIBUTE',
+            snapOptionInput: true,
+        },
+        {
+            type: 'input',
+            inputOp: 'videoSensing_menu_SUBJECT',
+            inputName: 'SUBJECT',
+        },
+    ],
+    'videoSensing_videoToggle': [
+        {
+            type: 'input',
+            inputOp: 'videoSensing_menu_VIDEO_STATE',
+            inputName: 'VIDEO_STATE',
+        },
+    ],
+    'videoSensing_setVideoTransparency': [
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'TRANSPARENCY',
+        },
+    ],
+    'sensing_timer': [],
+    'sensing_resettimer': [],
+    'sensing_of': [
+        {
+            type: 'field',
+            fieldName: 'PROPERTY',
+        },
+        {
+            type: 'input',
+            inputOp: 'sensing_of_object_menu',
+            inputName: 'OBJECT',
+        },
+    ],
+    'sensing_current': [
+        {
+            type: 'field',
+            fieldName: 'CURRENTMENU',
+            snapOptionInput: true,
+        },
+    ],
+    'sensing_dayssince2000': [],
+    'sensing_username': [],
+    'sensing_userid': [],
+    'operator_add': [
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'NUM1',
+        },
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'NUM2',
+        },
+    ],
+    'operator_subtract': [
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'NUM1',
+        },
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'NUM2',
+        },
+    ],
+    'operator_multiply': [
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'NUM1',
+        },
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'NUM2',
+        },
+    ],
+    'operator_divide': [
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'NUM1',
+        },
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'NUM2',
+        },
+    ],
+    'operator_random': [
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'FROM',
+        },
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'TO',
+        },
+    ],
+    'operator_lt': [
+        {
+            type: 'input',
+            inputOp: 'text',
+            inputName: 'OPERAND1',
+        },
+        {
+            type: 'input',
+            inputOp: 'text',
+            inputName: 'OPERAND2',
+        },
+    ],
+    'operator_equals': [
+        {
+            type: 'input',
+            inputOp: 'text',
+            inputName: 'OPERAND1',
+        },
+        {
+            type: 'input',
+            inputOp: 'text',
+            inputName: 'OPERAND2',
+        },
+    ],
+    'operator_gt': [
+        {
+            type: 'input',
+            inputOp: 'text',
+            inputName: 'OPERAND1',
+        },
+        {
+            type: 'input',
+            inputOp: 'text',
+            inputName: 'OPERAND2',
+        },
+    ],
+    'operator_and': [
+        {
+            type: 'input',
+            inputOp: 'boolean',
+            inputName: 'OPERAND1',
+        },
+        {
+            type: 'input',
+            inputOp: 'boolean',
+            inputName: 'OPERAND2',
+        },
+    ],
+    'operator_or': [
+        {
+            type: 'input',
+            inputOp: 'boolean',
+            inputName: 'OPERAND1',
+        },
+        {
+            type: 'input',
+            inputOp: 'boolean',
+            inputName: 'OPERAND2',
+        },
+    ],
+    'operator_not': [
+        {
+            type: 'input',
+            inputOp: 'boolean',
+            inputName: 'OPERAND',
+        },
+    ],
+    'operator_join': [
+        {
+            type: 'input',
+            inputOp: 'text',
+            inputName: 'STRING1',
+        },
+        {
+            type: 'input',
+            inputOp: 'text',
+            inputName: 'STRING2',
+        },
+    ],
+    'operator_letter_of': [
+        {
+            type: 'input',
+            inputOp: 'math_whole_number',
+            inputName: 'LETTER',
+        },
+        {
+            type: 'input',
+            inputOp: 'text',
+            inputName: 'STRING',
+        },
+    ],
+    'operator_length': [
+        {
+            type: 'input',
+            inputOp: 'text',
+            inputName: 'STRING',
+        },
+    ],
+    'operator_mod': [
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'NUM1',
+        },
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'NUM2',
+        },
+    ],
+    'operator_round': [
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'NUM',
+        },
+    ],
+    'operator_mathop': [
+        {
+            type: 'field',
+            fieldName: 'OPERATOR',
+        },
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'NUM',
+        },
+    ],
+    'data_variable': [
+        {
+            type: 'field',
+            fieldName: 'VARIABLE',
+            variableType: SB3_VAR_TYPES.VAR_SCALAR_TYPE,
+        },
+    ],
+    'data_setvariableto': [
+        {
+            type: 'field',
+            fieldName: 'VARIABLE',
+            variableType: SB3_VAR_TYPES.VAR_SCALAR_TYPE,
+        },
+        {
+            type: 'input',
+            inputOp: 'text',
+            inputName: 'VALUE',
+        },
+    ],
+    'data_changevariableby': [
+        {
+            type: 'field',
+            fieldName: 'VARIABLE',
+            variableType: SB3_VAR_TYPES.VAR_SCALAR_TYPE,
+        },
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'VALUE',
+        },
+    ],
+    'data_showvariable': [
+        {
+            type: 'field',
+            fieldName: 'VARIABLE',
+            variableType: SB3_VAR_TYPES.VAR_SCALAR_TYPE,
+        },
+    ],
+    'data_hidevariable': [
+        {
+            type: 'field',
+            fieldName: 'VARIABLE',
+            variableType: SB3_VAR_TYPES.VAR_SCALAR_TYPE,
+        },
+    ],
+    'data_listcontents': [
+        {
+            type: 'field',
+            fieldName: 'LIST',
+            variableType: SB3_VAR_TYPES.VAR_LIST_TYPE,
+        },
+    ],
+    'data_addtolist': [
+        {
+            type: 'input',
+            inputOp: 'text',
+            inputName: 'ITEM',
+        },
+        {
+            type: 'field',
+            fieldName: 'LIST',
+            variableType: SB3_VAR_TYPES.VAR_LIST_TYPE,
+        },
+    ],
+    'data_deleteoflist': [
+        {
+            type: 'input',
+            inputOp: 'math_integer',
+            inputName: 'INDEX',
+            snapOptionInput: true,
+        },
+        {
+            type: 'field',
+            fieldName: 'LIST',
+            variableType: SB3_VAR_TYPES.VAR_LIST_TYPE,
+        },
+    ],
+    'data_insertatlist': [
+        {
+            type: 'input',
+            inputOp: 'text',
+            inputName: 'ITEM',
+        },
+        {
+            type: 'input',
+            inputOp: 'math_integer',
+            inputName: 'INDEX',
+        },
+        {
+            type: 'field',
+            fieldName: 'LIST',
+            variableType: SB3_VAR_TYPES.VAR_LIST_TYPE,
+        },
+    ],
+    'data_replaceitemoflist': [
+        {
+            type: 'input',
+            inputOp: 'math_integer',
+            inputName: 'INDEX',
+        },
+        {
+            type: 'field',
+            fieldName: 'LIST',
+            variableType: SB3_VAR_TYPES.VAR_LIST_TYPE,
+        },
+        {
+            type: 'input',
+            inputOp: 'text',
+            inputName: 'ITEM',
+        },
+    ],
+    'data_itemoflist': [
+        {
+            type: 'input',
+            inputOp: 'math_integer',
+            inputName: 'INDEX',
+        },
+        {
+            type: 'field',
+            fieldName: 'LIST',
+            variableType: SB3_VAR_TYPES.VAR_LIST_TYPE,
+        },
+    ],
+    'data_lengthoflist': [
+        {
+            type: 'field',
+            fieldName: 'LIST',
+            variableType: SB3_VAR_TYPES.VAR_LIST_TYPE,
+        },
+    ],
+    'data_listcontainsitem': [
+        {
+            type: 'field',
+            fieldName: 'LIST',
+            variableType: SB3_VAR_TYPES.VAR_LIST_TYPE,
+        },
+        {
+            type: 'input',
+            inputOp: 'text',
+            inputName: 'ITEM',
+        },
+    ],
+    'data_showlist': [
+        {
+            type: 'field',
+            fieldName: 'LIST',
+            variableType: SB3_VAR_TYPES.VAR_LIST_TYPE,
+        },
+    ],
+    'data_hidelist': [
+        {
+            type: 'field',
+            fieldName: 'LIST',
+            variableType: SB3_VAR_TYPES.VAR_LIST_TYPE,
+        },
+    ],
     // 'procedures_definition': {
     //     argMap: []
     // },
     // 'getParam': {
     //     // Doesn't map to single 'opcode'. Import step assigns final correct 'opcode'.
-    //     'opcode': 'argument_reporter_string_number',
+    //         'opcode': 'argument_reporter_string_number',
     //     argMap: [
     //         {
     //             type: 'field',
@@ -1644,40 +1343,6 @@ export const SB3_ARG_MAPS = {
     // 'procedures_call': {
     //     argMap: []
     // }
-};
-
-export const C_ARGS = {
-    'control_repeat': [1],
-    'control_forever': [0],
-    'control_if': [1],
-    'control_if_else': [1, 2],
-    'control_repeat_until': [1],
-    'control_while': [1],
-    'control_for_each': [3],
-};
-
-export const LIST_ARGS = {
-    'data_addtolist': [1],
-    'data_deleteoflist': [1],
-    'data_insertatlist': [2],
-    'data_replaceitemoflist': [1],
-    'data_itemoflist': [1],
-    'data_lengthoflist': [0],
-    'data_listcontainsitem': [0],
-};
-
-export const COLOR_ARGS = {
-    'pen_setPenColorToColor': [0],
-    'sensing_touchingcolor': [0],
-    'sensing_coloristouchingcolor': [0, 1],
-};
-
-export const OPTION_ARGS = {
-    'looks_changeeffectby': [0],
-    'looks_seteffectto': [0],
-    'sensing_current': [0],
-    'videoSensing_videoOn': [0],
-    'data_deleteoflist': [0],
 };
 
 export const OBJECT_NAMES = {

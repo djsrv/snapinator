@@ -1,13 +1,10 @@
 import { SB2_TO_SB3_OP_MAP } from '../data/SB2Data';
 import {
-    C_ARGS,
-    COLOR_ARGS,
-    LIST_ARGS,
     OBJECT_NAMES,
-    OPTION_ARGS,
     SB3_ARG_MAPS,
     SB3_CONSTANTS,
     SB3_TO_SNAP_OP_MAP,
+    SB3_VAR_TYPES,
 } from '../data/SB3Data';
 import XMLDoc from '../XMLDoc';
 import Color from './Color';
@@ -165,26 +162,27 @@ export default class Block {
         blockComments: ScriptComment[],
         variables: VariableFrame,
     ): [any, number] {
-        if (C_ARGS[this.op] && C_ARGS[this.op].includes(argIndex)) {
+        let argSpec;
+        if (SB3_ARG_MAPS[this.op] && SB3_ARG_MAPS[this.op][argIndex]) {
+            argSpec = SB3_ARG_MAPS[this.op][argIndex];
+        }
+        if (argSpec && argSpec.type === 'input' && argSpec.inputOp === 'substack') {
             return new Script().readSB2(arg, nextBlockID, blockComments, variables, true);
         }
         if (Array.isArray(arg)) {
             return new Block().readSB2(arg, nextBlockID, blockComments, variables);
         }
-        if (LIST_ARGS[this.op] && LIST_ARGS[this.op].includes(argIndex)) {
-            return [Block.forVar(variables.getListName(arg)), nextBlockID];
-        }
-        if (COLOR_ARGS[this.op] && COLOR_ARGS[this.op].includes(argIndex)) {
-            return [Color.fromARGB(arg), nextBlockID];
-        }
-        if (
-            typeof arg === 'string'
-            && OPTION_ARGS[this.op] && OPTION_ARGS[this.op].includes(argIndex)
-        ) {
-            return [new Primitive(arg, true), nextBlockID];
-        }
         if (SPECIAL_CASE_ARGS[this.op] && SPECIAL_CASE_ARGS[this.op][argIndex]) {
             return [SPECIAL_CASE_ARGS[this.op][argIndex](arg), nextBlockID];
+        }
+        if (argSpec && argSpec.type === 'field' && argSpec.variableType === SB3_VAR_TYPES.VAR_LIST_TYPE) {
+            return [Block.forVar(variables.getListName(arg)), nextBlockID];
+        }
+        if (argSpec && argSpec.type === 'input' && argSpec.inputOp === 'colour_picker') {
+            return [Color.fromARGB(arg), nextBlockID];
+        }
+        if (typeof arg === 'string' && argSpec && argSpec.snapOptionInput) {
+            return [new Primitive(arg, true), nextBlockID];
         }
         return [new Primitive(arg), nextBlockID];
     }
@@ -199,9 +197,9 @@ export default class Block {
 
         this.op = jsonObj.opcode;
         this.args = [];
-        const spec = SB3_ARG_MAPS[this.op];
-        if (spec) {
-            for (const argSpec of spec.argMap) {
+        const argMap = SB3_ARG_MAPS[this.op];
+        if (argMap) {
+            for (const argSpec of argMap) {
                 this.args.push(this.readArgSB3(argSpec, jsonObj, blockMap, variables));
             }
         }
