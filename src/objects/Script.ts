@@ -1,3 +1,4 @@
+import { SB3_WORKSPACE_X_SCALE, SB3_WORKSPACE_Y_SCALE } from '../data/SB3Data';
 import XMLDoc from '../XMLDoc';
 import Block from './Block';
 import ScriptComment from './ScriptComment';
@@ -37,11 +38,11 @@ export default class Script {
         let blockObj: any = blockMap[blockID];
         if (!embedded) {
             if (Array.isArray(blockObj)) {
-                this.x = blockObj[3];
-                this.y = blockObj[4];
+                this.x = blockObj[3] / SB3_WORKSPACE_X_SCALE;
+                this.y = blockObj[4] / SB3_WORKSPACE_Y_SCALE;
             } else {
-                this.x = blockObj.x;
-                this.y = blockObj.y;
+                this.x = blockObj.x / SB3_WORKSPACE_X_SCALE;
+                this.y = blockObj.y / SB3_WORKSPACE_Y_SCALE;
             }
         }
         this.stack = [];

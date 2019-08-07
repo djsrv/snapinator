@@ -34,6 +34,9 @@
 
 */
 
+export const SB3_WORKSPACE_X_SCALE = 1.5;
+export const SB3_WORKSPACE_Y_SCALE = 2.2;
+
 export const SB3_VAR_TYPES = {
     VAR_SCALAR_TYPE: '',
     VAR_LIST_TYPE: 'list',
@@ -1366,4 +1369,4 @@ export const SB3_ROTATION_STYLES = {
     'all around': 1,
     'left-right': 2,
     'don\'t rotate': 0,
-}
+};
