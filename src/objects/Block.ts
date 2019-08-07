@@ -28,16 +28,16 @@ const SPECIAL_CASE_ARGS = {
     'videoSensing_videoOn': {},
     'sensing_of': {},
     'operator_mathop': {},
+    'data_insertatlist': {},
+    'data_replaceitemoflist': {},
     'data_itemoflist': {},
-    'data_lengthoflist': {},
-    'data_listcontainsitem': {},
 };
 
 function handleObjArg(arg: any, choices: string[]) {
-    if (choices.includes(arg)) {
+    if (choices.includes(arg.value)) {
         return new Primitive(OBJECT_NAMES[arg], true);
     }
-    return new Primitive(arg);
+    return arg;
 }
 
 SPECIAL_CASE_ARGS['motion_pointtowards'][0] =
@@ -60,25 +60,25 @@ SPECIAL_CASE_ARGS['videoSensing_videoOn'][0] = (arg: any) => {
 
 SPECIAL_CASE_ARGS['pen_changePenColorParamBy'][0] =
 SPECIAL_CASE_ARGS['pen_setPenColorParamTo'][0] = (arg: any) => {
-    if (arg === 'color') {
-        arg = 'hue';
+    if (arg.value === 'color') {
+        return new Primitive('hue', true);
     }
-    return new Primitive(arg, true);
-}
+    return arg;
+};
 
 SPECIAL_CASE_ARGS['event_whenkeypressed'][0] =
 SPECIAL_CASE_ARGS['sensing_keypressed'][0] = (arg: any) => {
-    if (arg === 'any') {
-        arg = 'any key';
+    if (arg.value === 'any') {
+        return new Primitive('any key', true);
     }
-    return new Primitive(arg, true);
+    return arg;
 };
 
 SPECIAL_CASE_ARGS['control_stop'][0] = (arg: any) => {
-    if (arg === 'other scripts in stage') {
-        arg = 'other scripts in sprite';
+    if (arg.value === 'other scripts in stage') {
+        return new Primitive('other scripts in sprite', true);
     }
-    return new Primitive(arg, true);
+    return arg;
 };
 
 SPECIAL_CASE_ARGS['sensing_of'][0] = (arg: any) => {
@@ -87,35 +87,40 @@ SPECIAL_CASE_ARGS['sensing_of'][0] = (arg: any) => {
         'x position', 'y position', 'direction', 'size',
     ];
 
-    if (arg === 'backdrop #' || arg === 'background #') {
-        arg = 'costume #';
-    } else if (arg === 'backdrop name') {
-        arg = 'costume name';
+    if (arg.value === 'backdrop #' || arg.value === 'background #') {
+        return new Primitive('costume #', true);
+    } else if (arg.value === 'backdrop name') {
+        return new Primitive('costume name', true);
     }
-    if (OPTIONS.includes(arg)) {
-        return new Primitive(arg, true);
+    if (OPTIONS.includes(arg.value)) {
+        return new Primitive(arg.value, true);
     }
-    return new Primitive(arg);
+    return arg;
 };
 SPECIAL_CASE_ARGS['sensing_of'][1] = (arg: any) => {
-    if (arg === '_stage_') {
-        arg = 'Stage';
+    if (arg.value === '_stage_') {
+        return new Primitive('Stage');
     }
-    return new Primitive(arg);
+    return arg;
 };
 
 SPECIAL_CASE_ARGS['operator_mathop'][0] = (arg: any) => {
-    arg = arg.replace(/ \^$/, '^');
-    return new Primitive(arg, true);
+    if (arg.value === 'e ^') {
+        return new Primitive('e^', true);
+    }
+    if (arg.value === '10 ^') {
+        return new Primitive('10^', true);
+    }
+    return arg;
 };
 
-SPECIAL_CASE_ARGS['data_itemoflist'][0] =
-SPECIAL_CASE_ARGS['data_lengthoflist'][1] =
-SPECIAL_CASE_ARGS['data_listcontainsitem'][0] = (arg: any) => {
-    if (arg === 'random' || arg === 'any') {
+SPECIAL_CASE_ARGS['data_insertatlist'][1] =
+SPECIAL_CASE_ARGS['data_replaceitemoflist'][0] =
+SPECIAL_CASE_ARGS['data_itemoflist'][0] = (arg: any) => {
+    if (arg.value === 'random' || arg.value === 'any') {
         return new Primitive('any', true);
     }
-    return new Primitive(arg);
+    return arg;
 };
 
 export default class Block {
@@ -166,25 +171,28 @@ export default class Block {
         if (SB3_ARG_MAPS[this.op] && SB3_ARG_MAPS[this.op][argIndex]) {
             argSpec = SB3_ARG_MAPS[this.op][argIndex];
         }
+
         if (argSpec && argSpec.type === 'input' && argSpec.inputOp === 'substack') {
             return new Script().readSB2(arg, nextBlockID, blockComments, variables, true);
         }
         if (Array.isArray(arg)) {
             return new Block().readSB2(arg, nextBlockID, blockComments, variables);
         }
-        if (SPECIAL_CASE_ARGS[this.op] && SPECIAL_CASE_ARGS[this.op][argIndex]) {
-            return [SPECIAL_CASE_ARGS[this.op][argIndex](arg), nextBlockID];
-        }
+
+        let value;
         if (argSpec && argSpec.type === 'field' && argSpec.variableType === SB3_VAR_TYPES.VAR_LIST_TYPE) {
-            return [Block.forVar(variables.getListName(arg)), nextBlockID];
+            value = Block.forVar(variables.getListName(arg));
+        } else if (argSpec && argSpec.type === 'input' && argSpec.inputOp === 'colour_picker') {
+            value = Color.fromARGB(arg);
+        } else if (typeof arg === 'string' && argSpec && argSpec.snapOptionInput) {
+            value = new Primitive(arg, true);
+        } else {
+            value = new Primitive(arg);
         }
-        if (argSpec && argSpec.type === 'input' && argSpec.inputOp === 'colour_picker') {
-            return [Color.fromARGB(arg), nextBlockID];
+        if (SPECIAL_CASE_ARGS[this.op] && SPECIAL_CASE_ARGS[this.op][argIndex]) {
+            value = SPECIAL_CASE_ARGS[this.op][argIndex](value);
         }
-        if (typeof arg === 'string' && argSpec && argSpec.snapOptionInput) {
-            return [new Primitive(arg, true), nextBlockID];
-        }
-        return [new Primitive(arg), nextBlockID];
+        return [value, nextBlockID];
     }
 
     readSB3(blockID: any, blockMap: any, variables: VariableFrame): Block {
@@ -195,12 +203,13 @@ export default class Block {
         }
 
         this.op = jsonObj.opcode;
-        this.args = [];
         const argMap = SB3_ARG_MAPS[this.op];
         if (argMap) {
-            for (const argSpec of argMap) {
-                this.args.push(this.readArgSB3(argSpec, jsonObj, blockMap, variables));
-            }
+            this.args = argMap.map((argSpec, argIndex) => {
+                return this.readArgSB3(jsonObj, argIndex, argSpec, blockMap, variables);
+            });
+        } else {
+            this.args = [];
         }
 
         return this;
@@ -218,7 +227,8 @@ export default class Block {
         return this;
     }
 
-    readArgSB3(argSpec: any, jsonObj: any, blockMap: any, variables: VariableFrame) {
+    readArgSB3(jsonObj: any, argIndex: number, argSpec: any, blockMap: any, variables: VariableFrame) {
+        let value: any = new Primitive(null);
         if (argSpec.type === 'input') { // input (blocks can be dropped here)
             const argArr = jsonObj.inputs[argSpec.inputName];
             if (argArr) {
@@ -228,9 +238,13 @@ export default class Block {
                     // value is a primitive other than variable/list
                     if (typeof inputValue === 'string') { // dropdown menu id
                         const inputObj = blockMap[inputValue];
-                        return new Primitive(inputObj.fields[argSpec.inputName][0]);
+                        value = new Primitive(inputObj.fields[argSpec.inputName][0]);
                     } else if (Array.isArray(inputValue)) { // primitive array
-                        return new Primitive(inputValue[1]);
+                        if (argSpec.inputOp === 'colour_picker') {
+                            value = Color.fromHex(inputValue[1]);
+                        } else {
+                            value = new Primitive(inputValue[1]);
+                        }
                     }
                 } else if (
                     inputType === SB3_CONSTANTS.INPUT_BLOCK_NO_SHADOW
@@ -248,9 +262,12 @@ export default class Block {
             }
         } else { // field (blocks cannot be dropped here)
             const argArr = jsonObj.fields[argSpec.fieldName];
-            return new Primitive(argArr[0]);
+            value = new Primitive(argArr[0]);
         }
-        return new Primitive(null);
+        if (SPECIAL_CASE_ARGS[this.op] && SPECIAL_CASE_ARGS[this.op][argIndex]) {
+            value = SPECIAL_CASE_ARGS[this.op][argIndex](value);
+        }
+        return value;
     }
 
     toXML(xml: XMLDoc, forStage: boolean, variables: VariableFrame): Element {

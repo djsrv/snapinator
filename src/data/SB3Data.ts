@@ -619,6 +619,7 @@ export const SB3_ARG_MAPS = {
             type: 'input',
             inputOp: 'text',
             inputName: 'COLOR_PARAM',
+            snapOptionInput: true,
         },
         {
             type: 'input',
@@ -631,6 +632,7 @@ export const SB3_ARG_MAPS = {
             type: 'input',
             inputOp: 'text',
             inputName: 'COLOR_PARAM',
+            snapOptionInput: true,
         },
         {
             type: 'input',
@@ -685,6 +687,7 @@ export const SB3_ARG_MAPS = {
         {
             type: 'field',
             fieldName: 'KEY_OPTION',
+            snapOptionInput: true,
         },
     ],
     'event_whenthisspriteclicked': [],
@@ -853,6 +856,7 @@ export const SB3_ARG_MAPS = {
         {
             type: 'field',
             fieldName: 'STOP_OPTION',
+            snapOptionInput: true,
         },
     ],
     'control_start_as_clone': [],
@@ -920,6 +924,7 @@ export const SB3_ARG_MAPS = {
             type: 'input',
             inputOp: 'sensing_keyoptions',
             inputName: 'KEY_OPTION',
+            snapOptionInput: true,
         },
     ],
     'sensing_mousedown': [],
@@ -1164,6 +1169,7 @@ export const SB3_ARG_MAPS = {
         {
             type: 'field',
             fieldName: 'OPERATOR',
+            snapOptionInput: true,
         },
         {
             type: 'input',
@@ -1258,6 +1264,7 @@ export const SB3_ARG_MAPS = {
             type: 'input',
             inputOp: 'math_integer',
             inputName: 'INDEX',
+            snapOptionInput: true,
         },
         {
             type: 'field',
@@ -1270,6 +1277,7 @@ export const SB3_ARG_MAPS = {
             type: 'input',
             inputOp: 'math_integer',
             inputName: 'INDEX',
+            snapOptionInput: true,
         },
         {
             type: 'field',
@@ -1287,6 +1295,7 @@ export const SB3_ARG_MAPS = {
             type: 'input',
             inputOp: 'math_integer',
             inputName: 'INDEX',
+            snapOptionInput: true,
         },
         {
             type: 'field',

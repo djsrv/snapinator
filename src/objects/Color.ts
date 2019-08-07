@@ -9,6 +9,14 @@ export default class Color {
         return new Color(r, g, b, a);
     }
 
+    static fromHex(color: string): Color {
+        const r = parseInt(color.substr(1, 2), 16);
+        const g = parseInt(color.substr(3, 2), 16);
+        const b = parseInt(color.substr(5, 2), 16);
+        const a = 1;
+        return new Color(r, g, b, a);
+    }
+
     r: number;
     g: number;
     b: number;
