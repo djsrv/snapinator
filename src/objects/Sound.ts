@@ -1,5 +1,6 @@
 import SoundFile from '../media/SoundFile';
 import Project from '../Project';
+import XMLDoc from '../XMLDoc';
 
 export default class Sound {
     name: string;
@@ -17,5 +18,12 @@ export default class Sound {
         this.file = project.media[jsonObj.md5ext] as SoundFile;
 
         return this;
+    }
+
+    toXML(xml: XMLDoc): Element {
+        return xml.el('sound', {
+            'name': this.name,
+            'sound': this.file.toDataURL(),
+        });
     }
 }

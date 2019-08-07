@@ -128,7 +128,9 @@ export default class Scriptable {
 
     soundsXML(xml: XMLDoc): Element {
         return xml.el('sounds', null, [
-            xml.el('list'),
+            xml.el('list', null, this.sounds.map(
+                (sound) => xml.el('item', null, [sound.toXML(xml)]),
+            )),
         ]);
     }
 
