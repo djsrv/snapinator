@@ -470,6 +470,7 @@ export const SB3_ARG_MAPS = {
         {
             type: 'field',
             fieldName: 'FRONT_BACK',
+            snapOptionInput: true,
         },
     ],
     'looks_goforwardbackwardlayers': [

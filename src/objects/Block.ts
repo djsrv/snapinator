@@ -17,6 +17,8 @@ const SPECIAL_CASE_ARGS = {
     'motion_pointtowards': {},
     'motion_goto': {},
     'motion_glideto': {},
+    'looks_changeeffectby': {},
+    'looks_seteffectto': {},
     'pen_changePenColorParamBy': {},
     'pen_setPenColorParamTo': {},
     'event_whenkeypressed': {},
@@ -27,39 +29,45 @@ const SPECIAL_CASE_ARGS = {
     'sensing_keypressed': {},
     'videoSensing_videoOn': {},
     'sensing_of': {},
+    'sensing_current': {},
     'operator_mathop': {},
     'data_insertatlist': {},
     'data_replaceitemoflist': {},
     'data_itemoflist': {},
 };
 
-function handleObjArg(arg: any, choices: string[]) {
+function handleObjArg(arg: Primitive, choices: string[]) {
     if (choices.includes(arg.value)) {
-        return new Primitive(OBJECT_NAMES[arg], true);
+        return new Primitive(OBJECT_NAMES[arg.value], true);
     }
     return arg;
 }
 
 SPECIAL_CASE_ARGS['motion_pointtowards'][0] =
-SPECIAL_CASE_ARGS['sensing_distanceto'][0] = (arg: any) => {
+SPECIAL_CASE_ARGS['sensing_distanceto'][0] = (arg: Primitive) => {
     return handleObjArg(arg, ['_mouse_']);
 };
 SPECIAL_CASE_ARGS['motion_goto'][0] =
-SPECIAL_CASE_ARGS['motion_glideto'][0] = (arg: any) => {
+SPECIAL_CASE_ARGS['motion_glideto'][0] = (arg: Primitive) => {
     return handleObjArg(arg, ['_mouse_', '_random_']);
 };
-SPECIAL_CASE_ARGS['control_create_clone_of'][0] = (arg: any) => {
+SPECIAL_CASE_ARGS['control_create_clone_of'][0] = (arg: Primitive) => {
     return handleObjArg(arg, ['_myself_']);
 };
-SPECIAL_CASE_ARGS['sensing_touchingobject'][0] = (arg: any) => {
+SPECIAL_CASE_ARGS['sensing_touchingobject'][0] = (arg: Primitive) => {
     return handleObjArg(arg, ['_mouse_', '_edge_']);
 };
-SPECIAL_CASE_ARGS['videoSensing_videoOn'][0] = (arg: any) => {
+SPECIAL_CASE_ARGS['videoSensing_videoOn'][0] = (arg: Primitive) => {
     return handleObjArg(arg, ['this sprite']);
 };
 
+SPECIAL_CASE_ARGS['looks_changeeffectby'][0] =
+SPECIAL_CASE_ARGS['looks_seteffectto'][0] = (arg: Primitive) => {
+    return new Primitive(arg.value.toLowerCase(), true);
+};
+
 SPECIAL_CASE_ARGS['pen_changePenColorParamBy'][0] =
-SPECIAL_CASE_ARGS['pen_setPenColorParamTo'][0] = (arg: any) => {
+SPECIAL_CASE_ARGS['pen_setPenColorParamTo'][0] = (arg: Primitive) => {
     if (arg.value === 'color') {
         return new Primitive('hue', true);
     }
@@ -67,21 +75,21 @@ SPECIAL_CASE_ARGS['pen_setPenColorParamTo'][0] = (arg: any) => {
 };
 
 SPECIAL_CASE_ARGS['event_whenkeypressed'][0] =
-SPECIAL_CASE_ARGS['sensing_keypressed'][0] = (arg: any) => {
+SPECIAL_CASE_ARGS['sensing_keypressed'][0] = (arg: Primitive) => {
     if (arg.value === 'any') {
         return new Primitive('any key', true);
     }
     return arg;
 };
 
-SPECIAL_CASE_ARGS['control_stop'][0] = (arg: any) => {
+SPECIAL_CASE_ARGS['control_stop'][0] = (arg: Primitive) => {
     if (arg.value === 'other scripts in stage') {
         return new Primitive('other scripts in sprite', true);
     }
     return arg;
 };
 
-SPECIAL_CASE_ARGS['sensing_of'][0] = (arg: any) => {
+SPECIAL_CASE_ARGS['sensing_of'][0] = (arg: Primitive) => {
     const OPTIONS = [
         'costume #', 'costume name', 'volume',
         'x position', 'y position', 'direction', 'size',
@@ -97,14 +105,21 @@ SPECIAL_CASE_ARGS['sensing_of'][0] = (arg: any) => {
     }
     return arg;
 };
-SPECIAL_CASE_ARGS['sensing_of'][1] = (arg: any) => {
+SPECIAL_CASE_ARGS['sensing_of'][1] = (arg: Primitive) => {
     if (arg.value === '_stage_') {
         return new Primitive('Stage');
     }
     return arg;
 };
 
-SPECIAL_CASE_ARGS['operator_mathop'][0] = (arg: any) => {
+SPECIAL_CASE_ARGS['sensing_current'][0] = (arg: Primitive) => {
+    if (arg.value === 'DAYOFWEEK') {
+        return new Primitive('day of week', true);
+    }
+    return new Primitive(arg.value.toLowerCase(), true);
+};
+
+SPECIAL_CASE_ARGS['operator_mathop'][0] = (arg: Primitive) => {
     if (arg.value === 'e ^') {
         return new Primitive('e^', true);
     }
@@ -116,7 +131,7 @@ SPECIAL_CASE_ARGS['operator_mathop'][0] = (arg: any) => {
 
 SPECIAL_CASE_ARGS['data_insertatlist'][1] =
 SPECIAL_CASE_ARGS['data_replaceitemoflist'][0] =
-SPECIAL_CASE_ARGS['data_itemoflist'][0] = (arg: any) => {
+SPECIAL_CASE_ARGS['data_itemoflist'][0] = (arg: Primitive) => {
     if (arg.value === 'random' || arg.value === 'any') {
         return new Primitive('any', true);
     }
@@ -178,13 +193,15 @@ export default class Block {
         if (Array.isArray(arg)) {
             return new Block().readSB2(arg, nextBlockID, blockComments, variables);
         }
+        if (argSpec && argSpec.type === 'field' && argSpec.variableType === SB3_VAR_TYPES.VAR_LIST_TYPE) {
+            return [Block.forVar(variables.getListName(arg)), nextBlockID];
+        }
+        if (argSpec && argSpec.type === 'input' && argSpec.inputOp === 'colour_picker') {
+            return [Color.fromARGB(arg), nextBlockID];
+        }
 
         let value;
-        if (argSpec && argSpec.type === 'field' && argSpec.variableType === SB3_VAR_TYPES.VAR_LIST_TYPE) {
-            value = Block.forVar(variables.getListName(arg));
-        } else if (argSpec && argSpec.type === 'input' && argSpec.inputOp === 'colour_picker') {
-            value = Color.fromARGB(arg);
-        } else if (typeof arg === 'string' && argSpec && argSpec.snapOptionInput) {
+        if (typeof arg === 'string' && argSpec && argSpec.snapOptionInput) {
             value = new Primitive(arg, true);
         } else {
             value = new Primitive(arg);
@@ -228,7 +245,7 @@ export default class Block {
     }
 
     readArgSB3(jsonObj: any, argIndex: number, argSpec: any, blockMap: any, variables: VariableFrame) {
-        let value: any = new Primitive(null);
+        let value;
         if (argSpec.type === 'input') { // input (blocks can be dropped here)
             const argArr = jsonObj.inputs[argSpec.inputName];
             if (argArr) {
@@ -238,12 +255,12 @@ export default class Block {
                     // value is a primitive other than variable/list
                     if (typeof inputValue === 'string') { // dropdown menu id
                         const inputObj = blockMap[inputValue];
-                        value = new Primitive(inputObj.fields[argSpec.inputName][0]);
+                        value = inputObj.fields[argSpec.inputName][0];
                     } else if (Array.isArray(inputValue)) { // primitive array
                         if (argSpec.inputOp === 'colour_picker') {
-                            value = Color.fromHex(inputValue[1]);
+                            return Color.fromHex(inputValue[1]);
                         } else {
-                            value = new Primitive(inputValue[1]);
+                            value = inputValue[1];
                         }
                     }
                 } else if (
@@ -262,7 +279,16 @@ export default class Block {
             }
         } else { // field (blocks cannot be dropped here)
             const argArr = jsonObj.fields[argSpec.fieldName];
-            value = new Primitive(argArr[0]);
+            if (argSpec.variableType === SB3_VAR_TYPES.VAR_LIST_TYPE) {
+                return Block.forVar(variables.getListName(argArr[0]));
+            } else {
+                value = argArr[0];
+            }
+        }
+        if (typeof value === 'string' && argSpec.snapOptionInput) {
+            value = new Primitive(value, true);
+        } else {
+            value = new Primitive(value);
         }
         if (SPECIAL_CASE_ARGS[this.op] && SPECIAL_CASE_ARGS[this.op][argIndex]) {
             value = SPECIAL_CASE_ARGS[this.op][argIndex](value);
