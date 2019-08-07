@@ -11,4 +11,11 @@ export default class Sound {
 
         return this;
     }
+
+    readSB3(jsonObj: any, project: Project): Sound {
+        this.name = jsonObj.name;
+        this.file = project.media[jsonObj.md5ext] as SoundFile;
+
+        return this;
+    }
 }

@@ -21,6 +21,15 @@ export default class Costume {
         return this;
     }
 
+    readSB3(jsonObj: any, project: Project): Costume {
+        this.name = jsonObj.name;
+        this.file = project.media[jsonObj.md5ext] as ImageFile;
+        this.rotationCenterX = jsonObj.rotationCenterX / jsonObj.bitmapResolution;
+        this.rotationCenterY = jsonObj.rotationCenterY / jsonObj.bitmapResolution;
+
+        return this;
+    }
+
     toXML(xml: XMLDoc): Element {
         return xml.el('costume', {
             'name': this.name,

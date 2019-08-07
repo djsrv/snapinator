@@ -28,10 +28,8 @@ export default class Scriptable {
 
         this.name = jsonObj.objName;
         this.costumes = [];
-        if (costumeObjs != null) {
-            for (const costumeObj of costumeObjs) {
-                this.costumes.push(new Costume().readSB2(costumeObj, project));
-            }
+        for (const costumeObj of costumeObjs) {
+            this.costumes.push(new Costume().readSB2(costumeObj, project));
         }
         this.sounds = [];
         if (soundObjs != null) {
@@ -85,11 +83,19 @@ export default class Scriptable {
     }
 
     readSB3(jsonObj: any, project: Project, libraryIndex: number): Scriptable {
+        const costumeObjs = jsonObj.costumes;
+        const soundObjs = jsonObj.sounds;
         const blockMap = jsonObj.blocks;
 
         this.name = jsonObj.name;
         this.costumes = [];
+        for (const costumeObj of costumeObjs) {
+            this.costumes.push(new Costume().readSB3(costumeObj, project));
+        }
         this.sounds = [];
+        for (const soundObj of soundObjs) {
+            this.sounds.push(new Sound().readSB3(soundObj, project));
+        }
         this.costumeIndex = jsonObj.currentCostume + 1;
 
         this.readVariablesSB3(jsonObj, project);
