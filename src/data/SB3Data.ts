@@ -115,6 +115,9 @@ export const SB3_TO_SNAP_OP_MAP = {
     'sound_play': 'playSound',
     'sound_playuntildone': 'doPlaySoundUntilDone',
     'sound_stopallsounds': 'doStopAllSounds',
+    // 'sound_changeeffectby': '',
+    // 'sound_seteffectto': '',
+    // 'sound_cleareffects': '',
     // 'music_playDrumForBeats': '',
     'music_playNoteForBeats': 'doPlayNote',
     'music_restForBeats': 'doRest',
@@ -520,6 +523,29 @@ export const SB3_ARG_MAPS = {
         },
     ],
     'sound_stopallsounds': [],
+    'sound_changeeffectby': [
+        {
+            type: 'field',
+            fieldName: 'EFFECT',
+        },
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'VALUE',
+        },
+    ],
+    'sound_seteffectto': [
+        {
+            type: 'field',
+            fieldName: 'EFFECT',
+        },
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'VALUE',
+        },
+    ],
+    'sound_cleareffects': [],
     'music_playDrumForBeats': [
         {
             type: 'input',
@@ -1252,6 +1278,13 @@ export const SB3_ARG_MAPS = {
             inputName: 'INDEX',
             snapOptionInput: true,
         },
+        {
+            type: 'field',
+            fieldName: 'LIST',
+            variableType: SB3_VAR_TYPES.VAR_LIST_TYPE,
+        },
+    ],
+    'data_deletealloflist': [
         {
             type: 'field',
             fieldName: 'LIST',
