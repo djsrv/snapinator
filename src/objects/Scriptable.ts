@@ -56,17 +56,17 @@ export default class Scriptable {
         }
         if (scriptArrs != null) {
             for (const scriptArr of scriptArrs) {
-                const blockStackObj = scriptArr[2];
-                const firstBlockObj = blockStackObj[0];
-                const firstOp = firstBlockObj[0];
+                const blockStackArr = scriptArr[2];
+                const firstBlockArr = blockStackArr[0];
+                const firstOp = firstBlockArr[0];
                 if (firstOp === 'procDef') {
-                    // let blockDef;
-                    // [blockDef, nextBlockID] = new BlockDefinition().readSB2(
-                    //     scriptObj, nextBlockID, blockComments, this.variables,
-                    // );
-                    // this.blocks.push(blockDef);
+                    let blockDef: BlockDefinition;
+                    [blockDef, nextBlockID] = new BlockDefinition().readSB2(
+                        blockStackArr, nextBlockID, blockComments, this.variables,
+                    );
+                    this.blocks.push(blockDef);
                 } else {
-                    let script;
+                    let script: Script;
                     [script, nextBlockID] = new Script().readSB2(
                         scriptArr, nextBlockID, blockComments, this.variables,
                     );
@@ -150,7 +150,9 @@ export default class Scriptable {
     }
 
     blocksXML(xml: XMLDoc): Element {
-        return xml.el('blocks');
+        return xml.el('blocks', null, this.blocks.map(
+            (blockDef) => blockDef.toXML(xml, this),
+        ));
     }
 
     scriptsXML(xml: XMLDoc): Element {
@@ -160,7 +162,7 @@ export default class Scriptable {
                 return comment.toXML(xml);
             }
             const script: Script = scriptOrComment;
-            return script.toXML(xml, this instanceof Stage, this.variables);
+            return script.toXML(xml, this, this.variables);
         }));
     }
 }

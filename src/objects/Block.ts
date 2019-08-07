@@ -10,6 +10,7 @@ import XMLDoc from '../XMLDoc';
 import Color from './Color';
 import Primitive from './Primitive';
 import Script from './Script';
+import Scriptable from './Scriptable';
 import ScriptComment from './ScriptComment';
 import VariableFrame from './VariableFrame';
 
@@ -164,7 +165,7 @@ export default class Block {
         this.op = SB2_TO_SB3_OP_MAP[sb2Op] || sb2Op;
         nextBlockID += 1;
         this.args = jsonArr.slice(1).map((argObj, argIndex) => {
-            let arg;
+            let arg: any;
             [arg, nextBlockID] = this.readArgSB2(argObj, argIndex, nextBlockID, blockComments, variables);
             return arg;
         });
@@ -200,7 +201,7 @@ export default class Block {
             return [Color.fromARGB(arg), nextBlockID];
         }
 
-        let value;
+        let value: Primitive;
         if (typeof arg === 'string' && argSpec && argSpec.snapOptionInput) {
             value = new Primitive(arg, true);
         } else {
@@ -260,7 +261,7 @@ export default class Block {
         blockComments: {[s: string]: ScriptComment},
         variables: VariableFrame,
     ) {
-        let value;
+        let value: Primitive;
         if (argSpec.type === 'input') { // input (blocks can be dropped here)
             const argArr = jsonObj.inputs[argSpec.inputName];
             if (argArr) {
@@ -291,6 +292,8 @@ export default class Block {
                         return new Block().readSB3(inputValue, blockMap, blockComments, variables);
                     }
                 }
+            } else if (argSpec.inputOp === 'substack') { // empty substack
+                return new Script();
             }
         } else { // field (blocks cannot be dropped here)
             const argArr = jsonObj.fields[argSpec.fieldName];
@@ -311,24 +314,43 @@ export default class Block {
         return value;
     }
 
-    toXML(xml: XMLDoc, forStage: boolean, variables: VariableFrame): Element {
-        if (this.op === 'data_variable') {
-            return xml.el('block', {var: this.args[0]});
-        }
-        const snapOp = SB3_TO_SNAP_OP_MAP[this.op] || this.op;
-        if (!snapOp) {
-            throw new Error('Unsupported block ' + this.op);
-        }
-        const children = this.args.map((arg) => {
+    toXML(xml: XMLDoc, scriptable: Scriptable, variables: VariableFrame): Element {
+        const argToXML = (arg) => {
+            if (arg instanceof Script) {
+                const script: Script = arg;
+                return script.toXML(xml, scriptable, variables);
+            }
             if (arg instanceof Block) {
                 const block: Block = arg;
-                return block.toXML(xml, forStage, variables);
+                return block.toXML(xml, scriptable, variables);
             }
             return arg.toXML(xml);
-        });
-        if (this.comment) {
-            children.push(this.comment.toXML(xml));
+        };
+
+        let element: Element;
+        if (this.op === 'data_variable') {
+            element = xml.el('block', {var: this.args[0].value});
+        } else if (this.op === 'argument_reporter_string_number') {
+            element = xml.el('block', {var: variables.getParamName(this.args[0].value)});
+        } else if (this.op === 'procedures_call') {
+            element = xml.el(
+                'custom-block',
+                {
+                    s: this.args[0].value,
+                    scope: scriptable.name,
+                },
+                this.args.slice(1).map(argToXML),
+            );
+        } else {
+            const snapOp = SB3_TO_SNAP_OP_MAP[this.op] || this.op;
+            if (!snapOp) {
+                throw new Error('Unsupported block: ' + this.op);
+            }
+            element = xml.el('block', {s: snapOp}, this.args.map(argToXML));
         }
-        return xml.el('block', {s: snapOp}, children);
+        if (this.comment) {
+            element.appendChild(this.comment.toXML(xml));
+        }
+        return element;
     }
 }

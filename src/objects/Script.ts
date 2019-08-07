@@ -1,6 +1,7 @@
 import { SB3_WORKSPACE_X_SCALE, SB3_WORKSPACE_Y_SCALE } from '../data/SB3Data';
 import XMLDoc from '../XMLDoc';
 import Block from './Block';
+import Scriptable from './Scriptable';
 import ScriptComment from './ScriptComment';
 import VariableFrame from './VariableFrame';
 
@@ -8,6 +9,10 @@ export default class Script {
     x?: number;
     y?: number;
     stack: Block[];
+
+    constructor() {
+        this.stack = [];
+    }
 
     readSB2(
         jsonArr: any[],
@@ -24,7 +29,6 @@ export default class Script {
             this.y = jsonArr[1];
             blockArrs = jsonArr[2];
         }
-        this.stack = [];
         for (const blockArr of blockArrs) {
             let block;
             [block, nextBlockID] = new Block().readSB2(blockArr, nextBlockID, blockComments, variables);
@@ -51,7 +55,6 @@ export default class Script {
                 this.y = blockObj.y / SB3_WORKSPACE_Y_SCALE;
             }
         }
-        this.stack = [];
         while (blockID) {
             this.stack.push(new Block().readSB3(blockID, blockMap, blockComments, variables));
             if (!Array.isArray(blockObj) && blockObj.next) {
@@ -66,12 +69,12 @@ export default class Script {
         return this;
     }
 
-    toXML(xml: XMLDoc, forStage: boolean, variables: VariableFrame): Element {
+    toXML(xml: XMLDoc, scriptable: Scriptable, variables: VariableFrame): Element {
         const props: any = {};
         if (this.x != null && this.y != null) {
             props.x = this.x;
             props.y = this.y;
         }
-        return xml.el('script', props, this.stack.map((block) => block.toXML(xml, forStage, variables)));
+        return xml.el('script', props, this.stack.map((block) => block.toXML(xml, scriptable, variables)));
     }
 }

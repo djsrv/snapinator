@@ -189,7 +189,7 @@ export const SB2_TO_SB3_OP_MAP = {
     'showList:': 'data_showlist',
     'hideList:': 'data_hidelist',
     'procDef': 'procedures_definition',
-    'getParam': 'argument_reporter',
+    'getParam': 'argument_reporter_string_number',
     'call': 'procedures_call',
 };
 
