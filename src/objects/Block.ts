@@ -212,7 +212,12 @@ export default class Block {
         return [value, nextBlockID];
     }
 
-    readSB3(blockID: any, blockMap: any, variables: VariableFrame): Block {
+    readSB3(
+        blockID: string,
+        blockMap: any,
+        blockComments: {[s: string]: ScriptComment},
+        variables: VariableFrame,
+    ): Block {
         const jsonObj = blockMap[blockID];
 
         if (Array.isArray(jsonObj)) { // primitive array
@@ -223,10 +228,13 @@ export default class Block {
         const argMap = SB3_ARG_MAPS[this.op];
         if (argMap) {
             this.args = argMap.map((argSpec, argIndex) => {
-                return this.readArgSB3(jsonObj, argIndex, argSpec, blockMap, variables);
+                return this.readArgSB3(jsonObj, argIndex, argSpec, blockMap, blockComments, variables);
             });
         } else {
             this.args = [];
+        }
+        if (blockComments[blockID]) {
+            this.comment = blockComments[blockID];
         }
 
         return this;
@@ -244,7 +252,14 @@ export default class Block {
         return this;
     }
 
-    readArgSB3(jsonObj: any, argIndex: number, argSpec: any, blockMap: any, variables: VariableFrame) {
+    readArgSB3(
+        jsonObj: any,
+        argIndex: number,
+        argSpec: any,
+        blockMap: any,
+        blockComments: {[s: string]: ScriptComment},
+        variables: VariableFrame,
+    ) {
         let value;
         if (argSpec.type === 'input') { // input (blocks can be dropped here)
             const argArr = jsonObj.inputs[argSpec.inputName];
@@ -269,11 +284,11 @@ export default class Block {
                 ) {
                     // value is a substack or block (including variable/list primitives)
                     if (argSpec.inputOp === 'substack') {
-                        return new Script().readSB3(inputValue, blockMap, variables, true);
+                        return new Script().readSB3(inputValue, blockMap, blockComments, variables, true);
                     } else if (Array.isArray(inputValue)) { // primitive array
                         return new Block().readPrimitiveSB3(inputValue, variables);
                     } else {
-                        return new Block().readSB3(inputValue, blockMap, variables);
+                        return new Block().readSB3(inputValue, blockMap, blockComments, variables);
                     }
                 }
             }

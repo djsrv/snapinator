@@ -34,7 +34,13 @@ export default class Script {
         return [this, nextBlockID];
     }
 
-    readSB3(blockID: string, blockMap: any, variables: VariableFrame, embedded: boolean = false): Script {
+    readSB3(
+        blockID: string,
+        blockMap: any,
+        blockComments: {[s: string]: ScriptComment},
+        variables: VariableFrame,
+        embedded: boolean = false,
+    ): Script {
         let blockObj: any = blockMap[blockID];
         if (!embedded) {
             if (Array.isArray(blockObj)) {
@@ -47,7 +53,7 @@ export default class Script {
         }
         this.stack = [];
         while (blockID) {
-            this.stack.push(new Block().readSB3(blockID, blockMap, variables));
+            this.stack.push(new Block().readSB3(blockID, blockMap, blockComments, variables));
             if (!Array.isArray(blockObj) && blockObj.next) {
                 blockID = blockObj.next;
                 blockObj = blockMap[blockObj.next];

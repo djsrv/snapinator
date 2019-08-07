@@ -1,3 +1,4 @@
+import { SB3_WORKSPACE_X_SCALE, SB3_WORKSPACE_Y_SCALE } from '../data/SB3Data';
 import XMLDoc from '../XMLDoc';
 
 export default class ScriptComment {
@@ -16,6 +17,19 @@ export default class ScriptComment {
         this.text = jsonArr[6];
         this.width = jsonArr[2];
         this.collapsed = !jsonArr[4];
+
+        return this;
+    }
+
+    readSB3(jsonObj: any): ScriptComment {
+        const blockID = jsonObj.blockId;
+        if (blockID === null) {
+            this.x = jsonObj.x / SB3_WORKSPACE_X_SCALE;
+            this.y = jsonObj.y / SB3_WORKSPACE_Y_SCALE;
+        }
+        this.text = jsonObj.text;
+        this.width = jsonObj.width / SB3_WORKSPACE_X_SCALE;
+        this.collapsed = jsonObj.minimized;
 
         return this;
     }
