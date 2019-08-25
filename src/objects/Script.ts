@@ -29,10 +29,12 @@ export default class Script {
             this.y = jsonArr[1];
             blockArrs = jsonArr[2];
         }
-        for (const blockArr of blockArrs) {
-            let block;
-            [block, nextBlockID] = new Block().readSB2(blockArr, nextBlockID, blockComments, variables);
-            this.stack.push(block);
+        if (jsonArr) {
+            for (const blockArr of blockArrs) {
+                let block;
+                [block, nextBlockID] = new Block().readSB2(blockArr, nextBlockID, blockComments, variables);
+                this.stack.push(block);
+            }
         }
 
         return [this, nextBlockID];
