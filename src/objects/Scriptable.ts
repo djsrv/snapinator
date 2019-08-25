@@ -120,8 +120,14 @@ export default class Scriptable {
         for (const blockID in blockMap) {
             if (blockMap.hasOwnProperty(blockID)) {
                 const blockObj = blockMap[blockID];
-                if (blockObj.topLevel || Array.isArray(blockObj)) {
-                    this.scripts.push(new Script().readSB3(blockID, blockMap, blockComments, this.variables));
+                if (Array.isArray(blockObj) || blockObj.topLevel) {
+                    if (!Array.isArray(blockObj) && blockObj.opcode === 'procedures_definition') {
+                        this.blocks.push(
+                            new BlockDefinition().readSB3(blockID, blockMap, blockComments, this.variables),
+                        );
+                    } else {
+                        this.scripts.push(new Script().readSB3(blockID, blockMap, blockComments, this.variables));
+                    }
                 }
             }
         }

@@ -7,6 +7,7 @@ import {
     SB3_VAR_TYPES,
 } from '../data/SB3Data';
 import XMLDoc from '../XMLDoc';
+import BlockDefinition from './BlockDefinition';
 import Color from './Color';
 import Primitive from './Primitive';
 import Script from './Script';
@@ -145,6 +146,7 @@ export default class Block {
     }
 
     op: string;
+    spec: string;
     args: any[];
     comment?: ScriptComment;
 
@@ -164,7 +166,12 @@ export default class Block {
         const sb2Op = jsonArr[0];
         this.op = SB2_TO_SB3_OP_MAP[sb2Op] || sb2Op;
         nextBlockID += 1;
-        this.args = jsonArr.slice(1).map((argObj, argIndex) => {
+        let argObjs = jsonArr.slice(1);
+        if (this.op === 'procedures_call') {
+            this.spec = BlockDefinition.convertSemanticSpec(argObjs[0]);
+            argObjs = argObjs.slice(1);
+        }
+        this.args = argObjs.map((argObj, argIndex) => {
             let arg: any;
             [arg, nextBlockID] = this.readArgSB2(argObj, argIndex, nextBlockID, blockComments, variables);
             return arg;
@@ -226,13 +233,25 @@ export default class Block {
         }
 
         this.op = jsonObj.opcode;
-        const argMap = SB3_ARG_MAPS[this.op];
-        if (argMap) {
-            this.args = argMap.map((argSpec, argIndex) => {
+        if (this.op === 'procedures_call') {
+            this.spec = BlockDefinition.convertSemanticSpec(jsonObj.mutation.proccode);
+            const argIDs = JSON.parse(jsonObj.mutation.argumentids);
+            this.args = argIDs.map((argID, argIndex) => {
+                const argSpec = {
+                    type: 'input',
+                    inputName: argID,
+                };
                 return this.readArgSB3(jsonObj, argIndex, argSpec, blockMap, blockComments, variables);
             });
         } else {
-            this.args = [];
+            const argMap = SB3_ARG_MAPS[this.op];
+            if (argMap) {
+                this.args = argMap.map((argSpec, argIndex) => {
+                    return this.readArgSB3(jsonObj, argIndex, argSpec, blockMap, blockComments, variables);
+                });
+            } else {
+                this.args = [];
+            }
         }
         if (blockComments[blockID]) {
             this.comment = blockComments[blockID];
@@ -330,16 +349,16 @@ export default class Block {
         let element: Element;
         if (this.op === 'data_variable') {
             element = xml.el('block', {var: this.args[0].value});
-        } else if (this.op === 'argument_reporter_string_number') {
+        } else if (this.op === 'argument_reporter_string_number' || this.op === 'argument_reporter_boolean') {
             element = xml.el('block', {var: variables.getParamName(this.args[0].value)});
         } else if (this.op === 'procedures_call') {
             element = xml.el(
                 'custom-block',
                 {
-                    s: this.args[0].value,
+                    s: this.spec,
                     scope: scriptable.name,
                 },
-                this.args.slice(1).map(argToXML),
+                this.args.map(argToXML),
             );
         } else {
             const snapOp = SB3_TO_SNAP_OP_MAP[this.op] || this.op;

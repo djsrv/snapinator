@@ -224,7 +224,8 @@ export const SB3_TO_SNAP_OP_MAP = {
     'data_showlist': 'doShowVar',
     'data_hidelist': 'doHideVar',
     // 'procedures_definition': '',
-    // 'argument_reporter': '',
+    // 'argument_reporter_string_number': '',
+    // 'argument_reporter_boolean': '',
     // 'procedures_call': '',
 };
 
@@ -1373,22 +1374,18 @@ export const SB3_ARG_MAPS = {
             variableType: SB3_VAR_TYPES.VAR_LIST_TYPE,
         },
     ],
-    // 'procedures_definition': {
-    //     argMap: []
-    // },
-    // 'getParam': {
-    //     // Doesn't map to single 'opcode'. Import step assigns final correct 'opcode'.
-    //         'opcode': 'argument_reporter_string_number',
-    //     argMap: [
-    //         {
-    //             type: 'field',
-    //             fieldName: 'VALUE'
-    //         }
-    //     ]
-    // },
-    // 'procedures_call': {
-    //     argMap: []
-    // }
+    'argument_reporter_string_number': [
+        {
+            type: 'field',
+            fieldName: 'VALUE',
+        },
+    ],
+    'argument_reporter_boolean': [
+        {
+            type: 'field',
+            fieldName: 'VALUE',
+        },
+    ],
 };
 
 export const OBJECT_NAMES = {

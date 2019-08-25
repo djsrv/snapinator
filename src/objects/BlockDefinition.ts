@@ -5,7 +5,7 @@ import ScriptComment from './ScriptComment';
 import VariableFrame from './VariableFrame';
 
 export default class BlockDefinition {
-    static convertSpecSB2(spec: string): string {
+    static convertSemanticSpec(spec: string): string {
         const ARG_TYPES = ['b', 'n', 's'];
 
         const convertPart = (part) => {
@@ -16,7 +16,7 @@ export default class BlockDefinition {
                 throw new Error('Invalid custom block argument type: ' + part);
             }
             part = part.replace(/\\(.)/g, '$1'); // unescape
-            if (part.charAt(0) === '%') {
+            if (part.charAt(0) === '%' && part.length > 1) {
                 // prevent Snap! from turning this into an input
                 return '\\' + part;
             }
@@ -33,20 +33,7 @@ export default class BlockDefinition {
     warp: boolean;
     comment: ScriptComment;
 
-    readSB2(
-        jsonArr: any[],
-        nextBlockID: number,
-        blockComments: ScriptComment[],
-        parentVariables: VariableFrame,
-    ): [BlockDefinition, number] {
-        const blockID = nextBlockID;
-
-        const defArr = jsonArr[0];
-        const semanticSpec = BlockDefinition.convertSpecSB2(defArr[1]);
-        this.warp = defArr[4];
-
-        this.variables = new VariableFrame(parentVariables).readBlockDefSB2(defArr);
-
+    setSpec(semanticSpec: string) {
         let inputIndex = -1;
         this.inputTypes = [];
         const convertSpecPart = (part) => {
@@ -58,6 +45,22 @@ export default class BlockDefinition {
             return part;
         };
         this.spec = semanticSpec.split(' ').map(convertSpecPart).join(' ');
+    }
+
+    readSB2(
+        jsonArr: any[],
+        nextBlockID: number,
+        blockComments: ScriptComment[],
+        parentVariables: VariableFrame,
+    ): [BlockDefinition, number] {
+        const blockID = nextBlockID;
+        const defArr = jsonArr[0];
+
+        const semanticSpec = BlockDefinition.convertSemanticSpec(defArr[1]);
+        this.warp = defArr[4];
+        const paramNames = defArr[2];
+        this.variables = new VariableFrame(parentVariables).readBlockParams(paramNames);
+        this.setSpec(semanticSpec);
 
         nextBlockID += 1 + this.variables.vars.length;
         if (jsonArr.length > 1) {
@@ -71,6 +74,34 @@ export default class BlockDefinition {
         }
 
         return [this, nextBlockID];
+    }
+
+    readSB3(
+        defID: string,
+        blockMap: any,
+        blockComments: {[s: string]: ScriptComment},
+        parentVariables: VariableFrame,
+    ): BlockDefinition {
+        const defObj = blockMap[defID];
+        const protoID = defObj.inputs['custom_block'][1];
+        const protoObj = blockMap[protoID];
+
+        const semanticSpec = BlockDefinition.convertSemanticSpec(protoObj.mutation.proccode);
+        // protoObj.mutation.warp is sometimes stored as a boolean and sometimes as a stringified boolean
+        this.warp = protoObj.mutation.warp.toString() === 'true';
+        const paramNames = JSON.parse(protoObj.mutation.argumentnames);
+        this.variables = new VariableFrame(parentVariables).readBlockParams(paramNames);
+        this.setSpec(semanticSpec);
+
+        if (defObj.next) {
+            this.script = new Script().readSB3(defObj.next, blockMap, blockComments, this.variables, true);
+        }
+
+        if (blockComments[defID]) {
+            this.comment = blockComments[defID];
+        }
+
+        return this;
     }
 
     toXML(xml: XMLDoc, scriptable: Scriptable) {

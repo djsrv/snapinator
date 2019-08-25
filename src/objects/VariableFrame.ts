@@ -115,9 +115,7 @@ export default class VariableFrame {
         return this;
     }
 
-    readBlockDefSB2(jsonArr: any): VariableFrame {
-        const paramNames = jsonArr[2];
-
+    readBlockParams(paramNames: string[]): VariableFrame {
         for (const oldName of paramNames) {
             const newName = this.getUnusedName(oldName.replace(/'/g, ''));
             this.vars.push(new Variable(newName));

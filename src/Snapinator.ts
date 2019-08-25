@@ -11,9 +11,3 @@ export default class Snapinator {
         return project;
     }
 }
-
-/* Media */
-
-export interface IProjectReader {
-    readFile(file: ArrayBuffer): Promise<Project>;
-}
