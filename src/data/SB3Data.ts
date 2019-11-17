@@ -93,7 +93,7 @@ export const SB3_TO_SNAP_OP_MAP = {
     // 'looks_hideallsprites': '',
     'looks_switchcostumeto': 'doSwitchToCostume',
     'looks_nextcostume': 'doWearNextCostume',
-    'looks_switchbackdropto': 'doSwitchToCostume', // TEMPORARY
+    // 'looks_switchbackdropto': 'doSwitchToCostume',
     'looks_changeeffectby': 'changeEffect',
     'looks_seteffectto': 'setEffect',
     'looks_cleargraphiceffects': 'clearEffects',
@@ -104,14 +104,13 @@ export const SB3_TO_SNAP_OP_MAP = {
     'looks_gotofrontback': 'goToLayer',
     // 'looks_goforwardbackwardlayers': '',
     // 'looks_costumenumbername': '',
-    'costumeIndex': 'getCostumeIdx',
+    'costumeIndex': 'getCostumeIdx', // SB2 opcode
     // 'costumeName': '',
     // 'looks_backdropnumbername': '',
     // 'sceneName': '',
     'looks_size': 'getScale',
     // 'looks_switchbackdroptoandwait': '',
-    'looks_nextbackdrop': 'doWearNextCostume', // TEMPORARY
-    'backgroundIndex': 'getCostumeIdx', // TEMPORARY
+    // 'looks_nextbackdrop': 'doWearNextCostume',
     'sound_play': 'playSound',
     'sound_playuntildone': 'doPlaySoundUntilDone',
     'sound_stopallsounds': 'doStopAllSounds',
@@ -135,8 +134,8 @@ export const SB3_TO_SNAP_OP_MAP = {
     'pen_penDown': 'down',
     'pen_penUp': 'up',
     'pen_setPenColorToColor': 'setColor',
-    'pen_changePenColorParamBy': 'setPenHSVA',
-    'pen_setPenColorParamTo': 'changePenHSVA',
+    'pen_changePenColorParamBy': 'changePenHSVA',
+    'pen_setPenColorParamTo': 'setPenHSVA',
     // 'pen_changePenHueBy': '',
     // 'pen_setPenHueToNumber': '',
     // 'pen_changePenShadeBy': '',

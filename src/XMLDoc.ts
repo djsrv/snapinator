@@ -25,6 +25,14 @@ export default class XMLDoc {
         return el;
     }
 
+    docFragment(content: Node[]) {
+        const fragment = this.doc.createDocumentFragment();
+        for (const c of content) {
+            fragment.appendChild(c);
+        }
+        return fragment;
+    }
+
     serialize(): string {
         return new XMLSerializer().serializeToString(this.doc);
     }
