@@ -75,7 +75,7 @@ export const SB2_TO_SB3_OP_MAP = {
     'changeStretchBy:': 'looks_changestretchby',
     'setStretchTo:': 'looks_setstretchto',
     // 'comeToFront': 'looks_gotofrontback',
-    'goBackByLayers:': 'looks_goforwardbackwardlayers',
+    // 'goBackByLayers:': 'looks_goforwardbackwardlayers',
     // 'costumeIndex': 'looks_costumenumbername',
     // 'costumeName': 'looks_costumenumbername',
     // 'sceneName': 'looks_backdropnumbername',

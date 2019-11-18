@@ -102,6 +102,7 @@ export const SB3_TO_SNAP_OP_MAP = {
     // 'looks_changestretchby': '',
     // 'looks_setstretchto': '',
     'looks_gotofrontback': 'goToLayer',
+    'goBackByLayers:': 'goBack',
     // 'looks_goforwardbackwardlayers': '',
     // 'looks_costumenumbername': '',
     'costumeIndex': 'getCostumeIdx', // SB2 opcode

@@ -389,6 +389,20 @@ export default class Block {
             );
         };
 
+        SPECIAL_CASE_BLOCKS['looks_goforwardbackwardlayers'] = () => {
+            if (this.args[0].value === 'forward') {
+                return xml.el('block', {s: 'goBack'}, [
+                    xml.el('block', {s: 'reportDifference'}, [
+                        xml.el('l', null, 0),
+                        argToXML(this.args[1]),
+                    ]),
+                ]);
+            }
+            return xml.el('block', {s: 'goBack'}, [
+                argToXML(this.args[1]),
+            ]);
+        };
+
         SPECIAL_CASE_BLOCKS['costumeName'] = () => {
             return xml.el('block', {s: 'reportAttributeOf'}, [
                 xml.el('l', null, [

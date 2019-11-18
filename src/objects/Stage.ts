@@ -38,7 +38,7 @@ export default class Stage extends Scriptable {
             if (targetObj.isStage) {
                 this.readSB3(targetObj, project, i);
             } else {
-                this.children.push(new Sprite().readSB3(targetObj, project, i));
+                this.children[targetObj.layerOrder] = new Sprite().readSB3(targetObj, project, i);
             }
         }
 
