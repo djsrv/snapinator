@@ -389,6 +389,46 @@ export default class Block {
             );
         };
 
+        SPECIAL_CASE_BLOCKS['motion_glideto'] = () => {
+            const component = (objName, x) => {
+                if (objName.value === '_mouse_') {
+                    return xml.el('block', {s: x ? 'reportMouseX' : 'reportMouseY'});
+                }
+                if (objName.value === '_random_') {
+                    return xml.el('block', {s: 'reportRandom'}, [
+                        xml.el('block', {s: 'reportAttributeOf'}, [
+                            xml.el('l', null, [
+                                xml.el('option', null, x ? 'left' : 'bottom'),
+                            ]),
+                            xml.el('l', null, 'Stage'),
+                        ]),
+                        xml.el('block', {s: 'reportAttributeOf'}, [
+                            xml.el('l', null, [
+                                xml.el('option', null, x ? 'right' : 'top'),
+                            ]),
+                            xml.el('l', null, 'Stage'),
+                        ]),
+                    ]);
+                }
+                return xml.el('block', {s: 'reportAttributeOf'}, [
+                    xml.el('l', null, [
+                        xml.el('option', null, x ? 'x position' : 'y position'),
+                    ]),
+                    argToXML(objName),
+                ]);
+            };
+
+            return xml.el(
+                'block',
+                {s: 'doGlide'},
+                [
+                    argToXML(this.args[0]),
+                    component(this.args[1], true),
+                    component(this.args[1], false),
+                ],
+            );
+        };
+
         SPECIAL_CASE_BLOCKS['looks_goforwardbackwardlayers'] = () => {
             if (this.args[0].value === 'forward') {
                 return xml.el('block', {s: 'goBack'}, [
@@ -587,6 +627,15 @@ export default class Block {
             return xml.el('block', {s: 'setPenHSVA'}, [
                 xml.el('l', null, [
                     xml.el('option', null, 'brightness'),
+                ]),
+                argToXML(this.args[0]),
+            ]);
+        };
+
+        SPECIAL_CASE_BLOCKS['data_deletealloflist'] = () => {
+            return xml.el('block', {s: 'doDeleteFromList'}, [
+                xml.el('l', null, [
+                    xml.el('option', null, 'all'),
                 ]),
                 argToXML(this.args[0]),
             ]);

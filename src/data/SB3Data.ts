@@ -203,7 +203,7 @@ export const SB3_TO_SNAP_OP_MAP = {
     'operator_not': 'reportNot',
     'operator_join': 'reportJoin',
     'operator_letter_of': 'reportLetter',
-    'operator_length': 'repotrStringSize',
+    'operator_length': 'reportStringSize',
     // 'operator_contains': '',
     'operator_mod': 'reportModulus',
     'operator_round': 'reportRound',
@@ -278,6 +278,18 @@ export const SB3_ARG_MAPS = {
         },
     ],
     'motion_goto': [
+        {
+            type: 'input',
+            inputOp: 'motion_goto_menu',
+            inputName: 'TO',
+        },
+    ],
+    'motion_glideto': [
+        {
+            type: 'input',
+            inputOp: 'math_number',
+            inputName: 'SECS',
+        },
         {
             type: 'input',
             inputOp: 'motion_goto_menu',
