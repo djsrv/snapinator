@@ -7,8 +7,8 @@ import VariableFrame from './objects/VariableFrame';
 import XMLDoc from './XMLDoc';
 
 export default class Project {
-    zip: JSZip;
     jsonObj: any;
+    zip: any;
 
     name: string;
     notes: string;
@@ -18,10 +18,9 @@ export default class Project {
     globalVars: VariableFrame;
     stage: Stage;
 
-    async readZip(zip: JSZip) {
+    async readProject(jsonObj: any, zip: any) {
+        this.jsonObj = jsonObj;
         this.zip = zip;
-        const jsonText = await this.zip.file('project.json').async('text');
-        this.jsonObj = JSON.parse(jsonText);
         if (this.jsonObj.children) { // Scratch 2.0 project
             this.media = await this.readMediaSB2();
             this.globalVars = new VariableFrame().readScriptableSB2(this.jsonObj);
