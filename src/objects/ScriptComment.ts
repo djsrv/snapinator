@@ -34,7 +34,7 @@ export default class ScriptComment {
         return this;
     }
 
-    toXML(xml: XMLDoc) {
+    toXML(xml: XMLDoc): Element {
         const props: any = {
             w: this.width,
             collapsed: this.collapsed,

@@ -5,7 +5,6 @@ import Costume from './Costume';
 import Script from './Script';
 import ScriptComment from './ScriptComment';
 import Sound from './Sound';
-import Stage from './Stage';
 import VariableFrame from './VariableFrame';
 
 export default class Scriptable {
@@ -15,7 +14,7 @@ export default class Scriptable {
     costumeIndex: number;
     variables: VariableFrame;
     blocks: BlockDefinition[];
-    scripts: Array<Script | ScriptComment>;
+    scripts: (Script | ScriptComment)[];
 
     readSB2(jsonObj: any, project: Project): Scriptable {
         const costumeObjs = jsonObj.costumes;
@@ -139,7 +138,7 @@ export default class Scriptable {
         this.variables = new VariableFrame(project.globalVars);
     }
 
-    costumesXML(xml: XMLDoc) {
+    costumesXML(xml: XMLDoc): Element {
         return xml.el('costumes', null, [
             xml.el('list', null, this.costumes.map(
                 (costume) => xml.el('item', null, [costume.toXML(xml)]),

@@ -280,7 +280,7 @@ export default class Block {
         blockMap: any,
         blockComments: {[s: string]: ScriptComment},
         variables: VariableFrame,
-    ) {
+    ): any {
         let value: Primitive;
         if (argSpec.type === 'input') { // input (blocks can be dropped here)
             const argArr = jsonObj.inputs[argSpec.inputName];

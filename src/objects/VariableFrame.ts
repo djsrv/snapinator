@@ -28,7 +28,7 @@ export default class VariableFrame {
         return false;
     }
 
-    getUnusedName(name: string) {
+    getUnusedName(name: string): string {
         if (!this.isNameUsed(name)) {
             return name;
         }

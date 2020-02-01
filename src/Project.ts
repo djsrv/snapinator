@@ -1,4 +1,3 @@
-import * as JSZip from 'jszip';
 import ImageFile from './media/ImageFile';
 import MediaFile from './media/MediaFile';
 import SoundFile from './media/SoundFile';
@@ -44,7 +43,7 @@ export default class Project {
         return await file.async('uint8array');
     };
 
-    async readMediaSB2() {
+    async readMediaSB2(): Promise<any> {
         const stageObj = this.jsonObj;
         const media = {};
 
@@ -107,7 +106,7 @@ export default class Project {
         return media;
     }
 
-    async readMediaSB3() {
+    async readMediaSB3(): Promise<any> {
         const media = {};
 
         const readObj = async (jsonObj: any) => {

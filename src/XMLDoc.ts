@@ -2,7 +2,7 @@ export default class XMLDoc {
     doc: Document;
 
     constructor() {
-        this.doc = document.implementation.createDocument('', '', null);
+        this.doc = document.implementation.createDocument(null, null, null);
     }
 
     el(tagName: string, attribs?: any, content?: any): Element {
