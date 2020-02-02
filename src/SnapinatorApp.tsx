@@ -44,11 +44,11 @@ export default class SnapinatorApp extends Component<any, SnapinatorState> {
 
     render() {
         return <div id="io">
-            <div class="box">
+            <div id="in" class="box">
                 <h1>Input</h1>
                 <p>Select a Scratch project: <input type="file" onInput={this.handleFile.bind(this)}/></p>
             </div>
-            <div class="box">
+            <div id="out" class="box">
                 <h1>Output</h1>
                 <ul id="log">{this.state.logs}</ul>
             </div>

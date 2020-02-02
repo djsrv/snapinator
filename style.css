@@ -43,6 +43,8 @@ header p {
 main {
     width: 70%;
     margin: 20px 15%;
+    display: grid;
+    grid-gap: 20px;
 }
 
 .box {
@@ -52,27 +54,24 @@ main {
     padding: 20px;
     box-sizing: border-box;
     width: 100%;
-    margin-top: 20px;
-}
-
-.box:first-child {
-    margin-top: 0;
-}
-
-#app {
-    margin-top: 20px;
 }
 
 #io {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 20px;
 }
 
-#io .box {
-    width: calc(50% - 10px);
+#in, #out {
     min-height: 240px;
-    margin-top: 0;
+}
+
+#in {
+    grid-column: 1;
+}
+
+#out {
+    grid-column: 2;
 }
 
 #log {
