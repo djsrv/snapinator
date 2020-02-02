@@ -52,26 +52,16 @@ main {
     border: 1px solid #000;
     border-radius: 10px;
     padding: 20px;
-    box-sizing: border-box;
-    width: 100%;
 }
 
 #io {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid: auto-flow / 1fr 1fr;
     grid-gap: 20px;
 }
 
 #in, #out {
     min-height: 240px;
-}
-
-#in {
-    grid-column: 1;
-}
-
-#out {
-    grid-column: 2;
 }
 
 #log {
