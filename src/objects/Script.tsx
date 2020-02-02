@@ -1,5 +1,5 @@
 import { SB3_WORKSPACE_X_SCALE, SB3_WORKSPACE_Y_SCALE } from '../data/SB3Data';
-import XMLDoc from '../XMLDoc';
+import { h } from '../xml';
 import Block from './Block';
 import Scriptable from './Scriptable';
 import ScriptComment from './ScriptComment';
@@ -71,12 +71,11 @@ export default class Script {
         return this;
     }
 
-    toXML(xml: XMLDoc, scriptable: Scriptable, variables: VariableFrame): Element {
-        const props: any = {};
+    toXML(scriptable: Scriptable, variables: VariableFrame): Element {
+        const stack = this.stack.map((block) => block.toXML(scriptable, variables));
         if (this.x != null && this.y != null) {
-            props.x = this.x;
-            props.y = this.y;
+            return <script x={this.x} y={this.y}>{stack}</script>
         }
-        return xml.el('script', props, this.stack.map((block) => block.toXML(xml, scriptable, variables)));
+        return <script>{stack}</script>
     }
 }

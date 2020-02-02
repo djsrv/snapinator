@@ -3,7 +3,7 @@ import MediaFile from './media/MediaFile';
 import SoundFile from './media/SoundFile';
 import Stage from './objects/Stage';
 import VariableFrame from './objects/VariableFrame';
-import XMLDoc from './XMLDoc';
+import { h } from './xml';
 
 export default class Project {
     jsonObj: any;
@@ -35,7 +35,7 @@ export default class Project {
     async getAsset(fileName: string): Promise<Uint8Array | string> {
         const file = this.zip.file(fileName);
         if (!file) {
-            throw Error(fileName + ' does not exist');
+            throw new Error(fileName + ' does not exist');
         }
         if (fileName.endsWith('.svg')) {
             return await file.async('text');
@@ -142,21 +142,14 @@ export default class Project {
         return media;
     }
 
-    toXML(): XMLDoc {
-        const xml = new XMLDoc();
-        const proj = xml.el('project', {
-            name: 'TEST',
-            app: 'Snapinator',
-            version: 1,
-        }, [
-            xml.el('notes', null, 'Converted by Snapinator'),
-            this.stage.toXML(xml),
-            xml.el('hidden'),
-            xml.el('headers'),
-            xml.el('code'),
-            this.globalVars.toXML(xml),
-        ]);
-        xml.doc.appendChild(proj);
-        return xml;
+    toXML() {
+        return <project name="TEST" app="Snapinator" version="1">{[
+            <notes>Converted by Snapinator</notes>,
+            this.stage.toXML(),
+            <hidden/>,
+            <headers/>,
+            <code/>,
+            this.globalVars.toXML(),
+        ]}</project>;
     }
 }

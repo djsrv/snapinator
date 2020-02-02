@@ -1,4 +1,4 @@
-import XMLDoc from '../XMLDoc';
+import { h } from '../xml';
 
 export default class Color {
     static fromARGB(color: number): Color {
@@ -36,7 +36,7 @@ export default class Color {
             + this.a;
     }
 
-    toXML(xml: XMLDoc): Element {
-        return xml.el('color', null, this);
+    toXML() {
+        return <color>{this.toString()}</color>;
     }
 }

@@ -1,5 +1,5 @@
 import { SB3_WORKSPACE_X_SCALE, SB3_WORKSPACE_Y_SCALE } from '../data/SB3Data';
-import XMLDoc from '../XMLDoc';
+import { h } from '../xml';
 
 export default class ScriptComment {
     x?: number;
@@ -34,15 +34,14 @@ export default class ScriptComment {
         return this;
     }
 
-    toXML(xml: XMLDoc): Element {
-        const props: any = {
-            w: this.width,
-            collapsed: this.collapsed,
-        };
+    toXML(): Element {
         if (this.x != null && this.y != null) {
-            props.x = this.x;
-            props.y = this.y;
+            return <comment x={this.x} y={this.y} w={this.width} collapsed={this.collapsed}>
+                {this.text}
+            </comment>;
         }
-        return xml.el('comment', props, this.text);
+        return <comment w={this.width} collapsed={this.collapsed}>
+            {this.text}
+        </comment>;
     }
 }

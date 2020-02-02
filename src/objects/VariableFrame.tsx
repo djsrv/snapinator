@@ -1,4 +1,4 @@
-import XMLDoc from '../XMLDoc';
+import { h } from '../xml';
 import List from './List';
 import Primitive from './Primitive';
 import Variable from './Variable';
@@ -125,7 +125,9 @@ export default class VariableFrame {
         return this;
     }
 
-    toXML(xml: XMLDoc): Element {
-        return xml.el('variables', null, this.vars.map((variable) => variable.toXML(xml)));
+    toXML(): Element {
+        return <variables>
+            {this.vars.map((variable) => variable.toXML())}
+        </variables>;
     }
 }

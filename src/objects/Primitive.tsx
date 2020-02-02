@@ -1,4 +1,4 @@
-import XMLDoc from '../XMLDoc';
+import { h } from '../xml';
 
 export default class Primitive {
     value: any;
@@ -13,23 +13,19 @@ export default class Primitive {
         return this.value.toString();
     }
 
-    toXML(xml: XMLDoc): Element {
+    toXML(): Element {
         if (this.isOption) {
-            return xml.el('l', null,
-                xml.el('option', null, this.value),
-            );
+            return <l><option>{this.value}</option></l>;
         }
         if (typeof this.value === 'boolean') {
             if (this.value) {
-                return xml.el('l', null,
-                    xml.el('bool', null, 'true'),
-                );
+                return <l><bool>true</bool></l>;
             }
-            return xml.el('l');
+            return <l/>;
         }
         if (this.value == null) {
-            return xml.el('l');
+            return <l/>;
         }
-        return xml.el('l', null, this.value);
+        return <l>{this.value}</l>;
     }
 }

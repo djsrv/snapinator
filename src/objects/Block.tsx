@@ -6,7 +6,7 @@ import {
     SB3_TO_SNAP_OP_MAP,
     SB3_VAR_TYPES,
 } from '../data/SB3Data';
-import XMLDoc from '../XMLDoc';
+import { h } from '../xml';
 import BlockDefinition from './BlockDefinition';
 import Color from './Color';
 import Primitive from './Primitive';
@@ -335,131 +335,108 @@ export default class Block {
         return value;
     }
 
-    toXML(xml: XMLDoc, scriptable: Scriptable, variables: VariableFrame): Element {
+    toXML(scriptable: Scriptable, variables: VariableFrame): Element {
         const argToXML = (arg: any) => {
             if (arg instanceof Script) {
                 const script: Script = arg;
-                return script.toXML(xml, scriptable, variables);
+                return script.toXML(scriptable, variables);
             }
             if (arg instanceof Block) {
                 const block: Block = arg;
-                return block.toXML(xml, scriptable, variables);
+                return block.toXML(scriptable, variables);
             }
-            return arg.toXML(xml);
+            return arg.toXML();
         };
 
         const tellStageTo = (block: any) => {
-            return xml.el('block', {s: 'doTellTo'}, [
-                xml.el('l', null, 'Stage'),
-                xml.el('block', {s: 'reifyScript'}, [
-                    xml.el('script', null, [
-                        block,
-                    ]),
-                    xml.el('list'),
-                ]),
-                xml.el('list'),
-            ]);
-        }
+            return <block s="doTellTo">
+                <l>Stage</l>
+                <block s="reifyScript">
+                    <script>{block}</script>
+                    <list/>
+                </block>
+                <list/>
+            </block>;
+        };
 
         const SPECIAL_CASE_BLOCKS: any = {};
 
         SPECIAL_CASE_BLOCKS['data_variable'] = () => {
-            return xml.el('block', {var: this.args[0].value});
+            return <block var={this.args[0].value}/>;
         };
 
         SPECIAL_CASE_BLOCKS['data_listcontents'] = () => {
-            return xml.el('block', {s: 'reportJoinWords'},
-                xml.el('block', {var: variables.getListName(this.args[0].value)}),
-            );
+            return <block s="reportJoinWords">
+                <block var={variables.getListName(this.args[0].value)}/>
+            </block>;
         };
 
         SPECIAL_CASE_BLOCKS['argument_reporter_string_number'] =
         SPECIAL_CASE_BLOCKS['argument_reporter_boolean'] = () => {
-            return xml.el('block', {var: variables.getParamName(this.args[0].value)});
+            return <block var={variables.getParamName(this.args[0].value)}/>;
         };
 
         SPECIAL_CASE_BLOCKS['procedures_call'] = () => {
-            return xml.el(
-                'custom-block',
-                {
-                    s: this.spec,
-                    scope: scriptable.name,
-                },
-                this.args.map(argToXML),
-            );
+            return <custom-block s={this.spec} scope={scriptable.name}>
+                this.args.map(argToXML)
+            </custom-block>;
         };
 
         SPECIAL_CASE_BLOCKS['motion_glideto'] = () => {
             const component = (objName, x) => {
                 if (objName.value === '_mouse_') {
-                    return xml.el('block', {s: x ? 'reportMouseX' : 'reportMouseY'});
+                    return <block s={x ? 'reportMouseX' : 'reportMouseY'}/>;
                 }
                 if (objName.value === '_random_') {
-                    return xml.el('block', {s: 'reportRandom'}, [
-                        xml.el('block', {s: 'reportAttributeOf'}, [
-                            xml.el('l', null, [
-                                xml.el('option', null, x ? 'left' : 'bottom'),
-                            ]),
-                            xml.el('l', null, 'Stage'),
-                        ]),
-                        xml.el('block', {s: 'reportAttributeOf'}, [
-                            xml.el('l', null, [
-                                xml.el('option', null, x ? 'right' : 'top'),
-                            ]),
-                            xml.el('l', null, 'Stage'),
-                        ]),
-                    ]);
+                    return <block s="reportRandom">
+                        <block s="reportAttributeOf">
+                            <l><option>{x ? 'left' : 'bottom'}</option></l>
+                            <l>Stage</l>
+                        </block>
+                        <block s="reportAttributeOf">
+                            <l><option>{x ? 'right' : 'top'}</option></l>
+                            <l>Stage</l>
+                        </block>
+                    </block>;
                 }
-                return xml.el('block', {s: 'reportAttributeOf'}, [
-                    xml.el('l', null, [
-                        xml.el('option', null, x ? 'x position' : 'y position'),
-                    ]),
-                    argToXML(objName),
-                ]);
+                return <block s="reportAttributeOf">
+                    <l><option>{x ? 'x position' : 'y position'}</option></l>
+                    {argToXML(objName)}
+                </block>;
             };
 
-            return xml.el(
-                'block',
-                {s: 'doGlide'},
-                [
-                    argToXML(this.args[0]),
-                    component(this.args[1], true),
-                    component(this.args[1], false),
-                ],
-            );
+            return <block s="doGlide">{[
+                argToXML(this.args[0]),
+                component(this.args[1], true),
+                component(this.args[1], false),
+            ]}</block>;
         };
 
         SPECIAL_CASE_BLOCKS['looks_goforwardbackwardlayers'] = () => {
             if (this.args[0].value === 'forward') {
-                return xml.el('block', {s: 'goBack'}, [
-                    xml.el('block', {s: 'reportDifference'}, [
-                        xml.el('l', null, 0),
+                return <block s="goBack">
+                    <block s="reportDifference">{[
+                        <l>0</l>,
                         argToXML(this.args[1]),
-                    ]),
-                ]);
+                    ]}</block>
+                </block>;
             }
-            return xml.el('block', {s: 'goBack'}, [
-                argToXML(this.args[1]),
-            ]);
+            return <block s="goBack">{argToXML(this.args[1])}</block>;
         };
 
         SPECIAL_CASE_BLOCKS['costumeName'] = () => {
-            return xml.el('block', {s: 'reportAttributeOf'}, [
-                xml.el('l', null, [
-                    xml.el('option', null, 'costume name'),
-                ]),
-                xml.el('block', {s: 'reportObject'}, [
-                    xml.el('l', null, [
-                        xml.el('option', null, 'myself'),
-                    ]),
-                ]),
-            ]);
+            return <block s="reportAttributeOf">
+                <l><option>costume name</option></l>
+                <block s="reportObject">
+                    <l><option>myself</option></l>
+                </block>
+            </block>;
         };
 
         SPECIAL_CASE_BLOCKS['looks_costumenumbername'] = () => {
             const arg = this.args[0].value;
             if (arg === 'number') {
-                return xml.el('block', {s: 'getCostumeIdx'});
+                return <block s="getCostumeIdx"/>
             }
             return SPECIAL_CASE_BLOCKS['costumeName']();
         };
@@ -469,33 +446,29 @@ export default class Block {
             if (this.args[0] instanceof Primitive) {
                 const backdrop = this.args[0].value;
                 if (backdrop === 'next backdrop') {
-                    result = xml.el('block', {s: 'doWearNextCostume'});
+                    result = <block s="doWearNextCostume"/>;
                 } else if (backdrop === 'previous backdrop') {
-                    result = xml.el('block', {s: 'doSwitchToCostume'}, [
-                        xml.el('block', {s: 'reportDifference'}, [
-                            xml.el('l', null, 0),
-                            xml.el('l', null, 1),
-                        ]),
-                    ]);
+                    result = <block s="doSwitchToCostume">
+                        <block s="reportDifference">
+                            <l>0</l>
+                            <l>-1</l>
+                        </block>
+                    </block>;
                 } else if (backdrop === 'random backdrop') {
-                    result = xml.el('block', {s: 'doSwitchToCostume'}, [
-                        xml.el('block', {s: 'reportListItem'}, [
-                            xml.el('l', null, [
-                                xml.el('option', null, 'any'),
-                            ]),
-                            xml.el('block', {s: 'reportGet'}, [
-                                xml.el('l', null, [
-                                    xml.el('option', null, 'costumes'),
-                                ]),
-                            ]),
-                        ]),
-                    ]);
+                    result = <block s="doSwitchToCostume">
+                        <block s="reportListItem">
+                            <l><option>any</option></l>
+                            <block s="reportGet">
+                                <l><option>costumes</option></l>
+                            </block>
+                        </block>
+                    </block>;
                 }
             }
             if (!result) {
-                result = xml.el('block', {s: 'doSwitchToCostume'}, [
-                    argToXML(this.args[0]),
-                ]);
+                result = <block s="doSwitchToCostume">
+                    {argToXML(this.args[0])}
+                </block>;
             }
             if (!(scriptable instanceof Stage)) {
                 result = tellStageTo(result);
@@ -504,7 +477,7 @@ export default class Block {
         };
 
         SPECIAL_CASE_BLOCKS['looks_nextbackdrop'] = () => {
-            let result = xml.el('block', {s: 'doWearNextCostume'});
+            let result = <block s="doWearNextCostume"/>;
             if (!(scriptable instanceof Stage)) {
                 result = tellStageTo(result);
             }
@@ -513,132 +486,102 @@ export default class Block {
 
         SPECIAL_CASE_BLOCKS['backgroundIndex'] = () => {
             if (scriptable instanceof Stage) {
-                return xml.el('block', {s: 'getCostumeIdx'});
+                return <block s="getCostumeIdx"/>;
             }
-            return xml.el('block', {s: 'reportAttributeOf'}, [
-                xml.el('l', null, [
-                    xml.el('option', null, 'costume #'),
-                ]),
-                xml.el('l', null, 'Stage'),
-            ]);
+            return <block s="reportAttributeOf">
+                <l><option>costume #</option></l>
+                <l>Stage</l>
+            </block>;
         };
 
         SPECIAL_CASE_BLOCKS['sceneName'] = () => {
-            return xml.el('block', {s: 'reportAttributeOf'}, [
-                xml.el('l', null, [
-                    xml.el('option', null, 'costume name'),
-                ]),
-                xml.el('l', null, 'Stage'),
-            ]);
+            return <block s="reportAttributeOf">
+                <l><option>costume name</option></l>
+                <l>Stage</l>
+            </block>;
         };
 
         SPECIAL_CASE_BLOCKS['looks_backdropnumbername'] = () => {
             const arg = this.args[0].value;
             if (arg === 'number' && scriptable instanceof Stage) {
-                return xml.el('block', {s: 'getCostumeIdx'});
+                return <block s="getCostumeIdx"/>;
             }
             const newArg = arg === 'number' ? 'costume #' : 'costume name';
-            return xml.el('block', {s: 'reportAttributeOf'}, [
-                xml.el('l', null,
-                    xml.el('option', null, newArg),
-                ),
-                xml.el('l', null, 'Stage'),
-            ]);
+            return <block s="reportAttributeOf">
+                <l><option>{newArg}</option></l>
+                <l>Stage</l>
+            </block>;
         };
 
         SPECIAL_CASE_BLOCKS['event_whenthisspriteclicked'] = () => {
-            return xml.el('block', {s: 'receiveInteraction'}, [
-                xml.el('l', null, [
-                    xml.el('option', null, 'pressed'),
-                ]),
-            ]);
+            return <block s="receiveInteraction">
+                <l><option>pressed</option></l>
+            </block>;
         };
 
         SPECIAL_CASE_BLOCKS['videoSensing_videoToggle'] = () => {
             const arg = this.args[0].value;
             if (arg === 'off') {
-                return xml.el('block', {s: 'doSetGlobalFlag'}, [
-                    xml.el('l', null, [
-                        xml.el('option', null, 'video capture'),
-                    ]),
-                    xml.el('l', null, [
-                        xml.el('bool', null, false),
-                    ]),
-                ]);
+                return <block s="doSetGlobalFlag">
+                    <l><option>video capture</option></l>
+                    <l><bool>false</bool></l>
+                </block>;
             }
             const mirror = arg === 'on';
-            return xml.docFragment([
-                xml.el('block', {s: 'doSetGlobalFlag'}, [
-                    xml.el('l', null, [
-                        xml.el('option', null, 'video capture'),
-                    ]),
-                    xml.el('l', null, [
-                        xml.el('bool', null, true),
-                    ]),
-                ]),
-                xml.el('block', {s: 'doSetGlobalFlag'}, [
-                    xml.el('l', null, [
-                        xml.el('option', null, 'mirror video'),
-                    ]),
-                    xml.el('l', null, [
-                        xml.el('bool', null, mirror),
-                    ]),
-                ]),
-            ]);
+            return [
+                <block s="doSetGlobalFlag">
+                    <l><option>video capture</option></l>
+                    <l><bool>true</bool></l>
+                </block>,
+                <block s="doSetGlobalFlag">
+                    <l><option>mirror video</option></l>
+                    <l><bool>{mirror}</bool></l>
+                </block>,
+            ];
         };
 
         SPECIAL_CASE_BLOCKS['operator_join'] = () => {
-            return xml.el('block', {s: 'reportJoinWords'}, [
-                xml.el('list', null, [
+            return <block s="reportJoinWords">
+                <list>{[
                     argToXML(this.args[0]),
                     argToXML(this.args[1]),
-                ]),
-            ]);
+                ]}</list>
+            </block>;
         };
 
         SPECIAL_CASE_BLOCKS['pen_changePenHueBy'] = () => {
-            return xml.el('block', {s: 'changePenHSVA'}, [
-                xml.el('l', null, [
-                    xml.el('option', null, 'hue'),
-                ]),
+            return <block s="changePenHSVA">{[
+                <l><option>hue</option></l>,
                 argToXML(this.args[0]),
-            ]);
+            ]}</block>;
         };
 
         SPECIAL_CASE_BLOCKS['pen_setPenHueToNumber'] = () => {
-            return xml.el('block', {s: 'setPenHSVA'}, [
-                xml.el('l', null, [
-                    xml.el('option', null, 'hue'),
-                ]),
+            return <block s="setPenHSVA">{[
+                <l><option>hue</option></l>,
                 argToXML(this.args[0]),
-            ]);
+            ]}</block>;
         };
 
         SPECIAL_CASE_BLOCKS['pen_changePenShadeBy'] = () => {
-            return xml.el('block', {s: 'changePenHSVA'}, [
-                xml.el('l', null, [
-                    xml.el('option', null, 'brightness'),
-                ]),
+            return <block s="changePenHSVA">{[
+                <l><option>brightness</option></l>,
                 argToXML(this.args[0]),
-            ]);
+            ]}</block>;
         };
 
         SPECIAL_CASE_BLOCKS['pen_setPenShadeToNumber'] = () => {
-            return xml.el('block', {s: 'setPenHSVA'}, [
-                xml.el('l', null, [
-                    xml.el('option', null, 'brightness'),
-                ]),
+            return <block s="setPenHSVA">{[
+                <l><option>brightness</option></l>,
                 argToXML(this.args[0]),
-            ]);
+            ]}</block>;
         };
 
         SPECIAL_CASE_BLOCKS['data_deletealloflist'] = () => {
-            return xml.el('block', {s: 'doDeleteFromList'}, [
-                xml.el('l', null, [
-                    xml.el('option', null, 'all'),
-                ]),
+            return <block s="doDeleteFromList">{[
+                <l><option>all</option></l>,
                 argToXML(this.args[0]),
-            ]);
+            ]}</block>;
         };
 
         let element: Element;
@@ -649,10 +592,10 @@ export default class Block {
             if (!snapOp) {
                 throw new Error('Unsupported block: ' + this.op);
             }
-            element = xml.el('block', {s: snapOp}, this.args.map(argToXML));
+            element = <block s={snapOp}>{this.args.map(argToXML)}</block>;
         }
         if (this.comment) {
-            element.appendChild(this.comment.toXML(xml));
+            element.appendChild(this.comment.toXML());
         }
         return element;
     }

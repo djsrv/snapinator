@@ -1,4 +1,4 @@
-import XMLDoc from '../XMLDoc';
+import { h } from '../xml';
 import Script from './Script';
 import Scriptable from './Scriptable';
 import ScriptComment from './ScriptComment';
@@ -104,36 +104,32 @@ export default class BlockDefinition {
         return this;
     }
 
-    toXML(xml: XMLDoc, scriptable: Scriptable) {
+    toXML(scriptable: Scriptable) {
         const children = [
-            xml.el('header'),
-            xml.el('code'),
-            xml.el('inputs', null, this.inputTypes.map((type) => xml.el('input', {type}))),
+            <header/>,
+            <code/>,
+            <inputs>
+                {this.inputTypes.map((type) => <input type={type}/>)}
+            </inputs>,
         ];
         if (this.comment) {
-            children.push(this.comment.toXML(xml));
+            children.push(this.comment.toXML());
         }
         if (this.warp) {
             children.push(
-                xml.el('script', null,
-                    xml.el('block', {s: 'doWarp'}, [
-                        this.script
-                            ? this.script.toXML(xml, scriptable, this.variables)
-                            : xml.el('script'),
-                    ]),
-                ),
+                <script>
+                    <block s="doWarp">
+                        {this.script
+                                ? this.script.toXML(scriptable, this.variables)
+                                : <script/>}
+                    </block>
+                </script>
             );
         } else if (this.script) {
-            children.push(this.script.toXML(xml, scriptable, this.variables));
+            children.push(this.script.toXML(scriptable, this.variables));
         }
-        return xml.el(
-            'block-definition',
-            {
-                s: this.spec,
-                type: 'command',
-                category: 'other',
-            },
-            children,
-        );
+        return <block-definition s={this.spec} type="command" category="other">
+            {children}
+        </block-definition>;
     }
 }

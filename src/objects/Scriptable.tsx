@@ -1,5 +1,5 @@
 import Project from '../Project';
-import XMLDoc from '../XMLDoc';
+import { h } from '../xml';
 import BlockDefinition from './BlockDefinition';
 import Costume from './Costume';
 import Script from './Script';
@@ -138,36 +138,38 @@ export default class Scriptable {
         this.variables = new VariableFrame(project.globalVars);
     }
 
-    costumesXML(xml: XMLDoc): Element {
-        return xml.el('costumes', null, [
-            xml.el('list', null, this.costumes.map(
-                (costume) => xml.el('item', null, [costume.toXML(xml)]),
-            )),
-        ]);
+    costumesXML(): Element {
+        return <costumes>
+            <list>
+                {this.costumes.map((costume) => <item>{costume.toXML()}</item>)}
+            </list>
+        </costumes>;
     }
 
-    soundsXML(xml: XMLDoc): Element {
-        return xml.el('sounds', null, [
-            xml.el('list', null, this.sounds.map(
-                (sound) => xml.el('item', null, [sound.toXML(xml)]),
-            )),
-        ]);
+    soundsXML(): Element {
+        return <sounds>
+            <list>
+                {this.sounds.map((sound) => <item>{sound.toXML()}</item>)}
+            </list>
+        </sounds>;
     }
 
-    blocksXML(xml: XMLDoc): Element {
-        return xml.el('blocks', null, this.blocks.map(
-            (blockDef) => blockDef.toXML(xml, this),
-        ));
+    blocksXML(): Element {
+        return <blocks>
+            {this.blocks.map((blockDef) => blockDef.toXML(this))}
+        </blocks>;
     }
 
-    scriptsXML(xml: XMLDoc): Element {
-        return xml.el('scripts', null, this.scripts.map((scriptOrComment) => {
-            if (scriptOrComment instanceof ScriptComment) {
-                const comment: ScriptComment = scriptOrComment;
-                return comment.toXML(xml);
-            }
-            const script: Script = scriptOrComment;
-            return script.toXML(xml, this, this.variables);
-        }));
+    scriptsXML(): Element {
+        return <scripts>
+            {this.scripts.map((scriptOrComment) => {
+                if (scriptOrComment instanceof ScriptComment) {
+                    const comment: ScriptComment = scriptOrComment;
+                    return comment.toXML();
+                }
+                const script: Script = scriptOrComment;
+                return script.toXML(this, this.variables);
+            })}
+        </scripts>;
     }
 }

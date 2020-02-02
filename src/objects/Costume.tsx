@@ -1,6 +1,6 @@
 import ImageFile from '../media/ImageFile';
 import Project from '../Project';
-import XMLDoc from '../XMLDoc';
+import { h } from '../xml';
 
 export default class Costume {
     name: string;
@@ -30,12 +30,7 @@ export default class Costume {
         return this;
     }
 
-    toXML(xml: XMLDoc): Element {
-        return xml.el('costume', {
-            'name': this.name,
-            'center-x': this.rotationCenterX,
-            'center-y': this.rotationCenterY,
-            'image': this.file.toDataURL(),
-        });
+    toXML(): Element {
+        return <costume name={this.name} center-x={this.rotationCenterX} center-y={this.rotationCenterY} image={this.file.toDataURL()}/>;
     }
 }

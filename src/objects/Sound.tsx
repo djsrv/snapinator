@@ -1,6 +1,6 @@
 import SoundFile from '../media/SoundFile';
 import Project from '../Project';
-import XMLDoc from '../XMLDoc';
+import { h } from '../xml';
 
 export default class Sound {
     name: string;
@@ -20,10 +20,7 @@ export default class Sound {
         return this;
     }
 
-    toXML(xml: XMLDoc): Element {
-        return xml.el('sound', {
-            'name': this.name,
-            'sound': this.file.toDataURL(),
-        });
+    toXML(): Element {
+        return <sound name={this.name} sound={this.file.toDataURL()}/>;
     }
 }

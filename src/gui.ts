@@ -1,5 +1,6 @@
 import Project from './Project';
 import Snapinator from './Snapinator';
+import { serializeXML } from './xml';
 
 const input = document.getElementById('input');
 input.addEventListener('input', onFileInput);
@@ -11,7 +12,7 @@ function onFileInput() {
         const project = await Snapinator.readProject(reader.result as ArrayBuffer);
         console.log(project);
         if (project instanceof Project) {
-            const projectXML = project.toXML().serialize();
+            const projectXML = serializeXML(project.toXML());
             const a = document.createElement('a');
             a.href = URL.createObjectURL(new Blob([projectXML], {type: 'text/xml'}));
             a.download = 'TEST.xml';

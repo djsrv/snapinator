@@ -1,7 +1,7 @@
 import { SB2_ROTATION_STYLES } from '../data/SB2Data';
 import { SB3_ROTATION_STYLES } from '../data/SB3Data';
 import Project from '../Project';
-import XMLDoc from '../XMLDoc';
+import { h } from '../xml';
 import Color from './Color';
 import Scriptable from './Scriptable';
 import VariableFrame from './VariableFrame';
@@ -54,7 +54,7 @@ export default class Sprite extends Scriptable {
         this.variables = new VariableFrame(project.globalVars).readScriptableSB3(jsonObj);
     }
 
-    toXML(xml: XMLDoc): Element {
+    toXML(): Element {
         const props: any = {
             name: this.name,
             idx: this.libraryIndex,
@@ -72,12 +72,12 @@ export default class Sprite extends Scriptable {
             props.hidden = true;
         }
 
-        return xml.el('sprite', props, [
-            this.costumesXML(xml),
-            this.soundsXML(xml),
-            this.variables.toXML(xml),
-            this.blocksXML(xml),
-            this.scriptsXML(xml),
-        ]);
+        return <sprite {...props}>{[
+            this.costumesXML(),
+            this.soundsXML(),
+            this.variables.toXML(),
+            this.blocksXML(),
+            this.scriptsXML(),
+        ]}</sprite>;
     }
 }

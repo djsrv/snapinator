@@ -8,11 +8,11 @@ module.exports = {
     filename: "snapinator_gui.bundle.js"
   },
   resolve: {
-    extensions: [".ts", ".js"]
+    extensions: [".ts", ".tsx", ".js"]
   },
   module: {
     rules: [
-      { test: /\.ts$/, loader: "ts-loader" }
+      { test: /\.tsx?$/, loader: "ts-loader" }
     ]
   }
 };

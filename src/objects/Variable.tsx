@@ -1,4 +1,4 @@
-import XMLDoc from '../XMLDoc';
+import { h } from '../xml';
 
 export default class Variable {
     name: string;
@@ -11,11 +11,9 @@ export default class Variable {
         }
     }
 
-    toXML(xml: XMLDoc): Element {
-        return xml.el('variable', {
-            name: this.name,
-        }, [
-            this.value.toXML(xml),
-        ]);
+    toXML(): Element {
+        return <variable name={this.name}>
+            {this.value.toXML()}
+        </variable>;
     }
 }

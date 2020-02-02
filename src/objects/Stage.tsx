@@ -1,5 +1,5 @@
 import Project from '../Project';
-import XMLDoc from '../XMLDoc';
+import { h } from '../xml';
 import Scriptable from './Scriptable';
 import Sprite from './Sprite';
 import VariableFrame from './VariableFrame';
@@ -53,8 +53,8 @@ export default class Stage extends Scriptable {
         return this;
     }
 
-    toXML(xml: XMLDoc): Element {
-        return xml.el('stage', {
+    toXML(): Element {
+        const props = {
             name: this.name,
             width: 480,
             height: 360,
@@ -64,13 +64,16 @@ export default class Stage extends Scriptable {
             lines: 'round',
             codify: false,
             scheduled: false,
-        }, [
-            this.costumesXML(xml),
-            this.soundsXML(xml),
-            xml.el('variables'),
-            this.blocksXML(xml),
-            this.scriptsXML(xml),
-            xml.el('sprites', null, this.children.map((child) => child.toXML(xml))),
-        ]);
+        };
+        return <stage {...props}>{[
+            this.costumesXML(),
+            this.soundsXML(),
+            <variables/>,
+            this.blocksXML(),
+            this.scriptsXML(),
+            <sprites>
+                {this.children.map((child) => child.toXML())}
+            </sprites>,
+        ]}</stage>;
     }
 }

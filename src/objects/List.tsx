@@ -1,4 +1,4 @@
-import XMLDoc from '../XMLDoc';
+import { h } from '../xml';
 
 export default class List {
     contents: any[];
@@ -7,12 +7,10 @@ export default class List {
         this.contents = contents;
     }
 
-    toXML(xml: XMLDoc): Element {
-        return xml.el('list', {
-            struct: 'atomic',
-        }, [
-            this.contents.map(this.encodeCell).join(','),
-        ]);
+    toXML(): Element {
+        return <list struct="atomic">
+            {this.contents.map(this.encodeCell).join(',')}
+        </list>;
     }
 
     // Adapted from lists.js in Snap!
