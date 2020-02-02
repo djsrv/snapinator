@@ -3,9 +3,45 @@
 <head>
   <meta charset="utf-8">
   <title>Snapinator</title>
+  <link href="https://fonts.googleapis.com/css?family=Inconsolata&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <input id="input" type="file">
-  <script src="bin/snapinator_gui.bundle.js"></script>
+  <header>
+    <div><img src="snap.png" height="120"></div>
+    <p>inator</p>
+  </header>
+  <main>
+    <div class="box">
+      <p>
+        Scratch's high ceiling not high enough for you? Snapinator lets you open your
+        <a href="https://scratch.mit.edu/">Scratch</a> projects in <a href="https://snap.berkeley.edu/">Snap<i>!</i></a>,
+        a block-based programming language with a low floor, wide walls, and <i>no ceiling</i>.
+      </p>
+    </div>
+    <div id="app"></div>
+    <noscript>
+      <div class="box">
+        <p>Snapinator requires JavaScript.</p>
+      </div>
+    </noscript>
+    <div class="box">
+      <h1>Credits</h1>
+      <p>
+        Snapinator 3.0 is written and maintained by <a href="https://github.com/djsrv">Dylan Servilla</a>,
+        inspired by the original Snapin8r by <a href="https://github.com/kach">Kartik Chandra</a>.
+      </p>
+      <p>
+        Snapinator is <a href="https://www.gnu.org/philosophy/free-sw.en.html">free software</a>, and you can
+        view its <a href="https://github.com/djsrv/snapinator">source code</a> on GitHub.</a>
+        It depends on numerous other free/open source projects, including <a href="https://stuk.github.io/jszip/">JSZip</a>,
+        <a href="https://preactjs.com/">Preact</a>, and parts of Scratch 3.0.
+      </p>
+      <p>
+        Snapinator couldn't exist without Scratch or Snap<i>!</i> &#128155;
+      </p>
+    </div>
+  </main>
+  <script src="bin/snapinator_app.bundle.js"></script>
 </body>
 </html>

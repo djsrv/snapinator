@@ -378,7 +378,7 @@ export default class Block {
 
         SPECIAL_CASE_BLOCKS['procedures_call'] = () => {
             return <custom-block s={this.spec} scope={scriptable.name}>
-                this.args.map(argToXML)
+                {this.args.map(argToXML)}
             </custom-block>;
         };
 

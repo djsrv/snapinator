@@ -8,6 +8,7 @@ import { h } from './xml';
 export default class Project {
     jsonObj: any;
     zip: any;
+    log: (msg: string) => void;
 
     name: string;
     notes: string;
@@ -17,9 +18,11 @@ export default class Project {
     globalVars: VariableFrame;
     stage: Stage;
 
-    async readProject(jsonObj: any, zip: any) {
+    async readProject(name: string, jsonObj: any, zip: any, log: (msg: string) => void) {
+        this.name = name;
         this.jsonObj = jsonObj;
         this.zip = zip;
+        this.log = log;
         if (this.jsonObj.children) { // Scratch 2.0 project
             this.media = await this.readMediaSB2();
             this.globalVars = new VariableFrame().readScriptableSB2(this.jsonObj);
@@ -143,7 +146,7 @@ export default class Project {
     }
 
     toXML() {
-        return <project name="TEST" app="Snapinator" version="1">{[
+        return <project name={this.name} app="Snapinator" version="1">{[
             <notes>Converted by Snapinator</notes>,
             this.stage.toXML(),
             <hidden/>,

@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "jszip": "^3.2.2",
+    "preact": "^10.2.1",
     "scratch-sb1-converter": "^0.2.7",
     "scratch-svg-renderer": "^0.2.0-prerelease.20200109070519"
   }
