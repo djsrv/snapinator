@@ -65,15 +65,15 @@ export default class Stage extends Scriptable {
             codify: false,
             scheduled: false,
         };
-        return <stage {...props}>{[
-            this.costumesXML(),
-            this.soundsXML(),
-            <variables/>,
-            this.blocksXML(),
-            this.scriptsXML(),
+        return <stage {...props}>
+            {this.costumesXML()}
+            {this.soundsXML()}
+            <variables/>
+            {this.blocksXML()}
+            {this.scriptsXML()}
             <sprites>
                 {this.children.map((child) => child.toXML())}
             </sprites>,
-        ]}</stage>;
+        </stage>;
     }
 }

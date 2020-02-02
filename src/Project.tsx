@@ -155,18 +155,18 @@ export default class Project {
     }
 
     toXML() {
-        return <project name={this.name} app="Snapinator" version="1">{[
-            <notes>Converted by Snapinator</notes>,
-            this.stage.toXML(),
-            <hidden/>,
-            <headers/>,
-            <code/>,
+        return <project name={this.name} app="Snapinator" version="1">
+            <notes>Converted by Snapinator</notes>
+            {this.stage.toXML()}
+            <hidden/>
+            <headers/>
+            <code/>
             <blocks>
                 {Object.keys(this.unsupportedOps).map(
                     (op) => new BlockDefinition().placeholder('UNSUPPORTED: ' + op, this.unsupportedOps[op]).toXML(null)
                 )}
-            </blocks>,
-            this.globalVars.toXML(),
-        ]}</project>;
+            </blocks>
+            {this.globalVars.toXML()}
+        </project>;
     }
 }

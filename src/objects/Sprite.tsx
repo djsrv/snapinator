@@ -72,12 +72,12 @@ export default class Sprite extends Scriptable {
             props.hidden = true;
         }
 
-        return <sprite {...props}>{[
-            this.costumesXML(),
-            this.soundsXML(),
-            this.variables.toXML(),
-            this.blocksXML(),
-            this.scriptsXML(),
-        ]}</sprite>;
+        return <sprite {...props}>
+            {this.costumesXML()}
+            {this.soundsXML()}
+            {this.variables.toXML()}
+            {this.blocksXML()}
+            {this.scriptsXML()}
+        </sprite>;
     }
 }

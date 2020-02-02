@@ -1,4 +1,4 @@
-export function h(tagName: string, attribs?: any, content?: any): Element {
+export function h(tagName: string, attribs?: any, ...content: any): Element {
     const el = document.createElementNS(null, tagName);
     const addContent = (c: any) => {
         if (c == null) {

@@ -412,6 +412,18 @@ export default class Block {
             ]}</block>;
         };
 
+        SPECIAL_CASE_BLOCKS['motion_setrotationstyle'] = () => {
+            const ROTATION_STYLES = {
+                'don\'t rotate': 0,
+                'all around': 1,
+                'left-right': 2,
+            };
+            return <block s="doSetVar">
+                <l><option>rotation style</option></l>
+                <l>{ROTATION_STYLES[this.args[0].value] || 0}</l>
+            </block>
+        };
+
         SPECIAL_CASE_BLOCKS['looks_goforwardbackwardlayers'] = () => {
             if (this.args[0].value === 'forward') {
                 return <block s="goBack">
@@ -542,46 +554,46 @@ export default class Block {
 
         SPECIAL_CASE_BLOCKS['operator_join'] = () => {
             return <block s="reportJoinWords">
-                <list>{[
-                    argToXML(this.args[0]),
-                    argToXML(this.args[1]),
-                ]}</list>
+                <list>
+                    {argToXML(this.args[0])}
+                    {argToXML(this.args[1])}
+                </list>
             </block>;
         };
 
         SPECIAL_CASE_BLOCKS['pen_changePenHueBy'] = () => {
-            return <block s="changePenHSVA">{[
-                <l><option>hue</option></l>,
-                argToXML(this.args[0]),
-            ]}</block>;
+            return <block s="changePenHSVA">
+                <l><option>hue</option></l>
+                {argToXML(this.args[0])}
+            </block>;
         };
 
         SPECIAL_CASE_BLOCKS['pen_setPenHueToNumber'] = () => {
-            return <block s="setPenHSVA">{[
-                <l><option>hue</option></l>,
-                argToXML(this.args[0]),
-            ]}</block>;
+            return <block s="setPenHSVA">
+                <l><option>hue</option></l>
+                {argToXML(this.args[0])}
+            </block>;
         };
 
         SPECIAL_CASE_BLOCKS['pen_changePenShadeBy'] = () => {
-            return <block s="changePenHSVA">{[
-                <l><option>brightness</option></l>,
-                argToXML(this.args[0]),
-            ]}</block>;
+            return <block s="changePenHSVA">
+                <l><option>brightness</option></l>
+                {argToXML(this.args[0])}
+            </block>;
         };
 
         SPECIAL_CASE_BLOCKS['pen_setPenShadeToNumber'] = () => {
-            return <block s="setPenHSVA">{[
-                <l><option>brightness</option></l>,
-                argToXML(this.args[0]),
-            ]}</block>;
+            return <block s="setPenHSVA">
+                <l><option>brightness</option></l>
+                {argToXML(this.args[0])}
+            </block>;
         };
 
         SPECIAL_CASE_BLOCKS['data_deletealloflist'] = () => {
-            return <block s="doDeleteFromList">{[
-                <l><option>all</option></l>,
-                argToXML(this.args[0]),
-            ]}</block>;
+            return <block s="doDeleteFromList">
+                <l><option>all</option></l>
+                {argToXML(this.args[0])}
+            </block>;
         };
 
         let element: Element;
