@@ -4,25 +4,26 @@ import SoundFile from './media/SoundFile';
 import Stage from './objects/Stage';
 import VariableFrame from './objects/VariableFrame';
 import { h } from './xml';
+import BlockDefinition from './objects/BlockDefinition';
 
 export default class Project {
+    name: string;
     jsonObj: any;
     zip: any;
-    log: (msg: string) => void;
+    log: (msg: any) => void;
 
-    name: string;
-    notes: string;
-    thumbnail: ImageFile;
-
+    unsupportedOps: {[op: string]: boolean};
     media: {[id: string]: MediaFile};
     globalVars: VariableFrame;
     stage: Stage;
 
-    async readProject(name: string, jsonObj: any, zip: any, log: (msg: string) => void) {
+    async readProject(name: string, jsonObj: any, zip: any, log: (msg: any) => void) {
         this.name = name;
         this.jsonObj = jsonObj;
         this.zip = zip;
         this.log = log;
+
+        this.unsupportedOps = {};
         if (this.jsonObj.children) { // Scratch 2.0 project
             this.media = await this.readMediaSB2();
             this.globalVars = new VariableFrame().readScriptableSB2(this.jsonObj);
@@ -145,6 +146,14 @@ export default class Project {
         return media;
     }
 
+    unsupportedBlock(op: string, isReporter: boolean) {
+        if (!this.unsupportedOps.hasOwnProperty(op)) {
+            this.log(`Unsupported block: ${op}`);
+            this.unsupportedOps[op] = isReporter;
+        }
+        return <custom-block s={'UNSUPPORTED: ' + op}/>
+    }
+
     toXML() {
         return <project name={this.name} app="Snapinator" version="1">{[
             <notes>Converted by Snapinator</notes>,
@@ -152,6 +161,11 @@ export default class Project {
             <hidden/>,
             <headers/>,
             <code/>,
+            <blocks>
+                {Object.keys(this.unsupportedOps).map(
+                    (op) => new BlockDefinition().placeholder('UNSUPPORTED: ' + op, this.unsupportedOps[op]).toXML(null)
+                )}
+            </blocks>,
             this.globalVars.toXML(),
         ]}</project>;
     }

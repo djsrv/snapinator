@@ -335,7 +335,7 @@ export default class Block {
         return value;
     }
 
-    toXML(scriptable: Scriptable, variables: VariableFrame): Element {
+    toXML(scriptable: Scriptable, variables: VariableFrame, isArg: boolean = false): Element {
         const argToXML = (arg: any) => {
             if (arg instanceof Script) {
                 const script: Script = arg;
@@ -343,7 +343,7 @@ export default class Block {
             }
             if (arg instanceof Block) {
                 const block: Block = arg;
-                return block.toXML(scriptable, variables);
+                return block.toXML(scriptable, variables, true);
             }
             return arg.toXML();
         };
@@ -588,11 +588,12 @@ export default class Block {
         if (SPECIAL_CASE_BLOCKS.hasOwnProperty(this.op)) {
             element = SPECIAL_CASE_BLOCKS[this.op]();
         } else {
-            const snapOp = SB3_TO_SNAP_OP_MAP[this.op] || this.op;
-            if (!snapOp) {
-                throw new Error('Unsupported block: ' + this.op);
+            const snapOp = SB3_TO_SNAP_OP_MAP[this.op];
+            if (snapOp) {
+                element = <block s={snapOp}>{this.args.map(argToXML)}</block>;
+            } else {
+                element = scriptable.project.unsupportedBlock(this.op, isArg);
             }
-            element = <block s={snapOp}>{this.args.map(argToXML)}</block>;
         }
         if (this.comment) {
             element.appendChild(this.comment.toXML());

@@ -8,6 +8,7 @@ import Sound from './Sound';
 import VariableFrame from './VariableFrame';
 
 export default class Scriptable {
+    project: Project;
     name: string;
     costumes: Costume[];
     sounds: Sound[];
@@ -17,6 +18,7 @@ export default class Scriptable {
     scripts: (Script | ScriptComment)[];
 
     readSB2(jsonObj: any, project: Project): Scriptable {
+        this.project = project;
         const costumeObjs = jsonObj.costumes;
         const soundObjs = jsonObj.sounds;
         const commentArrs = jsonObj.scriptComments;
@@ -82,6 +84,7 @@ export default class Scriptable {
     }
 
     readSB3(jsonObj: any, project: Project, libraryIndex: number): Scriptable {
+        this.project = project;
         const costumeObjs = jsonObj.costumes;
         const soundObjs = jsonObj.sounds;
         const commentMap = jsonObj.comments;

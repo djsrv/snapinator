@@ -27,6 +27,7 @@ export default class BlockDefinition {
     }
 
     spec: string;
+    type: string;
     inputTypes: string[];
     variables: VariableFrame;
     script: Script;
@@ -61,6 +62,7 @@ export default class BlockDefinition {
         const paramNames = defArr[2];
         this.variables = new VariableFrame(parentVariables).readBlockParams(paramNames);
         this.setSpec(semanticSpec);
+        this.type = 'command';
 
         nextBlockID += 1 + this.variables.vars.length;
         if (jsonArr.length > 1) {
@@ -92,6 +94,7 @@ export default class BlockDefinition {
         const paramNames = JSON.parse(protoObj.mutation.argumentnames);
         this.variables = new VariableFrame(parentVariables).readBlockParams(paramNames);
         this.setSpec(semanticSpec);
+        this.type = 'command';
 
         if (defObj.next) {
             this.script = new Script().readSB3(defObj.next, blockMap, blockComments, this.variables, true);
@@ -101,6 +104,15 @@ export default class BlockDefinition {
             this.comment = blockComments[defID];
         }
 
+        return this;
+    }
+
+    placeholder(spec: string, isReporter: boolean): BlockDefinition {
+        this.setSpec(spec);
+        this.type = isReporter ? 'reporter' : 'command';
+        this.inputTypes = [];
+        this.variables = new VariableFrame();
+        this.warp = false;
         return this;
     }
 
@@ -128,7 +140,7 @@ export default class BlockDefinition {
         } else if (this.script) {
             children.push(this.script.toXML(scriptable, this.variables));
         }
-        return <block-definition s={this.spec} type="command" category="other">
+        return <block-definition s={this.spec} type={this.type} category="other">
             {children}
         </block-definition>;
     }
