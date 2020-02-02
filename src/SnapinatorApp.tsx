@@ -1,3 +1,23 @@
+/*
+
+    Snapinator
+    Copyright (C) 2020  Dylan Servilla
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+*/
+
 import Project from './Project';
 import { serializeXML } from './xml';
 import { h, Component, ComponentChild } from 'preact';
@@ -45,7 +65,7 @@ export default class SnapinatorApp extends Component<any, SnapinatorState> {
         const projectName = file.name.replace(/\..*$/, '');
         const reader = new FileReader();
         this.log(`Reading project "${projectName}"`);
-        reader.addEventListener('load', async (e) => {
+        reader.addEventListener('load', async () => {
             const project = await this.readProject(projectName, reader.result as ArrayBuffer);
             console.log(project);
             if (project instanceof Project) {
