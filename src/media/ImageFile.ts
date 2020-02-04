@@ -19,6 +19,7 @@
 */
 
 import MediaFile from './MediaFile';
+import { Base64 } from 'js-base64';
 import { SVGRenderer } from 'scratch-svg-renderer';
 
 export default class ImageFile extends MediaFile {
@@ -39,8 +40,8 @@ export default class ImageFile extends MediaFile {
 
     fixSVG(scratchVersion: number) {
         const renderer = new SVGRenderer();
-        renderer.loadString(this.data, scratchVersion === 2);
-        this.data = new XMLSerializer().serializeToString(renderer._svgTag);
+        renderer.loadString(Base64.decode(this.data), scratchVersion === 2);
+        this.data = Base64.encode(new XMLSerializer().serializeToString(renderer._svgTag));
     }
 
     async fixResolution(): Promise<null> {

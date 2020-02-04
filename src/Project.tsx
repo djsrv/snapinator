@@ -56,15 +56,12 @@ export default class Project {
         }
     }
 
-    async getAsset(fileName: string): Promise<Uint8Array | string> {
+    async getAsset(fileName: string): Promise<string> {
         const file = this.zip.file(fileName);
         if (!file) {
             throw new Error(fileName + ' does not exist');
         }
-        if (fileName.endsWith('.svg')) {
-            return await file.async('text');
-        }
-        return await file.async('uint8array');
+        return await file.async('base64');
     };
 
     async readMediaSB2(): Promise<any> {

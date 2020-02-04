@@ -18,11 +18,9 @@
 
 */
 
-import { Base64 } from 'js-base64';
-
 export default class MediaFile {
     dataFormat: string;
-    data: Uint8Array | string;
+    data: string;
     dataIsURL: boolean;
 
     constructor(dataFormat, data) {
@@ -43,6 +41,6 @@ export default class MediaFile {
         if (this.dataIsURL) {
             return this.data as string;
         }
-        return 'data:' + mimeTypes[this.dataFormat] + ';base64,' + Base64.encode(this.data);
+        return 'data:' + mimeTypes[this.dataFormat] + ';base64,' + this.data;
     }
 }
