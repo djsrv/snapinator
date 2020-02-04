@@ -93,7 +93,7 @@ export default class Stage extends Scriptable {
             {this.scriptsXML()}
             <sprites>
                 {this.children.map((child) => child.toXML())}
-            </sprites>,
+            </sprites>
         </stage>;
     }
 }

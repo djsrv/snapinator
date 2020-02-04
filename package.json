@@ -16,6 +16,7 @@
     "webpack-cli": "^3.3.10"
   },
   "dependencies": {
+    "js-base64": "^2.5.1",
     "jszip": "^3.2.2",
     "preact": "^10.2.1",
     "scratch-sb1-converter": "^0.2.7",

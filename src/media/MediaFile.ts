@@ -18,6 +18,8 @@
 
 */
 
+import { Base64 } from 'js-base64';
+
 export default class MediaFile {
     dataFormat: string;
     data: Uint8Array | string;
@@ -41,15 +43,6 @@ export default class MediaFile {
         if (this.dataIsURL) {
             return this.data as string;
         }
-        let dataString;
-        if (typeof this.data === 'string') {
-            dataString = this.data;
-        } else {
-            dataString = '';
-            for (let i = 0, l = this.data.length; i < l; i++) {
-                dataString += String.fromCharCode(this.data[i]);
-            }
-        }
-        return 'data:' + mimeTypes[this.dataFormat] + ';base64,' + btoa(dataString);
+        return 'data:' + mimeTypes[this.dataFormat] + ';base64,' + Base64.encode(this.data);
     }
 }
