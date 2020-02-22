@@ -18,6 +18,7 @@
 
 */
 
+import AssetServer from './AssetServer';
 import ImageFile from './media/ImageFile';
 import MediaFile from './media/MediaFile';
 import SoundFile from './media/SoundFile';
@@ -56,14 +57,6 @@ export default class Project {
         }
     }
 
-    async getAsset(fileName: string): Promise<string> {
-        const file = this.zip.file(fileName);
-        if (!file) {
-            throw new Error(fileName + ' does not exist');
-        }
-        return await file.async('base64');
-    };
-
     async readMediaSB2(): Promise<any> {
         const stageObj = this.jsonObj;
         const media = {};
@@ -75,26 +68,24 @@ export default class Project {
             if (costumeObjs != null) {
                 for (const costumeObj of costumeObjs) {
                     const baseLayerMD5Ext = costumeObj.baseLayerMD5;
-                    const baseLayerExt = baseLayerMD5Ext.split('.')[1];
+                    const [baseLayerMD5, baseLayerExt] = baseLayerMD5Ext.split('.');
+                    const baseLayerAssetID = this.zip instanceof AssetServer ? baseLayerMD5 : costumeObj.baseLayerID;
                     if (!media[baseLayerMD5Ext]) {
-                        const baseLayerData = await this.getAsset(costumeObj.baseLayerID + '.' + baseLayerExt);
-                        const baseLayerFile: ImageFile = new ImageFile(
-                            baseLayerExt, baseLayerData, costumeObj.bitmapResolution,
+                        const baseLayerFile: ImageFile = await new ImageFile().load(
+                            this.zip, baseLayerAssetID, baseLayerExt, 2, costumeObj.bitmapResolution
                         );
-                        await baseLayerFile.fixData(2);
                         media[baseLayerMD5Ext] = baseLayerFile;
                     }
 
                     if (costumeObj.text != null) {
                         const textLayerMD5Ext = costumeObj.textLayerMD5;
-                        const textLayerExt = textLayerMD5Ext.split('.')[1];
+                        const [textLayerMD5, textLayerExt] = textLayerMD5Ext.split('.');
+                        const textLayerAssetID = this.zip instanceof AssetServer ? textLayerMD5 : costumeObj.textLayerID;
                         if (!media[textLayerMD5Ext]) {
-                            const textLayerData = await this.getAsset(costumeObj.textLayerID + '.' + textLayerExt);
-                            const baseLayerFile: ImageFile = new ImageFile(
-                                textLayerExt, textLayerData, costumeObj.bitmapResolution,
+                            const textLayerFile: ImageFile = await new ImageFile().load(
+                                this.zip, textLayerAssetID, textLayerExt, 2, costumeObj.bitmapResolution
                             );
-                            await baseLayerFile.fixData(2);
-                            media[textLayerMD5Ext] = baseLayerFile;
+                            media[textLayerMD5Ext] = textLayerFile;
                         }
                         const combinedMD5Ext = baseLayerMD5Ext + '+' + textLayerMD5Ext;
                         if (!media[combinedMD5Ext]) {
@@ -107,10 +98,10 @@ export default class Project {
             if (soundObjs != null) {
                 for (const soundObj of soundObjs) {
                     const md5Ext = soundObj.md5;
-                    const ext = md5Ext.split('.')[1];
+                    const [md5, ext] = md5Ext.split('.');
+                    const assetID = this.zip instanceof AssetServer ? md5: soundObj.soundID;
                     if (!media[md5Ext]) {
-                        const data = await this.getAsset(soundObj.soundID + '.' + ext);
-                        const file: SoundFile = new SoundFile(ext, data);
+                        const file: SoundFile = await new SoundFile().load(this.zip, assetID, ext);
                         media[md5Ext] = file;
                     }
                 }
@@ -137,11 +128,9 @@ export default class Project {
             for (const costumeObj of costumeObjs) {
                 const md5Ext = costumeObj.md5ext;
                 if (!media[md5Ext]) {
-                    const data = await this.getAsset(md5Ext);
-                    const file: ImageFile = new ImageFile(
-                        costumeObj.dataFormat, data, costumeObj.bitmapResolution,
+                    const file: ImageFile = await new ImageFile().load(
+                        this.zip, costumeObj.assetId, costumeObj.dataFormat, 3, costumeObj.bitmapResolution
                     );
-                    await file.fixData(3);
                     media[md5Ext] = file;
                 }
             }
@@ -149,8 +138,7 @@ export default class Project {
             for (const soundObj of soundObjs) {
                 const md5Ext = soundObj.md5ext;
                 if (!media[md5Ext]) {
-                    const data = await this.getAsset(md5Ext);
-                    const file: SoundFile = new SoundFile(soundObj.dataFormat, data);
+                    const file: SoundFile = await new SoundFile().load(this.zip, soundObj.assetId, soundObj.dataFormat);
                     media[md5Ext] = file;
                 }
             }

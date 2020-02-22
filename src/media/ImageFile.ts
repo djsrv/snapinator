@@ -19,34 +19,49 @@
 */
 
 import MediaFile from './MediaFile';
-import { Base64 } from 'js-base64';
+import * as Base64 from 'base64-js';
+import * as JSZip from 'jszip';
 import { SVGRenderer } from 'scratch-svg-renderer';
 
 export default class ImageFile extends MediaFile {
-    resolution: number;
-
-    constructor(dataFormat, data, resolution) {
-        super(dataFormat, data);
-        this.resolution = resolution;
-    }
-
-    async fixData(scratchVersion: number) {
-        if (this.dataFormat === 'svg') {
-            this.fixSVG(scratchVersion);
-        } else if (this.resolution !== 1) {
-            await this.fixResolution();
+    async load(zip: any, assetID: string, dataFormat: string, scratchVersion: number, resolution: number): Promise<ImageFile> {
+        this.dataFormat = dataFormat;
+        const fileName = assetID + '.' + dataFormat;
+        const file = zip.file(fileName);
+        if (!file) {
+            throw new Error(fileName + ' does not exist');
         }
+        if (dataFormat === 'svg') {
+            let svgString;
+            if (zip instanceof JSZip) {
+                svgString = await file.async('text');
+            } else {
+                const fileArray = await file.async('uint8array');
+                svgString = new TextDecoder().decode(fileArray);
+            }
+            this.data = Base64.fromByteArray(
+                new TextEncoder().encode(
+                    this.fixSVG(svgString, scratchVersion)
+                )
+            );
+        } else {
+            await super.load(zip, assetID, dataFormat);
+            if (resolution !== 1) {
+                await this.fixResolution(resolution);
+            }
+        }
+        return this;
     }
 
-    fixSVG(scratchVersion: number) {
+    fixSVG(svgString: string, scratchVersion: number): string {
         const renderer = new SVGRenderer();
-        renderer.loadString(Base64.decode(this.data), scratchVersion === 2);
-        this.data = Base64.encode(new XMLSerializer().serializeToString(renderer._svgTag));
+        renderer.loadString(svgString, scratchVersion === 2);
+        return new XMLSerializer().serializeToString(renderer._svgTag);
     }
 
-    async fixResolution(): Promise<null> {
+    async fixResolution(resolution: number): Promise<null> {
         return new Promise((resolve) => {
-            if (this.resolution === 1) {
+            if (resolution === 1) {
                 resolve();
             }
             const img: HTMLImageElement = document.createElement('img');
@@ -54,16 +69,15 @@ export default class ImageFile extends MediaFile {
                 const canvas: HTMLCanvasElement = document.createElement('canvas');
                 const ctx: CanvasRenderingContext2D = canvas.getContext('2d');
                 ctx.imageSmoothingEnabled = false;
-                canvas.width = img.width / this.resolution;
-                canvas.height = img.height / this.resolution;
+                canvas.width = img.width / resolution;
+                canvas.height = img.height /resolution;
                 ctx.drawImage(
                     img, 0, 0, img.width, img.height,
-                    0, 0, img.width / this.resolution, img.height / this.resolution,
+                    0, 0, img.width / resolution, img.height / resolution,
                 );
                 this.data = canvas.toDataURL();
                 this.dataFormat = 'png';
                 this.dataIsURL = true;
-                this.resolution = 1;
                 resolve();
             };
             img.src = this.toDataURL();
@@ -82,7 +96,9 @@ export default class ImageFile extends MediaFile {
                     canvas.height = baseImg.height;
                     ctx.drawImage(baseImg, 0, 0);
                     ctx.drawImage(textImg, 0, 0);
-                    const result: ImageFile = new ImageFile('png', canvas.toDataURL(), this.resolution);
+                    const result: ImageFile = new ImageFile();
+                    result.data = canvas.toDataURL();
+                    result.dataFormat = 'png';
                     result.dataIsURL = true;
                     resolve(result);
                 };

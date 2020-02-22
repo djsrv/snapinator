@@ -18,15 +18,32 @@
 
 */
 
+import * as Base64 from 'base64-js';
+import * as JSZip from 'jszip';
+
 export default class MediaFile {
     dataFormat: string;
     data: string;
     dataIsURL: boolean;
 
-    constructor(dataFormat, data) {
-        this.dataFormat = dataFormat;
-        this.data = data;
+    constructor() {
         this.dataIsURL = false;
+    }
+
+    async load(zip: any, assetID: string, dataFormat: string, scratchVersion?: number, resolution?: number): Promise<MediaFile> {
+        this.dataFormat = dataFormat;
+        const fileName = assetID + '.' + dataFormat;
+        const file = zip.file(fileName);
+        if (!file) {
+            throw new Error(fileName + ' does not exist');
+        }
+        if (zip instanceof JSZip) {
+            this.data = await file.async('base64');
+        } else {
+            const fileArray = await file.async('uint8array');
+            this.data = Base64.fromByteArray(fileArray);
+        }
+        return this;
     }
 
     toDataURL(): string {

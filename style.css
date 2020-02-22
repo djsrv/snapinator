@@ -19,6 +19,10 @@ p:first-child {
     margin-top: 0;
 }
 
+a:link, a:visited {
+    color: #0000ee;
+}
+
 header {
     background-color: #2d3142;
     color: #fff;
@@ -54,17 +58,27 @@ main {
     padding: 20px;
 }
 
-#io {
+.io {
     display: grid;
     grid: auto-flow / 1fr 1fr;
     grid-gap: 20px;
 }
 
-#in, #out {
+.in, .out {
     min-height: 240px;
 }
 
-#log {
+.url {
+    font-family: Inconsolata, monospace;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.file {
+    font-family: Inconsolata, monospace;
+}
+
+.log {
     font-family: Inconsolata, monospace;
     list-style: none;
     margin-top: 10px;
