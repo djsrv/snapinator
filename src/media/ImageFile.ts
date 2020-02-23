@@ -24,12 +24,12 @@ import * as JSZip from 'jszip';
 import { SVGRenderer } from 'scratch-svg-renderer';
 
 export default class ImageFile extends MediaFile {
-    async load(zip: any, assetID: string, dataFormat: string, scratchVersion: number, resolution: number): Promise<ImageFile> {
+    async load(zip: any, assetID: string, dataFormat: string, log: (msg: any) => void, scratchVersion: number, resolution: number): Promise<ImageFile> {
         this.dataFormat = dataFormat;
         const fileName = assetID + '.' + dataFormat;
         const file = zip.file(fileName);
         if (!file) {
-            throw new Error(fileName + ' does not exist');
+            throw new Error(`${fileName} does not exist`);
         }
         if (dataFormat === 'svg') {
             let svgString;
@@ -45,7 +45,7 @@ export default class ImageFile extends MediaFile {
                 )
             );
         } else {
-            await super.load(zip, assetID, dataFormat);
+            await super.load(zip, assetID, dataFormat, log);
             if (resolution !== 1) {
                 await this.fixResolution(resolution);
             }

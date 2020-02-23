@@ -72,7 +72,7 @@ export default class Project {
                     const baseLayerAssetID = this.zip instanceof AssetServer ? baseLayerMD5 : costumeObj.baseLayerID;
                     if (!media[baseLayerMD5Ext]) {
                         const baseLayerFile: ImageFile = await new ImageFile().load(
-                            this.zip, baseLayerAssetID, baseLayerExt, 2, costumeObj.bitmapResolution
+                            this.zip, baseLayerAssetID, baseLayerExt, this.log, 2, costumeObj.bitmapResolution
                         );
                         media[baseLayerMD5Ext] = baseLayerFile;
                     }
@@ -83,7 +83,7 @@ export default class Project {
                         const textLayerAssetID = this.zip instanceof AssetServer ? textLayerMD5 : costumeObj.textLayerID;
                         if (!media[textLayerMD5Ext]) {
                             const textLayerFile: ImageFile = await new ImageFile().load(
-                                this.zip, textLayerAssetID, textLayerExt, 2, costumeObj.bitmapResolution
+                                this.zip, textLayerAssetID, textLayerExt, this.log, 2, costumeObj.bitmapResolution
                             );
                             media[textLayerMD5Ext] = textLayerFile;
                         }
@@ -101,7 +101,7 @@ export default class Project {
                     const [md5, ext] = md5Ext.split('.');
                     const assetID = this.zip instanceof AssetServer ? md5: soundObj.soundID;
                     if (!media[md5Ext]) {
-                        const file: SoundFile = await new SoundFile().load(this.zip, assetID, ext);
+                        const file: SoundFile = await new SoundFile().load(this.zip, assetID, ext, this.log);
                         media[md5Ext] = file;
                     }
                 }
@@ -129,7 +129,7 @@ export default class Project {
                 const md5Ext = costumeObj.md5ext;
                 if (!media[md5Ext]) {
                     const file: ImageFile = await new ImageFile().load(
-                        this.zip, costumeObj.assetId, costumeObj.dataFormat, 3, costumeObj.bitmapResolution
+                        this.zip, costumeObj.assetId, costumeObj.dataFormat, this.log, 3, costumeObj.bitmapResolution
                     );
                     media[md5Ext] = file;
                 }
@@ -138,7 +138,7 @@ export default class Project {
             for (const soundObj of soundObjs) {
                 const md5Ext = soundObj.md5ext;
                 if (!media[md5Ext]) {
-                    const file: SoundFile = await new SoundFile().load(this.zip, soundObj.assetId, soundObj.dataFormat);
+                    const file: SoundFile = await new SoundFile().load(this.zip, soundObj.assetId, soundObj.dataFormat, this.log);
                     media[md5Ext] = file;
                 }
             }
