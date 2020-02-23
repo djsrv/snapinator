@@ -1,6 +1,6 @@
 /*
 
-    From ArrayBufferStream.js in scratch-audio
+    From ADPCMSoundDecoder.js in scratch-audio
     https://github.com/LLK/scratch-audio/blob/80820c6ba6124ccbc7a6bba6599b68e5c74f8d67/src/ADPCMSoundDecoder.js
 
     Copyright (c) 2016, Massachusetts Institute of Technology
