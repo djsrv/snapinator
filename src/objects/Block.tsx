@@ -561,6 +561,15 @@ export default class Block {
             </block>;
         };
 
+        SPECIAL_CASE_BLOCKS['sensing_touchingobject'] = () => {
+            return <block s="reportAnd">
+                <block s="reportShown"/>
+                <block s="reportTouchingObject">
+                    {argToXML(this.args[0])}
+                </block>
+            </block>;
+        };
+
         SPECIAL_CASE_BLOCKS['videoSensing_videoToggle'] = () => {
             const arg = this.args[0].value;
             if (arg === 'off') {
