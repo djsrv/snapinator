@@ -166,6 +166,10 @@ export default class Block {
         return new Block().initForVar(varName);
     }
 
+    static forList(varName: string) {
+        return new Block().initForList(varName);
+    }
+
     op: string;
     spec: string;
     args: any[];
@@ -173,6 +177,12 @@ export default class Block {
 
     initForVar(varName: string) {
         this.op = 'data_variable';
+        this.args = [new Primitive(varName)];
+        return this;
+    }
+
+    initForList(varName: string) {
+        this.op = 'data_listcontents';
         this.args = [new Primitive(varName)];
         return this;
     }
@@ -288,7 +298,7 @@ export default class Block {
             return this.initForVar(value);
         }
         if (type === SB3_CONSTANTS.LIST_PRIMITIVE) {
-            return this.initForVar(variables.getListName(value));
+            return this.initForList(variables.getListName(value));
         }
         return this;
     }
@@ -387,7 +397,7 @@ export default class Block {
 
         SPECIAL_CASE_BLOCKS['data_listcontents'] = () => {
             return <block s="reportJoinWords">
-                <block var={variables.getListName(this.args[0].value)}/>
+                <block var={this.args[0].value}/>
             </block>;
         };
 
