@@ -444,14 +444,24 @@ export default class Block {
             </block>
         };
 
+        SPECIAL_CASE_BLOCKS['comeToFront'] = () => {
+            return <block s="goToLayer">
+                <l><option>front</option></l>
+            </block>;
+        };
+
         SPECIAL_CASE_BLOCKS['looks_goforwardbackwardlayers'] = () => {
             if (this.args[0].value === 'forward') {
-                return <block s="goBack">
-                    <block s="reportDifference">{[
-                        <l>0</l>,
-                        argToXML(this.args[1]),
-                    ]}</block>
-                </block>;
+                if (this.args[1] instanceof Block) {
+                    return <block s="goBack">
+                        <block s="reportDifference">
+                            <l>0</l>
+                            {argToXML(this.args[1])}
+                        </block>
+                    </block>;
+                } else {
+                    this.args[1].value = -this.args[1].value;
+                }
             }
             return <block s="goBack">{argToXML(this.args[1])}</block>;
         };
