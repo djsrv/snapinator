@@ -493,7 +493,7 @@ export default class Block {
                     result = <block s="doSwitchToCostume">
                         <block s="reportDifference">
                             <l>0</l>
-                            <l>-1</l>
+                            <l>1</l>
                         </block>
                     </block>;
                 } else if (backdrop === 'random backdrop') {
