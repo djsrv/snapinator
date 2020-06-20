@@ -26,12 +26,14 @@ import Variable from './Variable';
 export default class VariableFrame {
     parent: VariableFrame;
     vars: Variable[];
-    listNameMap: {[name: string]: string};
-    paramNameMap: {[name: string]: string};
+    varNameMap: {[id: string]: string};
+    listNameMap: {[id: string]: string};
+    paramNameMap: {[id: string]: string};
 
     constructor(parent?: VariableFrame) {
         this.parent = parent;
         this.vars = [];
+        this.varNameMap = {};
         this.listNameMap = {};
         this.paramNameMap = {};
     }
@@ -70,22 +72,32 @@ export default class VariableFrame {
         return name;
     }
 
-    getListName(oldName: string): string {
-        if (this.listNameMap[oldName]) {
-            return this.listNameMap[oldName];
+    getVarName(id: string): string {
+        if (this.varNameMap[id]) {
+            return this.varNameMap[id];
         }
         if (this.parent) {
-            return this.parent.getListName(oldName);
+            return this.parent.getVarName(id);
         }
         return null;
     }
 
-    getParamName(oldName: string): string {
-        if (this.paramNameMap[oldName]) {
-            return this.paramNameMap[oldName];
+    getListName(id: string): string {
+        if (this.listNameMap[id]) {
+            return this.listNameMap[id];
         }
         if (this.parent) {
-            return this.parent.getParamName(oldName);
+            return this.parent.getListName(id);
+        }
+        return null;
+    }
+
+    getParamName(id: string): string {
+        if (this.paramNameMap[id]) {
+            return this.paramNameMap[id];
+        }
+        if (this.parent) {
+            return this.parent.getParamName(id);
         }
         return null;
     }
@@ -118,17 +130,18 @@ export default class VariableFrame {
         for (const varID in varDict) {
             if (varDict.hasOwnProperty(varID)) {
                 const varArr = varDict[varID];
-                this.vars.push(new Variable(varArr[0], new Primitive(varArr[1])));
+                const varName = varArr[0];
+                this.vars.push(new Variable(varName, new Primitive(varArr[1])));
+                this.varNameMap[varID] = varName;
             }
         }
-
         for (const listID in listDict) {
             if (listDict.hasOwnProperty(listID)) {
                 const listArr = listDict[listID];
                 const oldName = listArr[0];
                 const newName = this.getUnusedName(oldName);
                 this.vars.push(new Variable(newName, new List(listArr[1])));
-                this.listNameMap[oldName] = newName;
+                this.listNameMap[listID] = newName;
             }
         }
 

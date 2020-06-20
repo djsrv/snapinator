@@ -293,12 +293,12 @@ export default class Block {
 
     readPrimitiveSB3(jsonArr: any[], variables: VariableFrame): any {
         const type = jsonArr[0];
-        const value = jsonArr[1];
+        const id = jsonArr[2];
         if (type === SB3_CONSTANTS.VAR_PRIMITIVE) {
-            return this.initForVar(value);
+            return this.initForVar(variables.getVarName(id));
         }
         if (type === SB3_CONSTANTS.LIST_PRIMITIVE) {
-            return this.initForList(variables.getListName(value));
+            return this.initForList(variables.getListName(id));
         }
         return this;
     }
@@ -311,7 +311,7 @@ export default class Block {
         blockComments: {[s: string]: ScriptComment},
         variables: VariableFrame,
     ): any {
-        let value: Primitive;
+        let value: any;
         if (argSpec.type === 'input') { // input (blocks can be dropped here)
             const argArr = jsonObj.inputs[argSpec.inputName];
             if (argArr) {
@@ -349,20 +349,23 @@ export default class Block {
         } else { // field (blocks cannot be dropped here)
             const argArr = jsonObj.fields[argSpec.fieldName];
             if (argSpec.variableType === SB3_VAR_TYPES.VAR_LIST_TYPE) {
-                return Block.forVar(variables.getListName(argArr[0]));
+                return Block.forVar(variables.getListName(argArr[1]));
+            } else if (argSpec.variableType === SB3_VAR_TYPES.VAR_SCALAR_TYPE) {
+                value = variables.getVarName(argArr[1]);
             } else {
                 value = argArr[0];
             }
         }
+        let prim: Primitive;
         if (typeof value === 'string' && argSpec.snapOptionInput) {
-            value = new Primitive(value, true);
+            prim = new Primitive(value, true);
         } else {
-            value = new Primitive(value);
+            prim = new Primitive(value);
         }
         if (SPECIAL_CASE_ARGS[this.op] && SPECIAL_CASE_ARGS[this.op][argIndex]) {
-            value = SPECIAL_CASE_ARGS[this.op][argIndex](value);
+            prim = SPECIAL_CASE_ARGS[this.op][argIndex](prim);
         }
-        return value;
+        return prim;
     }
 
     toXML(scriptable: Scriptable, variables: VariableFrame, isArg: boolean = false): Element {
