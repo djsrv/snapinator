@@ -181,9 +181,9 @@ export default class Block {
         return this;
     }
 
-    initForList(varName: string) {
+    initForList(listName: string) {
         this.op = 'data_listcontents';
-        this.args = [new Primitive(varName)];
+        this.args = [Block.forVar(listName)];
         return this;
     }
 
@@ -397,7 +397,7 @@ export default class Block {
 
         SPECIAL_CASE_BLOCKS['data_listcontents'] = () => {
             return <block s="reportJoinWords">
-                <block var={this.args[0].value}/>
+                {argToXML(this.args[0])}
             </block>;
         };
 
