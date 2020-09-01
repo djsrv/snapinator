@@ -28,6 +28,7 @@ import Sound from './Sound';
 import VariableFrame from './VariableFrame';
 
 export default class Scriptable {
+    isStage: boolean;
     project: Project;
     name: string;
     costumes: Costume[];
@@ -36,6 +37,10 @@ export default class Scriptable {
     variables: VariableFrame;
     blocks: BlockDefinition[];
     scripts: (Script | ScriptComment)[];
+
+    constructor() {
+        this.isStage = false;
+    }
 
     readSB2(jsonObj: any, project: Project): Scriptable {
         this.project = project;

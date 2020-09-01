@@ -30,6 +30,11 @@ export default class Stage extends Scriptable {
     // children: Array<Sprite | Watcher>;
     children: Sprite[];
 
+    constructor() {
+        super();
+        this.isStage = true;
+    }
+
     readSB2(jsonObj: any, project: Project): Stage {
         const childObjs = jsonObj.children;
 

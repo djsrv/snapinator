@@ -33,7 +33,6 @@ import Primitive from './Primitive';
 import Script from './Script';
 import Scriptable from './Scriptable';
 import ScriptComment from './ScriptComment';
-import Stage from './Stage';
 import VariableFrame from './VariableFrame';
 
 const SPECIAL_CASE_ARGS = {
@@ -525,7 +524,7 @@ export default class Block {
                     {argToXML(this.args[0])}
                 </block>;
             }
-            if (!(scriptable instanceof Stage)) {
+            if (!scriptable.isStage) {
                 result = tellStageTo(result);
             }
             return result;
@@ -533,14 +532,14 @@ export default class Block {
 
         SPECIAL_CASE_BLOCKS['looks_nextbackdrop'] = () => {
             let result = <block s="doWearNextCostume"/>;
-            if (!(scriptable instanceof Stage)) {
+            if (!scriptable.isStage) {
                 result = tellStageTo(result);
             }
             return result;
         };
 
         SPECIAL_CASE_BLOCKS['backgroundIndex'] = () => {
-            if (scriptable instanceof Stage) {
+            if (scriptable.isStage) {
                 return <block s="getCostumeIdx"/>;
             }
             return <block s="reportAttributeOf">
@@ -558,7 +557,7 @@ export default class Block {
 
         SPECIAL_CASE_BLOCKS['looks_backdropnumbername'] = () => {
             const arg = this.args[0].value;
-            if (arg === 'number' && scriptable instanceof Stage) {
+            if (arg === 'number' && scriptable.isStage) {
                 return <block s="getCostumeIdx"/>;
             }
             const newArg = arg === 'number' ? 'costume #' : 'costume name';
