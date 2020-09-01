@@ -200,4 +200,16 @@ export default class Scriptable {
             })}
         </scripts>;
     }
+
+    hasBlock(op: string): boolean {
+        for (const scriptOrComment of this.scripts) {
+            if (scriptOrComment instanceof Script) {
+                const script: Script = scriptOrComment;
+                if (script.hasBlock(op)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

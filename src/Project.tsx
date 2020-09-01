@@ -22,6 +22,7 @@ import AssetServer from './AssetServer';
 import ImageFile from './media/ImageFile';
 import MediaFile from './media/MediaFile';
 import SoundFile from './media/SoundFile';
+import Sprite from './objects/Sprite';
 import Stage from './objects/Stage';
 import VariableFrame from './objects/VariableFrame';
 import { h } from './xml';
@@ -173,5 +174,17 @@ export default class Project {
             </blocks>
             {this.globalVars.toXML()}
         </project>;
+    }
+
+    hasBlock(op: string): boolean {
+        if (this.stage.hasBlock(op)) {
+            return true;
+        }
+        for (const sprite of this.stage.children) {
+            if (sprite instanceof Sprite && sprite.hasBlock(op)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

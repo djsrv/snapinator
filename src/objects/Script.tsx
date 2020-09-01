@@ -98,4 +98,13 @@ export default class Script {
         }
         return <script>{stack}</script>
     }
+
+    hasBlock(op: string): boolean {
+        for (const block of this.stack) {
+            if (block.hasBlock(op)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

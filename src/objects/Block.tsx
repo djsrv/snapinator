@@ -663,4 +663,16 @@ export default class Block {
         }
         return element;
     }
+
+    hasBlock(op: string): boolean {
+        if (op === this.op) {
+            return true;
+        }
+        for (const arg of this.args) {
+            if ((arg instanceof Block || arg instanceof Script) && arg.hasBlock(op)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
