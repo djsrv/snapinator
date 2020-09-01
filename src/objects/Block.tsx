@@ -495,10 +495,10 @@ export default class Block {
             return SPECIAL_CASE_BLOCKS['costumeName']();
         };
 
-        SPECIAL_CASE_BLOCKS['looks_switchbackdropto'] = () => {
+        const switchBackdropTo = (arg: any) => {
             let result: Element;
-            if (this.args[0] instanceof Primitive) {
-                const backdrop = this.args[0].value;
+            if (arg instanceof Primitive) {
+                const backdrop = arg.value;
                 if (backdrop === 'next backdrop') {
                     result = <block s="doWearNextCostume"/>;
                 } else if (backdrop === 'previous backdrop') {
@@ -521,13 +521,57 @@ export default class Block {
             }
             if (!result) {
                 result = <block s="doSwitchToCostume">
-                    {argToXML(this.args[0])}
+                    {argToXML(arg)}
                 </block>;
             }
             if (!scriptable.isStage) {
                 result = tellStageTo(result);
             }
             return result;
+        };
+
+        SPECIAL_CASE_BLOCKS['looks_switchbackdropto'] = () => {
+            let result: any = switchBackdropTo(this.args[0]);
+            if (scriptable.project.hasBackdropEvents) {
+                result = [
+                    result,
+                    <block s="doBroadcast">
+                        <block s="reportJoinWords">
+                            <list>
+                                <l>backdrop switched to </l>
+                                <block s="reportAttributeOf">
+                                    <l><option>costume name</option></l>
+                                    <l>Stage</l>
+                                </block>
+                            </list>
+                        </block>
+                    </block>,
+                ];
+            }
+            return result;
+        };
+
+        SPECIAL_CASE_BLOCKS['looks_switchbackdroptoandwait'] = () => {
+            return [
+                switchBackdropTo(this.args[0]),
+                <block s="doBroadcastAndWait">
+                    <block s="reportJoinWords">
+                        <list>
+                            <l>backdrop switched to </l>
+                            <block s="reportAttributeOf">
+                                <l><option>costume name</option></l>
+                                <l>Stage</l>
+                            </block>
+                        </list>
+                    </block>
+                </block>,
+            ];
+        };
+
+        SPECIAL_CASE_BLOCKS['event_whenbackdropswitchesto'] = () => {
+            return <block s="receiveMessage">
+                <l>{'backdrop switched to ' + this.args[0].value}</l>
+            </block>;
         };
 
         SPECIAL_CASE_BLOCKS['looks_nextbackdrop'] = () => {

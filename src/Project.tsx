@@ -39,6 +39,8 @@ export default class Project {
     globalVars: VariableFrame;
     stage: Stage;
 
+    hasBackdropEvents: boolean;
+
     async readProject(name: string, jsonObj: any, zip: any, log: (msg: any) => void) {
         this.name = name;
         this.jsonObj = jsonObj;
@@ -56,6 +58,8 @@ export default class Project {
             this.globalVars = new VariableFrame().readScriptableSB3(stageObj);
             this.stage = new Stage().readProjectSB3(this.jsonObj, this);
         }
+
+        this.hasBackdropEvents = this.hasBlock('event_whenbackdropswitchesto') || this.hasBlock('looks_switchbackdroptoandwait');
     }
 
     async readMediaSB2(): Promise<any> {
