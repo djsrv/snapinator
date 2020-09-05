@@ -152,13 +152,13 @@ export default class BlockDefinition {
                 <script>
                     <block s="doWarp">
                         {this.script
-                                ? this.script.toXML(scriptable, this.variables)
+                                ? this.script.toXML(scriptable)
                                 : <script/>}
                     </block>
                 </script>
             );
         } else if (this.script) {
-            children.push(this.script.toXML(scriptable, this.variables));
+            children.push(this.script.toXML(scriptable));
         }
         return <block-definition s={this.spec} type={this.type} category="other">
             {children}

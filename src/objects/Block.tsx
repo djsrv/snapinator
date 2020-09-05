@@ -231,11 +231,16 @@ export default class Block {
         if (Array.isArray(arg)) {
             return new Block().readSB2(arg, nextBlockID, blockComments, variables);
         }
-        if (argSpec && argSpec.type === 'field' && argSpec.variableType === SB3_VAR_TYPES.VAR_LIST_TYPE) {
-            return [Block.forVar(variables.getListName(arg)), nextBlockID];
-        }
         if (argSpec && argSpec.type === 'input' && argSpec.inputOp === 'colour_picker') {
             return [Color.fromARGB(arg), nextBlockID];
+        }
+
+        if (argSpec && argSpec.type === 'field') {
+            if (argSpec.variableType === SB3_VAR_TYPES.VAR_LIST_TYPE) {
+                return [Block.forVar(variables.getListName(arg)), nextBlockID];
+            } else if (argSpec.variableType === SB3_VAR_TYPES.VAR_PARAM_TYPE) {
+                arg = variables.getParamName(arg);
+            }
         }
 
         let value: Primitive;
@@ -353,6 +358,8 @@ export default class Block {
                 return Block.forVar(variables.getListName(argArr[1]));
             } else if (argSpec.variableType === SB3_VAR_TYPES.VAR_SCALAR_TYPE) {
                 value = variables.getVarName(argArr[1]);
+            } else if (argSpec.variableType === SB3_VAR_TYPES.VAR_PARAM_TYPE) {
+                value = variables.getParamName(argArr[0]);
             } else if (argSpec.variableType === SB3_VAR_TYPES.VAR_BROADCAST_MESSAGE_TYPE) {
                 value = variables.getMessageName(argArr[1]);
             } else {
@@ -371,15 +378,15 @@ export default class Block {
         return prim;
     }
 
-    toXML(scriptable: Scriptable, variables: VariableFrame, isArg: boolean = false): Element {
+    toXML(scriptable: Scriptable, isArg: boolean = false): Element {
         const argToXML = (arg: any) => {
             if (arg instanceof Script) {
                 const script: Script = arg;
-                return script.toXML(scriptable, variables);
+                return script.toXML(scriptable);
             }
             if (arg instanceof Block) {
                 const block: Block = arg;
-                return block.toXML(scriptable, variables, true);
+                return block.toXML(scriptable, true);
             }
             return arg.toXML();
         };
@@ -397,7 +404,9 @@ export default class Block {
 
         const SPECIAL_CASE_BLOCKS: any = {};
 
-        SPECIAL_CASE_BLOCKS['data_variable'] = () => {
+        SPECIAL_CASE_BLOCKS['data_variable'] =
+        SPECIAL_CASE_BLOCKS['argument_reporter_string_number'] =
+        SPECIAL_CASE_BLOCKS['argument_reporter_boolean'] = () => {
             return <block var={this.args[0].value}/>;
         };
 
@@ -405,11 +414,6 @@ export default class Block {
             return <block s="reportJoinWords">
                 {argToXML(this.args[0])}
             </block>;
-        };
-
-        SPECIAL_CASE_BLOCKS['argument_reporter_string_number'] =
-        SPECIAL_CASE_BLOCKS['argument_reporter_boolean'] = () => {
-            return <block var={variables.getParamName(this.args[0].value)}/>;
         };
 
         SPECIAL_CASE_BLOCKS['procedures_call'] = () => {

@@ -43,6 +43,7 @@ export const SB3_VAR_TYPES = {
     VAR_SCALAR_TYPE: '',
     VAR_LIST_TYPE: 'list',
     VAR_BROADCAST_MESSAGE_TYPE: 'broadcast_msg',
+    VAR_PARAM_TYPE: 'param'
 };
 
 export const SB3_CONSTANTS = {
@@ -1392,12 +1393,14 @@ export const SB3_ARG_MAPS = {
         {
             type: 'field',
             fieldName: 'VALUE',
+            variableType: SB3_VAR_TYPES.VAR_PARAM_TYPE,
         },
     ],
     'argument_reporter_boolean': [
         {
             type: 'field',
             fieldName: 'VALUE',
+            variableType: SB3_VAR_TYPES.VAR_PARAM_TYPE,
         },
     ],
 };

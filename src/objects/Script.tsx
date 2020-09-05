@@ -91,8 +91,8 @@ export default class Script {
         return this;
     }
 
-    toXML(scriptable: Scriptable, variables: VariableFrame): Element {
-        const stack = this.stack.map((block) => block.toXML(scriptable, variables));
+    toXML(scriptable: Scriptable): Element {
+        const stack = this.stack.map((block) => block.toXML(scriptable));
         if (this.x != null && this.y != null) {
             return <script x={this.x} y={this.y}>{stack}</script>
         }

@@ -196,7 +196,7 @@ export default class Scriptable {
                     return comment.toXML();
                 }
                 const script: Script = scriptOrComment;
-                return script.toXML(this, this.variables);
+                return script.toXML(this);
             })}
         </scripts>;
     }
