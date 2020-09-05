@@ -29,6 +29,7 @@ export default class VariableFrame {
     varNameMap: {[id: string]: string};
     listNameMap: {[id: string]: string};
     paramNameMap: {[id: string]: string};
+    messageNameMap: {[id: string]: string};
 
     constructor(parent?: VariableFrame) {
         this.parent = parent;
@@ -36,6 +37,7 @@ export default class VariableFrame {
         this.varNameMap = {};
         this.listNameMap = {};
         this.paramNameMap = {};
+        this.messageNameMap = {};
     }
 
     isNameUsed(name: string): boolean {
@@ -102,6 +104,16 @@ export default class VariableFrame {
         return null;
     }
 
+    getMessageName(id: string): string {
+        if (this.messageNameMap[id]) {
+            return this.messageNameMap[id];
+        }
+        if (this.parent) {
+            return this.parent.getMessageName(id);
+        }
+        return null;
+    }
+
     readScriptableSB2(jsonObj: any): VariableFrame {
         const varObjs = jsonObj.variables;
         const listObjs = jsonObj.lists;
@@ -126,6 +138,7 @@ export default class VariableFrame {
     readScriptableSB3(jsonObj: any): VariableFrame {
         const varDict = jsonObj.variables;
         const listDict = jsonObj.lists;
+        const messageDict = jsonObj.broadcasts || {};
 
         for (const varID in varDict) {
             if (varDict.hasOwnProperty(varID)) {
@@ -142,6 +155,11 @@ export default class VariableFrame {
                 const newName = this.getUnusedName(oldName);
                 this.vars.push(new Variable(newName, new List(listArr[1])));
                 this.listNameMap[listID] = newName;
+            }
+        }
+        for (const messageID in messageDict) {
+            if (messageDict.hasOwnProperty(messageID)) {
+                this.messageNameMap[messageID] = messageDict[messageID];
             }
         }
 

@@ -323,8 +323,10 @@ export default class Block {
                         const fieldName = Object.keys(inputObj.fields)[0];
                         value = inputObj.fields[fieldName][0];
                     } else if (Array.isArray(inputValue)) { // primitive array
-                        if (argSpec.inputOp === 'colour_picker') {
+                        if (inputValue[0] === SB3_CONSTANTS.COLOR_PICKER_PRIMITIVE) {
                             return Color.fromHex(inputValue[1]);
+                        } else if (inputValue[0] === SB3_CONSTANTS.BROADCAST_PRIMITIVE) {
+                            value = variables.getMessageName(inputValue[2]);
                         } else {
                             value = inputValue[1];
                         }
@@ -351,6 +353,8 @@ export default class Block {
                 return Block.forVar(variables.getListName(argArr[1]));
             } else if (argSpec.variableType === SB3_VAR_TYPES.VAR_SCALAR_TYPE) {
                 value = variables.getVarName(argArr[1]);
+            } else if (argSpec.variableType === SB3_VAR_TYPES.VAR_BROADCAST_MESSAGE_TYPE) {
+                value = variables.getMessageName(argArr[1]);
             } else {
                 value = argArr[0];
             }
