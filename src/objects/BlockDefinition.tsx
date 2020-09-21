@@ -35,7 +35,8 @@ export default class BlockDefinition {
                 }
                 throw new Error('Invalid custom block argument type: ' + part);
             }
-            part = part.replace(/\\(.)/g, '$1'); // unescape
+            part = part.replace(/\\(.)/g, '$1') // unescape
+                       .replace(/'/g, '');      // strip apostrophes
             if (part.charAt(0) === '%' && part.length > 1) {
                 // prevent Snap! from turning this into an input
                 return '\\' + part;
