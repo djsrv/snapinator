@@ -226,7 +226,7 @@ export const SB3_TO_SNAP_OP_MAP = {
     'data_listcontainsitem': 'reportListContainsItem',
     'data_showlist': 'doShowVar',
     'data_hidelist': 'doHideVar',
-    'data_itemnumoflist": 'reportListIndex',
+    'data_itemnumoflist': 'reportListIndex',
     // 'procedures_definition': '',
     // 'argument_reporter_string_number': '',
     // 'argument_reporter_boolean': '',
