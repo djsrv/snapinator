@@ -1399,9 +1399,9 @@ export const SB3_ARG_MAPS = {
         {
             type: 'field',
             fieldName: 'LIST',
-            variableType; SB3_VAR_TYPES.VAR_LIST_TYPE,
+            variableType: SB3_VAR_TYPES.VAR_LIST_TYPE,
         }
-    ]
+    ],
     'argument_reporter_string_number': [
         {
             type: 'field',
