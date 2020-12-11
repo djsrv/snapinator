@@ -222,11 +222,11 @@ export const SB3_TO_SNAP_OP_MAP = {
     'data_insertatlist': 'doInsertInList',
     'data_replaceitemoflist': 'doReplaceInList',
     'data_itemoflist': 'reportListItem',
+    'data_itemnumoflist': 'reportListIndex',
     'data_lengthoflist': 'reportListLength',
     'data_listcontainsitem': 'reportListContainsItem',
     'data_showlist': 'doShowVar',
     'data_hidelist': 'doHideVar',
-    'data_itemnumoflist': 'reportListIndex',
     // 'procedures_definition': '',
     // 'argument_reporter_string_number': '',
     // 'argument_reporter_boolean': '',
@@ -1357,6 +1357,18 @@ export const SB3_ARG_MAPS = {
             variableType: SB3_VAR_TYPES.VAR_LIST_TYPE,
         },
     ],
+    'data_itemnumoflist': [
+        {
+            type: 'input',
+            inputOp: 'text',
+            inputName: 'ITEM',
+        },
+        {
+            type: 'field',
+            fieldName: 'LIST',
+            variableType: SB3_VAR_TYPES.VAR_LIST_TYPE,
+        }
+    ],
     'data_lengthoflist': [
         {
             type: 'field',
@@ -1389,18 +1401,6 @@ export const SB3_ARG_MAPS = {
             fieldName: 'LIST',
             variableType: SB3_VAR_TYPES.VAR_LIST_TYPE,
         },
-    ],
-    'data_itemnumoflist': [
-        {
-            type: 'input',
-            inputOp: 'text',
-            inputName: 'ITEM',
-        },
-        {
-            type: 'field',
-            fieldName: 'LIST',
-            variableType: SB3_VAR_TYPES.VAR_LIST_TYPE,
-        }
     ],
     'argument_reporter_string_number': [
         {
