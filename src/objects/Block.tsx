@@ -626,11 +626,20 @@ export default class Block {
         };
 
         SPECIAL_CASE_BLOCKS['sensing_touchingobject'] = () => {
-            return <block s="reportAnd">
-                <block s="reportShown"/>
-                <block s="reportTouchingObject">
-                    {argToXML(this.args[0])}
-                </block>
+            const arg = this.args[0];
+            if ((arg instanceof Primitive && !arg.isOption) || arg instanceof Block) {
+                // If the argument is a sprite, Scratch returns true only if the calling
+                // sprite is visible. In Snap!, it doesn't matter, so insert a "shown?" block.
+                // If the argument is a reporter, just assume it returns a sprite.
+                return <block s="reportAnd">
+                    <block s="reportShown"/>
+                    <block s="reportTouchingObject">
+                        {argToXML(arg)}
+                    </block>
+                </block>;
+            }
+            return <block s="reportTouchingObject">
+                {argToXML(arg)}
             </block>;
         };
 
