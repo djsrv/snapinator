@@ -18,7 +18,7 @@
 
 */
 
-import AssetServer from './AssetServer';
+import Archive, { AssetServer } from './Archive';
 import ImageFile from './media/ImageFile';
 import MediaFile from './media/MediaFile';
 import SoundFile from './media/SoundFile';
@@ -31,7 +31,7 @@ import BlockDefinition from './objects/BlockDefinition';
 export default class Project {
     name: string;
     jsonObj: any;
-    zip: any;
+    zip: Archive;
     log: (msg: any) => void;
 
     unsupportedOps: {[op: string]: boolean};
@@ -41,7 +41,7 @@ export default class Project {
 
     hasBackdropEvents: boolean;
 
-    async readProject(name: string, jsonObj: any, zip: any, log: (msg: any) => void) {
+    async readProject(name: string, jsonObj: any, zip: Archive, log: (msg: any) => void) {
         this.name = name;
         this.jsonObj = jsonObj;
         this.zip = zip;

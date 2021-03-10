@@ -18,13 +18,13 @@
 
 */
 
+import Archive from '../Archive';
 import MediaFile from './MediaFile';
 import * as Base64 from 'base64-js';
-import * as JSZip from 'jszip';
 import loadSvgString from 'scratch-svg-renderer/src/load-svg-string';
 
 export default class ImageFile extends MediaFile {
-    async load(zip: any, assetID: string, dataFormat: string, log: (msg: any) => void, scratchVersion: number, resolution: number): Promise<ImageFile> {
+    async load(zip: Archive, assetID: string, dataFormat: string, log: (msg: any) => void, scratchVersion: number, resolution: number): Promise<ImageFile> {
         this.dataFormat = dataFormat;
         const fileName = assetID + '.' + dataFormat;
         const file = zip.file(fileName);
@@ -32,13 +32,7 @@ export default class ImageFile extends MediaFile {
             throw new Error(`${fileName} does not exist`);
         }
         if (dataFormat === 'svg') {
-            let svgString;
-            if (zip instanceof JSZip) {
-                svgString = await file.async('text');
-            } else {
-                const fileArray = await file.async('uint8array');
-                svgString = new TextDecoder().decode(fileArray);
-            }
+            let svgString = await file.text();
             this.data = Base64.fromByteArray(
                 new TextEncoder().encode(
                     this.fixSVG(svgString, scratchVersion)

@@ -18,19 +18,20 @@
 
 */
 
+import Archive from "../Archive";
 import ADPCMSoundDecoder, { isADPCMData } from '../audio/ADPCMSoundDecoder';
 import MediaFile from './MediaFile';
 import * as Base64 from 'base64-js';
 import * as WavEncoder from 'wav-encoder';
 
 export default class SoundFile extends MediaFile {
-    async load(zip: any, assetID: string, dataFormat: string, log: (msg: any) => void, scratchVersion?: number, resolution?: number): Promise<MediaFile> {
+    async load(zip: Archive, assetID: string, dataFormat: string, log: (msg: any) => void, scratchVersion?: number, resolution?: number): Promise<MediaFile> {
         const fileName = assetID + '.' + dataFormat;
         const file = zip.file(fileName);
         if (!file) {
             throw new Error(`${fileName} does not exist`);
         }
-        let fileArray = await file.async('uint8array');
+        let fileArray = await file.uint8array();
         if (isADPCMData(fileArray.buffer)) {
             log(`Decompressing ADPCM sound "${fileName}"`);
             const pcmBuffer = await WavEncoder.encode(

@@ -18,12 +18,11 @@
 
 */
 
-import AssetServer from './AssetServer';
+import Archive, { ZipArchive, SB1Archive, AssetServer } from './Archive';
 import ProjectURLInput from './components/ProjectURLInput';
 import Project from './Project';
 import { serializeXML } from './xml';
 import { h, Component, ComponentChild } from 'preact';
-import * as JSZip from 'jszip';
 import { SB1File } from 'scratch-sb1-converter';
 
 export interface State {
@@ -93,7 +92,7 @@ export default class SnapinatorApp extends Component<any, State> {
     }
 
     async readProject(projectName: string, file: ArrayBuffer): Promise<Project | null> {
-        let zip
+        let zip: Archive;
         let jsonObj;
         this.log(`Reading project "${projectName}"`);
         try {
@@ -105,14 +104,14 @@ export default class SnapinatorApp extends Component<any, State> {
             zip = new AssetServer();
         } catch (err) {
             try {
-                zip = await JSZip.loadAsync(file);
-                const jsonText = await zip.file('project.json').async('text');
+                zip = await new ZipArchive().load(file);
+                const jsonText = await zip.file('project.json').text();
                 jsonObj = JSON.parse(jsonText);
             } catch (err) {
                 try {
                     const sb1 = new SB1File(file);
                     jsonObj = sb1.json;
-                    zip = sb1.zip;
+                    zip = new SB1Archive(sb1.zip);
                 } catch (err) {
                     this.log('Invalid project');
                     return null;

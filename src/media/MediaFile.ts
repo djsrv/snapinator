@@ -18,8 +18,7 @@
 
 */
 
-import * as Base64 from 'base64-js';
-import * as JSZip from 'jszip';
+import Archive from '../Archive';
 
 export default class MediaFile {
     dataFormat: string;
@@ -30,19 +29,14 @@ export default class MediaFile {
         this.dataIsURL = false;
     }
 
-    async load(zip: any, assetID: string, dataFormat: string, log: (msg: any) => void, scratchVersion?: number, resolution?: number): Promise<MediaFile> {
+    async load(zip: Archive, assetID: string, dataFormat: string, log: (msg: any) => void, scratchVersion?: number, resolution?: number): Promise<MediaFile> {
         this.dataFormat = dataFormat;
         const fileName = assetID + '.' + dataFormat;
         const file = zip.file(fileName);
         if (!file) {
             throw new Error(`${fileName} does not exist`);
         }
-        if (zip instanceof JSZip) {
-            this.data = await file.async('base64');
-        } else {
-            const fileArray = await file.async('uint8array');
-            this.data = Base64.fromByteArray(fileArray);
-        }
+        this.data = await file.base64();
         return this;
     }
 
