@@ -18,9 +18,9 @@
   },
   "dependencies": {
     "base64-js": "^1.3.1",
-    "jszip": "^3.5.0",
+    "jszip": "^3.6.0",
     "preact": "^10.4.8",
-    "scratch-sb1-converter": "^0.2.7",
+    "scratch-sb1-converter": "github:adroitwhiz/scratch-sb1-converter#change-text-encoding",
     "scratch-svg-renderer": "^0.2.0-prerelease.20210225205629",
     "wav-encoder": "^1.3.0"
   }
