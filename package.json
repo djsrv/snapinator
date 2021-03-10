@@ -8,7 +8,7 @@
     "build-dev": "webpack --mode=development"
   },
   "author": "djsrv",
-  "license": "MIT",
+  "license": "AGPL-3.0",
   "devDependencies": {
     "ts-loader": "^8.0.17",
     "typescript": "^4.2.3",
