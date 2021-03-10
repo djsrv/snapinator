@@ -21,7 +21,7 @@
 import MediaFile from './MediaFile';
 import * as Base64 from 'base64-js';
 import * as JSZip from 'jszip';
-import { SVGRenderer } from 'scratch-svg-renderer';
+import loadSvgString from 'scratch-svg-renderer/src/load-svg-string';
 
 export default class ImageFile extends MediaFile {
     async load(zip: any, assetID: string, dataFormat: string, log: (msg: any) => void, scratchVersion: number, resolution: number): Promise<ImageFile> {
@@ -54,9 +54,8 @@ export default class ImageFile extends MediaFile {
     }
 
     fixSVG(svgString: string, scratchVersion: number): string {
-        const renderer = new SVGRenderer();
-        renderer.loadString(svgString, scratchVersion === 2);
-        return new XMLSerializer().serializeToString(renderer._svgTag);
+        const svgTag = loadSvgString(svgString, scratchVersion === 2);
+        return new XMLSerializer().serializeToString(svgTag);
     }
 
     async fixResolution(resolution: number): Promise<void> {

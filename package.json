@@ -3,26 +3,25 @@
   "version": "3.0.0",
   "description": "Converts Scratch projects/sprites to Snap!",
   "scripts": {
-    "build": "webpack -p",
-    "build-profile": "webpack -p --profile",
-    "build-dev": "webpack -d"
+    "build": "webpack --mode=production",
+    "build-profile": "webpack --mode=production --profile",
+    "build-dev": "webpack --mode=development"
   },
   "author": "djsrv",
   "license": "MIT",
   "devDependencies": {
-    "ts-loader": "^8.0.3",
-    "tslint": "^6.1.3",
-    "typescript": "^4.0.2",
-    "webpack": "^4.44.1",
-    "webpack-bundle-analyzer": "^3.8.0",
-    "webpack-cli": "^3.3.12"
+    "ts-loader": "^8.0.17",
+    "typescript": "^4.2.3",
+    "webpack": "^5.24.4",
+    "webpack-bundle-analyzer": "^4.4.0",
+    "webpack-cli": "^4.5.0"
   },
   "dependencies": {
     "base64-js": "^1.3.1",
     "jszip": "^3.5.0",
     "preact": "^10.4.8",
     "scratch-sb1-converter": "^0.2.7",
-    "scratch-svg-renderer": "^0.2.0-prerelease.20201019174008",
+    "scratch-svg-renderer": "^0.2.0-prerelease.20210225205629",
     "wav-encoder": "^1.3.0"
   }
 }
