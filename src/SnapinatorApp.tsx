@@ -121,7 +121,7 @@ export default class SnapinatorApp extends Component<any, State> {
         }
         const project = new Project();
         try {
-            await project.readProject(name, jsonObj, zip, this.log.bind(this));
+            await project.readProject(projectName, jsonObj, zip, this.log.bind(this));
         } catch (err) {
             this.log(err);
             return null;
