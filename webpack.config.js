@@ -7,7 +7,7 @@ module.exports = {
   context: __dirname + "/src",
   entry: "./app.tsx",
   output: {
-    path: __dirname + "/bin",
+    path: __dirname + "/dist",
     filename: "snapinator_app.bundle.js"
   },
   resolve: {
