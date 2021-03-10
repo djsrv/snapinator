@@ -59,7 +59,7 @@ export default class ImageFile extends MediaFile {
         return new XMLSerializer().serializeToString(renderer._svgTag);
     }
 
-    async fixResolution(resolution: number): Promise<null> {
+    async fixResolution(resolution: number): Promise<void> {
         return new Promise((resolve) => {
             if (resolution === 1) {
                 resolve();
