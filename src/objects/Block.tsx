@@ -108,6 +108,9 @@ SPECIAL_CASE_ARGS['control_stop'][0] = (arg: Primitive) => {
     if (arg.value === 'other scripts in stage') {
         return new Primitive('other scripts in sprite', true);
     }
+    if (arg.value === 'this script') {
+        return new Primitive('this block', true);
+    }
     return arg;
 };
 
