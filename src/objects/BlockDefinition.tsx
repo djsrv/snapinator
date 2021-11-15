@@ -1,7 +1,7 @@
 /*
 
     Snapinator
-    Copyright (C) 2020  Dylan Servilla
+    Copyright (C) 2020  Deborah Servilla
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as published by

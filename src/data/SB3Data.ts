@@ -4,7 +4,7 @@
     https://github.com/LLK/scratch-vm/blob/f4e49563d6ed9b748b31ac1a7c26592f344e4e42/src/serialization/sb3.js
     https://github.com/LLK/scratch-vm/blob/a6421b91f8c411ffb3a3b41f32e581d9bcc3bff9/src/serialization/sb2_specmap.js
 
-    Copyright (c) 2016-2020, Massachusetts Institute of Technology, Dylan Servilla
+    Copyright (c) 2016-2020, Massachusetts Institute of Technology, Deborah Servilla
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without

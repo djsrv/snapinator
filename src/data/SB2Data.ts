@@ -3,7 +3,7 @@
     Adapted from sb2_specmap.js in scratch-vm
     https://github.com/LLK/scratch-vm/blob/a6421b91f8c411ffb3a3b41f32e581d9bcc3bff9/src/serialization/sb2_specmap.js
 
-    Copyright (c) 2016-2020, Massachusetts Institute of Technology, Dylan Servilla
+    Copyright (c) 2016-2020, Massachusetts Institute of Technology, Deborah Servilla
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
